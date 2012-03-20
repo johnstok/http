@@ -34,7 +34,6 @@ public class SyntaxTest {
 
     @Test
     public void tokenMatching() {
-
         assertFalse(classOnce(Syntax.TOKEN, "\u0000"));
         assertFalse(classOnce(Syntax.TOKEN, "\u0001"));
         assertFalse(classOnce(Syntax.TOKEN, "\u0002"));
@@ -102,7 +101,7 @@ public class SyntaxTest {
     @Test
     public void octetMatching() {
         for (int i=0; i<256; i++) {
-            String s = ""+(char)i;
+            final String s = ""+(char)i;
             assertTrue(classOnce(Syntax.OCTET, s));
         }
 
@@ -114,30 +113,342 @@ public class SyntaxTest {
     @Test
     public void textMatching() {
         for (int i=0; i<32; i++) {
-            String s = ""+(char)i;
-            assertFalse("Matched char: "+i, classOnce(Syntax.TEXT, s));
+            final String s = ""+(char)i;
+            assertFalse("Matched char: "+i, pattern(Syntax.TEXT, s));
         }
         for (int i=32; i<127; i++) {
-            String s = ""+(char)i;
-            assertTrue("Unmatched char: "+i, classOnce(Syntax.TEXT, s));
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.TEXT, s));
         }
-        assertFalse(classOnce(Syntax.TEXT, ""+(char)127));
+        assertFalse(pattern(Syntax.TEXT, ""+(char)127));
         for (int i=128; i<256; i++) {
-            String s = ""+(char)i;
-            assertTrue("Unmatched char: "+i, classOnce(Syntax.TEXT, s));
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.TEXT, s));
         }
+
+        assertTrue(pattern(Syntax.TEXT, ""));
 
         assertTrue(pattern(Syntax.TEXT, "a\r\n\tb"));
+        assertTrue(pattern(Syntax.TEXT, "\r\n\tb"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\t"));
 
-        assertFalse(classOnce(Syntax.TEXT, ""+(char)-1));
-        assertFalse(classOnce(Syntax.TEXT, ""+(char)256));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n b"));
+        assertTrue(pattern(Syntax.TEXT, "\r\n b"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n "));
+
+        assertTrue(pattern(Syntax.TEXT, "a\r\n   b"));
+        assertTrue(pattern(Syntax.TEXT, "\r\n   b"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n   "));
+
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.TEXT, "\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\t\t\t"));
+
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\t \tb"));
+        assertTrue(pattern(Syntax.TEXT, "\r\n\t \tb"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\t \t"));
+
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\tb\r\n\tc"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n b\r\n\tc"));
+        assertTrue(pattern(Syntax.TEXT, "a\r\n\tb\r\n c"));
+
+        assertFalse(pattern(Syntax.TEXT, "\r\n"));
+        assertFalse(pattern(Syntax.TEXT, "\r\r"));
+        assertFalse(pattern(Syntax.TEXT, "\n\n"));
+        assertFalse(pattern(Syntax.TEXT, "\n\r"));
+        assertFalse(pattern(Syntax.TEXT, "\n\r "));
+        assertFalse(pattern(Syntax.TEXT, "\n\r\t"));
+
+        assertFalse(pattern(Syntax.TEXT, ""+(char)-1));
+        assertFalse(pattern(Syntax.TEXT, ""+(char)256));
+    }
+
+
+    @Test
+    public void ctextMatching() {
+        for (int i=0; i<32; i++) {
+            final String s = ""+(char)i;
+            assertFalse("Matched char: "+i, pattern(Syntax.CTEXT, s));
+        }
+        for (int i=32; i<40; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.CTEXT, s));
+        }
+        assertFalse(pattern(Syntax.CTEXT, ""+(char)40));
+        assertFalse(pattern(Syntax.CTEXT, ""+(char)41));
+        for (int i=42; i<127; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.CTEXT, s));
+        }
+        assertFalse(pattern(Syntax.CTEXT, ""+(char)127));
+        for (int i=128; i<256; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.CTEXT, s));
+        }
+
+        assertTrue(pattern(Syntax.CTEXT, ""));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\tb"));
+        assertTrue(pattern(Syntax.CTEXT, "\r\n\tb"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\t"));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n b"));
+        assertTrue(pattern(Syntax.CTEXT, "\r\n b"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n "));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n   b"));
+        assertTrue(pattern(Syntax.CTEXT, "\r\n   b"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n   "));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.CTEXT, "\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\t\t\t"));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\t \tb"));
+        assertTrue(pattern(Syntax.CTEXT, "\r\n\t \tb"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\t \t"));
+
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\tb\r\n\tc"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n b\r\n\tc"));
+        assertTrue(pattern(Syntax.CTEXT, "a\r\n\tb\r\n c"));
+
+        assertFalse(pattern(Syntax.CTEXT, "\r\n"));
+        assertFalse(pattern(Syntax.CTEXT, "\r\r"));
+        assertFalse(pattern(Syntax.CTEXT, "\n\n"));
+        assertFalse(pattern(Syntax.CTEXT, "\n\r"));
+        assertFalse(pattern(Syntax.CTEXT, "\n\r "));
+        assertFalse(pattern(Syntax.CTEXT, "\n\r\t"));
+
+        assertFalse(pattern(Syntax.CTEXT, ")("));
+        assertFalse(pattern(Syntax.CTEXT, ")("));
+        assertFalse(pattern(Syntax.CTEXT, ")\r\n ("));
+        assertFalse(pattern(Syntax.CTEXT, ")\r\n ("));
+
+        assertFalse(pattern(Syntax.CTEXT, ""+(char)-1));
+        assertFalse(pattern(Syntax.CTEXT, ""+(char)256));
+    }
+
+
+    @Test
+    public void commentMatching() {
+        for (int i=0; i<32; i++) {
+            final String s = "("+(char)i+")";
+            assertFalse("Matched char: "+i, pattern(Syntax.COMMENT, s));
+        }
+        for (int i=32; i<40; i++) {
+            final String s = "("+(char)i+")";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.COMMENT, s));
+        }
+        assertFalse(pattern(Syntax.COMMENT, "("+(char)40+")"));
+        assertFalse(pattern(Syntax.COMMENT, "("+(char)41+")"));
+        for (int i=42; i<127; i++) {
+            final String s = "("+(char)i+")";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.COMMENT, s));
+        }
+        assertFalse(pattern(Syntax.COMMENT, "("+(char)127+")"));
+        for (int i=128; i<256; i++) {
+            final String s = "("+(char)i+")";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.COMMENT, s));
+        }
+
+        assertTrue(pattern(Syntax.COMMENT, "()"));
+        assertTrue(pattern(Syntax.COMMENT, "(abc)"));
+
+        assertFalse(pattern(Syntax.COMMENT, "abc)"));
+        assertFalse(pattern(Syntax.COMMENT, "(abc"));
+        assertFalse(pattern(Syntax.COMMENT, "abc)def"));
+        assertFalse(pattern(Syntax.COMMENT, "abc(def"));
+        assertFalse(pattern(Syntax.COMMENT, "abc)(def"));
+        assertFalse(pattern(Syntax.COMMENT, "abc()def"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(\r\n\tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\t)"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n b)"));
+        assertTrue(pattern(Syntax.COMMENT, "(\r\n b)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n )"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n   b)"));
+        assertTrue(pattern(Syntax.COMMENT, "(\r\n   b)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n   )"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\t\t\tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(\r\n\t\t\tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\t\t\t)"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\t \tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(\r\n\t \tb)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\t \t)"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\tb\r\n\tc)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n b\r\n\tc)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\r\n\tb\r\n c)"));
+
+        assertFalse(pattern(Syntax.COMMENT, "(\r\n)"));
+        assertFalse(pattern(Syntax.COMMENT, "(\r\r)"));
+        assertFalse(pattern(Syntax.COMMENT, "(\n\n)"));
+        assertFalse(pattern(Syntax.COMMENT, "(\n\r)"));
+        assertFalse(pattern(Syntax.COMMENT, "(\n\r )"));
+        assertFalse(pattern(Syntax.COMMENT, "(\n\r\t)"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(\\))"));
+        assertTrue(pattern(Syntax.COMMENT, "(\\()"));
+        assertTrue(pattern(Syntax.COMMENT, "(\\)a\\()"));
+        assertTrue(pattern(Syntax.COMMENT, "(\\(a\\))"));
+
+        assertTrue(pattern(Syntax.COMMENT, "(a\\\")"));
+        assertTrue(pattern(Syntax.COMMENT, "(\\\"a)"));
+        assertTrue(pattern(Syntax.COMMENT, "(a\\\"b)"));
+
+        assertFalse(pattern(Syntax.COMMENT, "("+(char)-1+")"));
+        assertFalse(pattern(Syntax.COMMENT, "("+(char)256+")"));
+    }
+
+
+    @Test
+    public void quotedStringMatching() {
+        for (int i=0; i<32; i++) {
+            final String s = "\""+(char)i+"\"";
+            assertFalse("Matched char: "+i, pattern(Syntax.QUOTED_STRING, s));
+        }
+        for (int i=32; i<34; i++) {
+            final String s = "\""+(char)i+"\"";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QUOTED_STRING, s));
+        }
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\""+(char)34+"\""));
+        for (int i=35; i<127; i++) {
+            final String s = "\""+(char)i+"\"";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QUOTED_STRING, s));
+        }
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\""+(char)127+"\""));
+        for (int i=128; i<256; i++) {
+            final String s = "\""+(char)i+"\"";
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QUOTED_STRING, s));
+        }
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"abc\""));
+
+        assertFalse(pattern(Syntax.QUOTED_STRING, "abc\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"abc"));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "abc\"def"));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\r\n\tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\t\""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n b\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\r\n b\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n \""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n   b\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\r\n   b\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n   \""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\t\t\tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\r\n\t\t\tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\t\t\t\""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\t \tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\r\n\t \tb\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\t \t\""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\tb\r\n\tc\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n b\r\n\tc\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\r\n\tb\r\n c\""));
+
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\r\n\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\r\r\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\n\n\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\n\r\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\n\r \""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\"\n\r\t\""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\\\"\""));
+
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\\\"\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"\\\"a\""));
+        assertTrue(pattern(Syntax.QUOTED_STRING, "\"a\\\"b\""));
+
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\""+(char)-1+"\""));
+        assertFalse(pattern(Syntax.QUOTED_STRING, "\""+(char)256+"\""));
+    }
+
+
+    @Test
+    public void qdtextMatching() {
+        for (int i=0; i<32; i++) {
+            final String s = ""+(char)i;
+            assertFalse("Matched char: "+i, pattern(Syntax.QDTEXT, s));
+        }
+        for (int i=32; i<34; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QDTEXT, s));
+        }
+        assertFalse(pattern(Syntax.QDTEXT, ""+(char)34));
+        for (int i=35; i<127; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QDTEXT, s));
+        }
+        assertFalse(pattern(Syntax.QDTEXT, ""+(char)127));
+        for (int i=128; i<256; i++) {
+            final String s = ""+(char)i;
+            assertTrue("Unmatched char: "+i, pattern(Syntax.QDTEXT, s));
+        }
+
+        assertTrue(pattern(Syntax.QDTEXT, ""));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "\r\n\tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\t"));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n b"));
+        assertTrue(pattern(Syntax.QDTEXT, "\r\n b"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n "));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n   b"));
+        assertTrue(pattern(Syntax.QDTEXT, "\r\n   b"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n   "));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "\r\n\t\t\tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\t\t\t"));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\t \tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "\r\n\t \tb"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\t \t"));
+
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\tb\r\n\tc"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n b\r\n\tc"));
+        assertTrue(pattern(Syntax.QDTEXT, "a\r\n\tb\r\n c"));
+
+        assertFalse(pattern(Syntax.QDTEXT, "\r\n"));
+        assertFalse(pattern(Syntax.QDTEXT, "\r\r"));
+        assertFalse(pattern(Syntax.QDTEXT, "\n\n"));
+        assertFalse(pattern(Syntax.QDTEXT, "\n\r"));
+        assertFalse(pattern(Syntax.QDTEXT, "\n\r "));
+        assertFalse(pattern(Syntax.QDTEXT, "\n\r\t"));
+
+        assertFalse(pattern(Syntax.QDTEXT, "a\"b"));
+        assertFalse(pattern(Syntax.QDTEXT, "a\""));
+        assertFalse(pattern(Syntax.QDTEXT, "\"b"));
+        assertFalse(pattern(Syntax.QDTEXT, "\"ab\""));
+
+        assertFalse(pattern(Syntax.QDTEXT, "\""));
+        assertFalse(pattern(Syntax.QDTEXT, "\"\r\n \""));
+        assertFalse(pattern(Syntax.QDTEXT, "\r\n \""));
+        assertFalse(pattern(Syntax.QDTEXT, "\"\r\n "));
+
+        assertFalse(pattern(Syntax.QDTEXT, ""+(char)-1));
+        assertFalse(pattern(Syntax.QDTEXT, ""+(char)256));
     }
 
 
     @Test
     public void charMatching() {
         for (int i=0; i<128; i++) {
-            String s = ""+(char)i;
+            final String s = ""+(char)i;
             assertTrue(classOnce(Syntax.CHAR, s));
         }
 

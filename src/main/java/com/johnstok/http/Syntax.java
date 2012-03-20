@@ -69,7 +69,7 @@ public class Syntax {
    8859-1 [22] only when encoded according to the rules of RFC 2047
    [14]. */
 
-    public static final String TEXT = OCTET+"&&[^"+CTL+"]|(?:"+LWS+")"; // <any OCTET except CTLs, but including LWS>
+    public static final String TEXT = "((?:["+OCTET+"&&[^"+CTL+"]])+|"+LWS+")*";
 
 /* A CRLF is allowed in the definition of TEXT only as part of a header
    field continuation. It is expected that the folding LWS will be
@@ -82,38 +82,29 @@ public class Syntax {
 /* Many HTTP/1.1 header field values consist of words separated by LWS
    or special characters. These special characters MUST be in a quoted
    string to be used within a parameter value (as defined in section
-   3.6).
-
-       token          = 1*<any CHAR except CTLs or separators>
-       separators     = "(" | ")" | "<" | ">" | "@"
-                      | "," | ";" | ":" | "\" | <">
-                      | "/" | "[" | "]" | "?" | "="
-                      | "{" | "}" | SP | HT
-    */
+   3.6). */
 
     public static final String SEPARATOR = "\\(\\)<>@,;\\:\\\\\"/\\[\\]\\?\\=\\{\\} \t";
 
     public static final String TOKEN = CHAR+"&&[^"+SEPARATOR+"]&&[^"+CTL+"]";
 
-    /*
+/* The backslash character ("\") MAY be used as a single-character
+   quoting mechanism only within quoted-string and comment constructs. */
 
-   Comments can be included in some HTTP header fields by surrounding
+    public static final String QUOTED_PAIR    = "\\\\["+CHAR+"]";
+
+/* Comments can be included in some HTTP header fields by surrounding
    the comment text with parentheses. Comments are only allowed in
    fields containing "comment" as part of their field value definition.
    In all other fields, parentheses are considered part of the field
-   value.
+   value. */
 
-       comment        = "(" *( ctext | quoted-pair | comment ) ")"
-       ctext          = <any TEXT excluding "(" and ")">
+    public static final String CTEXT = "((?:["+OCTET+"&&[^"+CTL+"\\(\\)]])+|"+LWS+")*";
+    public static final String COMMENT = "\\(("+CTEXT+"|"+QUOTED_PAIR+")*\\)"; // FIXME: Add recursive definition to allow nested comments.
 
-   A string of text is parsed as a single word if it is quoted using
-   double-quote marks.
+/* A string of text is parsed as a single word if it is quoted using
+   double-quote marks. */
 
-       quoted-string  = ( <"> *(qdtext | quoted-pair ) <"> )
-       qdtext         = <any TEXT except <">>
-
-   The backslash character ("\") MAY be used as a single-character
-   quoting mechanism only within quoted-string and comment constructs. */
-
-    public static final String QUOTED_PAIR    = "\\\\["+CHAR+"]+";
+    public static final String QDTEXT = "((?:["+OCTET+"&&[^"+CTL+"\\\"]])+|"+LWS+")*";
+    public static final String QUOTED_STRING  = "\"("+QDTEXT+"|"+QUOTED_PAIR+")*\"";
 }
