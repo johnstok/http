@@ -29,6 +29,7 @@ import java.util.Set;
  *
  * @author Keith Webster Johnston.
  */
+@Specification(name="rfc-2616", section="9")
 public final class Method {
 
     private static final Set<String> KNOWN_METHODS =
@@ -38,29 +39,72 @@ public final class Method {
             Method.OPTIONS,
             Method.DELETE,
             Method.POST,
+            Method.TRACE,
+            Method.CONNECT,
             Method.PUT
         ));
 
     /** GET : String. */
+    @Specification(name="rfc-2616", section="9.3")
     public static final String GET  = "GET";                       //$NON-NLS-1$
 
     /** HEAD : String. */
+    @Specification(name="rfc-2616", section="9.4")
     public static final String HEAD = "HEAD";                      //$NON-NLS-1$
 
     /** OPTIONS : String. */
+    @Specification(name="rfc-2616", section="9.2")
     public static final String OPTIONS = "OPTIONS";                //$NON-NLS-1$
 
     /** DELETE : String. */
+    @Specification(name="rfc-2616", section="9.7")
     public static final String DELETE = "DELETE";                  //$NON-NLS-1$
 
     /** PUT : boolean. */
+    @Specification(name="rfc-2616", section="9.6")
     public static final String PUT = "PUT";                        //$NON-NLS-1$
 
     /** POST : String. */
+    @Specification(name="rfc-2616", section="9.5")
     public static final String POST = "POST";                      //$NON-NLS-1$
+
+    /** TRACE : String. */
+    @Specification(name="rfc-2616", section="9.8")
+    public static final String TRACE = "TRACE";                     //$NON-NLS-1$
+
+    /** CONNECT : String. */
+    @Specification(name="rfc-2616", section="9.9")
+    public static final String CONNECT = "CONNECT";                //$NON-NLS-1$
 
 
     private Method() { super(); }
+
+
+    @Specification(name="rfc-2616", section="9.1.1")
+    public boolean isSafe() {
+        throw new UnsupportedOperationException();
+    }
+
+
+    @Specification(name="rfc-2616", section="9.1.2")
+    public boolean isIdempotent() {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public boolean isResponseCacheable() {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public boolean isEntityRequired() {
+        throw new UnsupportedOperationException();
+    }
+
+
+    public boolean isEntityAllowed() {
+        throw new UnsupportedOperationException();
+    }
 
 
     /**

@@ -20,11 +20,13 @@
 package com.johnstok.http;
 
 
+@Specification(name="rfc-2616", section="10")
 public enum Status {
 
     OK(                             200, "OK"),
     CREATED(                        201, "Created"),
     ACCEPTED(                       202, "Accepted"),
+    NON_AUTHORITATIVE_INFORMATION(  203, "Non-Authoritative Information"),
     NO_CONTENT(                     204, "No Content"),
     RESET_CONTENT(                  205, "Reset Content"),
     PARTIAL_CONTENT(                206, "Partial Content"),
@@ -71,8 +73,8 @@ public enum Status {
     /**
      * Constructor.
      *
-     * @param code
-     * @param description
+     * @param code        The integer code for the status.
+     * @param description The default description for the status.
      */
     private Status(final int code, final String description) {
         _description = description;
