@@ -19,6 +19,9 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * The HTTP version.
@@ -80,8 +83,11 @@ package com.johnstok.http;
  *
  * @author Keith Webster Johnston.
  */
-// TODO: Add 'specification' annotation.
+@Specification(name="rfc-2616", section="3.1")
 public class Version {
+
+    public static final String SYNTAX =
+        "HTTP/("+Syntax.DIGIT+")+\\.("+Syntax.DIGIT+")+";
 
     private final int _major;
     private final int _minor;
@@ -128,5 +134,24 @@ public class Version {
             + _major
             + "."                                                  //$NON-NLS-1$
             + _minor;
+    }
+
+
+    /**
+     * Parse a string into a valid version.
+     *
+     * @param versionString A string representing the version.
+     *
+     * @return A corresponding version object.
+     */
+    public static Version parse(final String versionString) {
+        final Matcher m = Pattern.compile(SYNTAX).matcher(versionString);
+        if (m.matches()) {
+            return
+                new Version(
+                    Integer.valueOf(m.group(1)).intValue(),
+                    Integer.valueOf(m.group(2)).intValue());
+        }
+        throw new ClientHttpException(Status.BAD_REQUEST);
     }
 }
