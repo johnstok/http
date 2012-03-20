@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import com.johnstok.http.ClientHttpException;
+import com.johnstok.http.Status;
 
 
 /**
@@ -30,16 +32,28 @@ import java.util.TimeZone;
  *
  * @author Keith Webster Johnston.
  */
-public class DateHeader {
+public final class DateHeader {
+    // TODO: Consider using regex to parse dates, as described in the spec.
 
-    private static final SimpleDateFormat FORMATTER;
+    private static final SimpleDateFormat RFC_822;
+    private static final SimpleDateFormat RFC_850;
+    private static final SimpleDateFormat ANSI_C;
 
 
     static {
-        FORMATTER =
+        RFC_822 =
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz"); //$NON-NLS-1$
-        FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));   //$NON-NLS-1$
+        RFC_822.setTimeZone(TimeZone.getTimeZone("GMT"));          //$NON-NLS-1$
+        RFC_850 =
+            new SimpleDateFormat("EEE, dd-MMM-yy HH:mm:ss zzz");   //$NON-NLS-1$
+        RFC_850.setTimeZone(TimeZone.getTimeZone("GMT"));          //$NON-NLS-1$
+        ANSI_C =
+            new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");      //$NON-NLS-1$
+        ANSI_C.setTimeZone(TimeZone.getTimeZone("GMT"));           //$NON-NLS-1$
     }
+
+
+    private DateHeader() { super(); }
 
 
     /**
@@ -51,9 +65,19 @@ public class DateHeader {
      */
     public static Date parse(final String value) {
         try {
-            return FORMATTER.parse(value);
+            return RFC_822.parse(value);
         } catch (final ParseException e) {
-            return null;
+            // Continue.
+        }
+        try {
+            return RFC_850.parse(value);
+        } catch (final ParseException e) {
+            // Continue.
+        }
+        try {
+            return ANSI_C.parse(value);
+        } catch (final ParseException e) {
+            throw new ClientHttpException(Status.BAD_REQUEST);
         }
     }
 
@@ -67,7 +91,19 @@ public class DateHeader {
      */
     public static boolean isValidDate(final String value) {
         try {
-            FORMATTER.parse(value);
+            RFC_822.parse(value);
+            return true;
+        } catch (final ParseException e) {
+            // Continue.
+        }
+        try {
+            RFC_850.parse(value);
+            return true;
+        } catch (final ParseException e) {
+            // Continue.
+        }
+        try {
+            ANSI_C.parse(value);
             return true;
         } catch (final ParseException e) {
             return false;
@@ -83,6 +119,6 @@ public class DateHeader {
      * @return The date formatted as an HTTP date string.
      */
     public static String format(final Date date) {
-        return FORMATTER.format(date);
+        return RFC_822.format(date);
     }
 }
