@@ -48,8 +48,8 @@ public class ContentNegotiatorTest {
         // ACT
         final String encoding =
             negotiator.selectEncoding(
-                new WeightedValue(ContentEncoding.ANY, 0),
-                new WeightedValue(ContentEncoding.IDENTITY, 1));
+                new WeightedValue(ContentEncoding.ANY.toString(), 0),
+                new WeightedValue(ContentEncoding.IDENTITY.toString(), 1));
 
         // ASSERT
         assertEquals(ContentEncoding.IDENTITY, encoding);
@@ -68,7 +68,7 @@ public class ContentNegotiatorTest {
         // ACT
         final String encoding =
             negotiator
-                .selectEncoding(new WeightedValue(ContentEncoding.ANY, 0));
+                .selectEncoding(new WeightedValue(ContentEncoding.ANY.toString(), 0));
 
         // ASSERT
         assertNull(encoding);
@@ -148,7 +148,7 @@ public class ContentNegotiatorTest {
         // ACT
         final String encoding =
             negotiator.selectEncoding(new WeightedValue(
-                ContentEncoding.IDENTITY,
+                ContentEncoding.IDENTITY.toString(),
                 0));
 
         // ASSERT

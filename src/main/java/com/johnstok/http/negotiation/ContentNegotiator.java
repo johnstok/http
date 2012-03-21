@@ -44,11 +44,12 @@ import com.johnstok.http.WeightedValue;
 public class ContentNegotiator
     implements
         Negotiator<String> {
+    // FIXME: Don't convert content codings to string.
 
     private static final WeightedValue ANY =
-        new WeightedValue(ContentEncoding.ANY, 0.001f);
+        new WeightedValue(ContentEncoding.ANY.toString(), 0.001f);
     private static final WeightedValue IDENTITY =
-        new WeightedValue(ContentEncoding.IDENTITY, 0.001f);
+        new WeightedValue(ContentEncoding.IDENTITY.toString(), 0.001f);
 
     private final Set<WeightedValue> _supportedEncodings;
 
@@ -93,7 +94,7 @@ public class ContentNegotiator
      */
     @Override
     public String select(final List<WeightedValue> clientEncodings) {
-        if (null == clientEncodings) { return ContentEncoding.IDENTITY; }
+        if (null == clientEncodings) { return ContentEncoding.IDENTITY.toString(); }
 
         final List<WeightedValue> disallowedEncodings =
             new ArrayList<WeightedValue>();
@@ -125,7 +126,7 @@ public class ContentNegotiator
         if (disallowedEncodings.contains(ANY)
             && !allowedEncodings.contains(IDENTITY)) { return null; }
         if (disallowedEncodings.contains(IDENTITY)) { return null; }
-        return ContentEncoding.IDENTITY;
+        return ContentEncoding.IDENTITY.toString();
     }
 
 
