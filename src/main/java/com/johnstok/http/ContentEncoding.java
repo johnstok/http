@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
  */
 @Specification(name="rfc-2616", section="3.5")
 public final class ContentEncoding {
+    // TODO: x-gzip equiv to gzip
+    // TODO: x-compress equiv to compress
 
     private static final String CONTENT_CODING = Syntax.TOKEN;
     public  static final String SYNTAX  = "(["+CONTENT_CODING+"])+";
@@ -51,13 +53,6 @@ public final class ContentEncoding {
      *
      * The encoding format produced by the common UNIX file compression program
      * "compress". This format is an adaptive Lempel-Ziv-Welch coding (LZW).
-     *
-     * Use of program names for the identification of encoding formats is not
-     * desirable and is discouraged for future encodings. Their use here is
-     * representative of historical practice, not good design. For compatibility
-     * with previous implementations of HTTP, applications SHOULD consider
-     * "x-gzip" and "x-compress" to be equivalent to "gzip" and "compress"
-     * respectively.
      */
     public static final ContentEncoding COMPRESS =
         new ContentEncoding("compress");                           //$NON-NLS-1$
@@ -133,7 +128,7 @@ public final class ContentEncoding {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        ContentEncoding other = (ContentEncoding) obj;
+        final ContentEncoding other = (ContentEncoding) obj;
         if (_name == null) {
             if (other._name != null) {
                 return false;
