@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  *
  * @author Keith Webster Johnston.
  */
-@Specification(name="rfc-2616", section="3.2.2")
+@Specification(name="rfc-2616", section="3.3.2")
 public class Time {
 
     public static final String SYNTAX = "("+Syntax.DIGIT+")+";
