@@ -23,23 +23,40 @@ import java.util.Locale;
 
 
 /**
- * Identifies a natural language spoken, written, etc. by human beings.
- *
- * A language tag is composed of 1 or more parts: A primary language tag and a
- * possibly empty series of subtags:
- *
+ * A language tag identifies a natural language spoken, written, or
+ * otherwise conveyed by human beings for communication of information
+ * to other human beings. Computer languages are explicitly excluded.
+ * HTTP uses language tags within the Accept-Language and Content-
+ * Language fields.
+
+ * The syntax and registry of HTTP language tags is the same as that
+ * defined by RFC 1766 [1]. In summary, a language tag is composed of 1
+ * or more parts: A primary language tag and a possibly empty series of
+ * subtags:
+ * <pre>
  *      language-tag  = primary-tag *( "-" subtag )
  *      primary-tag   = 1*8ALPHA
  *      subtag        = 1*8ALPHA
- *
- * White space is not allowed within the tag and all tags are case-insensitive.
- *
- * Implements RFC-2616, section 3.10.
- * Implements RFC-1766
+ * </pre>
+ * White space is not allowed within the tag and all tags are case-
+ * insensitive. The name space of language tags is administered by the
+ * IANA. Example tags include:
+ * <pre>
+ *     en, en-US, en-cockney, i-cherokee, x-pig-latin
+ * </pre>
+ * where any two-letter primary-tag is an ISO-639 language abbreviation
+ * and any two-letter initial subtag is an ISO-3166 country code. (The
+ * last three tags above are not registered tags; all but the last are
+ * examples of tags which could be registered in future.)
  *
  * @author Keith Webster Johnston.
  */
+@Specifications({
+    @Specification(name="rfc-2616", section="3.10"),
+    @Specification(name="rfc-1766")
+})
 public class LanguageTag {
+    // TODO: Add a parse method, rather than a public constructor.
 
     private final String _value;
 
@@ -59,23 +76,23 @@ public class LanguageTag {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Determine if language tags match.
      *
-     * @param languageRange
+     * A language-range matches a language-tag if it exactly equals the tag,
+     * or if it exactly equals a prefix of the tag such that the first tag
+     * character following the prefix is "-".
      *
-     * @return
+     * @param languageTag The tag to match.
+     *
+     * @return True if the specified tag matches this tag, false otherwise.
      */
-    public boolean matchedBy(final String languageRange) { // See 14.4
-        /*
-         * A language-range matches a language-tag if it exactly equals the tag,
-         * or if it exactly equals a prefix of the tag such that the first tag
-         * character following the prefix is "-"
-         */
+    @Specification(name="rfc-2616", section="14.4")
+    public boolean matchedBy(final String languageTag) {
         final String ciTag   = _value.toLowerCase(Locale.US);
-        final String ciRange = languageRange.toLowerCase(Locale.US);
+        final String ciRange = languageTag.toLowerCase(Locale.US);
         return ciTag.equals(ciRange)
                || (ciTag.startsWith(ciRange)
-                   && '-'==ciTag.charAt(languageRange.length()));
+                   && '-'==ciTag.charAt(languageTag.length()));
     }
 
 
@@ -122,13 +139,13 @@ public class LanguageTag {
 
 
     /**
-     * TODO: Add a description for this method.
+     * Determine the number of elements by which language tags match.
      *
-     * @param languageRange
+     * @param languageTag The tag to match.
      *
-     * @return
+     * @return The number of matching elements, 0 if the tags don't match.
      */
-    public int matchDepth(final String languageRange) {
-        return (matchedBy(languageRange)) ? languageRange.split("-").length : 0;
+    public int matchDepth(final String languageTag) {
+        return (matchedBy(languageTag)) ? languageTag.split("-").length : 0;
     }
 }
