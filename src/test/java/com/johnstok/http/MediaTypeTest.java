@@ -31,6 +31,8 @@ import org.junit.Test;
  */
 public class MediaTypeTest {
 
+    // TODO: Parameter names are case-insensitive
+
     @Test
     public void constructAny() {
 
@@ -76,7 +78,7 @@ public class MediaTypeTest {
         // ARRANGE
 
         // ACT
-        final MediaType mt = new MediaType("*/*");
+        final MediaType mt = MediaType.parse("*/*");
 
         // ASSERT
         assertEquals("*", mt.getType());
@@ -89,7 +91,7 @@ public class MediaTypeTest {
         // ARRANGE
 
         // ACT
-        final MediaType mt = new MediaType("text/*");
+        final MediaType mt = MediaType.parse("text/*");
 
         // ASSERT
         assertEquals("text", mt.getType());
@@ -102,7 +104,7 @@ public class MediaTypeTest {
         // ARRANGE
 
         // ACT
-        final MediaType mt = new MediaType("text/html");
+        final MediaType mt = MediaType.parse("text/html");
 
         // ASSERT
         assertEquals("text", mt.getType());

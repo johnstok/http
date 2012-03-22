@@ -251,7 +251,7 @@ public class MediaTypeNegotiator
             MediaType match = null;
 
             for (final WeightedValue v : mediaRanges) {
-                final MediaType mediaRange = new MediaType(v.getValue());
+                final MediaType mediaRange = MediaType.parse(v.getValue());
                 if (avail.matches(mediaRange) && mediaRange.precedes(match)) {
                     weight = v.getWeight();
                     match = mediaRange;

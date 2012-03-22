@@ -28,6 +28,33 @@ import java.util.regex.Pattern;
  *
  * The type, sub-type, and parameter attribute names are case-insensitive.
  *
+ * HTTP uses Internet Media Types [17] in the Content-Type (section 14.17) and
+ * Accept (section 14.1) header fields in order to provide open and extensible
+ * data typing and type negotiation.
+ * <pre>
+ *     media-type     = type "/" subtype *( ";" parameter )
+ *     type           = token
+ *     subtype        = token
+ * </pre>
+ * Parameters MAY follow the type/subtype in the form of attribute/value pairs
+ * (as defined in section 3.6).
+ *
+ * The type, subtype, and parameter attribute names are case-insensitive.
+ * Parameter values might or might not be case-sensitive, depending on the
+ * semantics of the parameter name. Linear white space (LWS) MUST NOT be used
+ * between the type and subtype, nor between an attribute and its value. The
+ * presence or absence of a parameter might be significant to the processing of
+ * a media-type, depending on its definition within the media type registry.
+ *
+ * Note that some older HTTP applications do not recognize media type
+ * parameters. When sending data to older HTTP applications, implementations
+ * SHOULD only use media type parameters when they are required by that
+ * type/subtype definition.
+ *
+ * Media-type values are registered with the Internet Assigned Number Authority
+ * (IANA [19]). The media type registration process is outlined in RFC 1590
+ * [17]. Use of non-registered media types is discouraged.
+ *
  * @author Keith Webster Johnston.
  */
 @Specifications({
@@ -35,6 +62,10 @@ import java.util.regex.Pattern;
     @Specification(name="rfc-1590")
 })
 public class MediaType {
+
+    public  static final String TYPE    = Syntax.TOKEN;
+    public  static final String SUBTYPE = Syntax.TOKEN;
+    public  static final String SYNTAX  = "(["+TYPE+"]+)/(["+SUBTYPE+"]+)";
 
     // TODO: Parameters.
 
@@ -45,40 +76,28 @@ public class MediaType {
     /**
      * Constructor.
      *
-     * @param type
-     * @param subtype
+     * @param type    The primary type of the media type.
+     * @param subtype The sub-type of the media type.
      */
     public MediaType(final String type, final String subtype) {
-        _type = Contract.require().matches(Syntax.TOKEN+"+", type);
-        _subtype = Contract.require().matches(Syntax.TOKEN+"+", subtype);
+        _type = Contract.require().matches("["+Syntax.TOKEN+"]+", type);
+        _subtype = Contract.require().matches("["+Syntax.TOKEN+"]+", subtype);
     }
 
 
     /**
-     * Constructor.
+     * Parse a string into a media type.
      *
-     * A media type represented as a string, in the following format: <pre>
-     * media-type     = type "/" subtype *( ";" parameter )
-     * type           = token
-     * subtype        = token</pre>
+     * @param mediaTypeString A string representing the media type.
      *
-     * Linear white space (LWS) MUST NOT be used between the type and subtype,
-     * nor between an attribute and its value.
-     *
-     * @param mediaType
-     * @param subtype
+     * @return A corresponding media type object.
      */
-    // FIXME: Replace with a parse() method to allow NULL to be returned.
-    public MediaType(final String mediaType) {
-        final Matcher m =
-            Pattern.compile("("+Syntax.TOKEN+"+)/("+Syntax.TOKEN+"+)")
-            .matcher(mediaType);
+    public static MediaType parse(final String mediaTypeString) {
+        final Matcher m = Pattern.compile(SYNTAX).matcher(mediaTypeString);
         if (m.matches()) {
-            _type = m.group(1);
-            _subtype = m.group(2);
-        } else {
-            throw new ClientHttpException(Status.BAD_REQUEST);
+            return new MediaType(m.group(1), m.group(2));
         }
+        throw new ClientHttpException(Status.BAD_REQUEST);
     }
 
 
@@ -153,7 +172,7 @@ public class MediaType {
      * @return True if the provided media type matches; false otherwise.
      */
     public boolean matches(final String mediaType) {
-        return matches(new MediaType(mediaType));
+        return matches(MediaType.parse(mediaType));
     }
 
 
