@@ -117,11 +117,11 @@ public class RangeUnit {
 
 
     /**
-     * Parse a string into an entity tag.
+     * Parse a string into a range unit.
      *
-     * @param rangeUnitString A string representing the entity tag.
+     * @param rangeUnitString A string representing the range unit.
      *
-     * @return A corresponding entity tag object.
+     * @return A corresponding range unit object.
      */
     public static RangeUnit parse(final String rangeUnitString) {
         final Matcher m = Pattern.compile(SYNTAX).matcher(rangeUnitString);
