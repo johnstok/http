@@ -31,8 +31,6 @@ import org.junit.Test;
  */
 public class MediaTypeTest {
 
-    // TODO: Parameter names are case-insensitive
-
     @Test
     public void constructAny() {
 
@@ -73,7 +71,7 @@ public class MediaTypeTest {
     }
 
     @Test
-    public void constructTextAny() {
+    public void parseAny() {
 
         // ARRANGE
 
@@ -86,7 +84,7 @@ public class MediaTypeTest {
     }
 
     @Test
-    public void constructTextWildcardSubtype() {
+    public void parseTextWildcardSubtype() {
 
         // ARRANGE
 
@@ -99,7 +97,7 @@ public class MediaTypeTest {
     }
 
     @Test
-    public void constructTextFullySpecified() {
+    public void parseTextFullySpecified() {
 
         // ARRANGE
 
@@ -109,6 +107,97 @@ public class MediaTypeTest {
         // ASSERT
         assertEquals("text", mt.getType());
         assertEquals("html", mt.getSubtype());
+    }
+
+    @Test
+    public void parseSingleParamSpecified() {
+
+        // ARRANGE
+
+        // ACT
+        final MediaType mt = MediaType.parse("text/html;a=1");
+
+        // ASSERT
+        assertEquals("text", mt.getType());
+        assertEquals("html", mt.getSubtype());
+        assertEquals("1", mt.getParameter("a"));
+        assertEquals("1", mt.getParameter("A"));
+    }
+
+    @Test
+    public void parseMultipleParamSpecified() {
+
+        // ARRANGE
+
+        // ACT
+        final MediaType mt = MediaType.parse("text/html;a=1;b=2;c=3");
+
+        // ASSERT
+        assertEquals("text", mt.getType());
+        assertEquals("html", mt.getSubtype());
+        assertEquals("1", mt.getParameter("a"));
+        assertEquals("2", mt.getParameter("b"));
+        assertEquals("3", mt.getParameter("c"));
+    }
+
+    @Test
+    public void parseParamTrailingSemicolonInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            MediaType.parse("text/html;a=1;");
+
+            // ASSERT
+        } catch (ClientHttpException e) {
+            assertEquals(Status.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    @Test
+    public void parseParamNoValueInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            MediaType.parse("text/html;a=1;b=");
+
+        // ASSERT
+        } catch (ClientHttpException e) {
+            assertEquals(Status.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    @Test
+    public void parseNoAttributeInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            MediaType.parse("text/html;a=1;=2");
+
+            // ASSERT
+        } catch (ClientHttpException e) {
+            assertEquals(Status.BAD_REQUEST, e.getStatus());
+        }
+    }
+
+    @Test
+    public void parseParamTooManyPartsInvalid() {
+
+        // ARRANGE
+
+        // ACT
+        try {
+            MediaType.parse("text/html;a=1;b=c=d");
+
+            // ASSERT
+        } catch (ClientHttpException e) {
+            assertEquals(Status.BAD_REQUEST, e.getStatus());
+        }
     }
 
     @Test

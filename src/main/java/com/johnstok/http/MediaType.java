@@ -19,6 +19,10 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,14 +67,37 @@ import java.util.regex.Pattern;
 })
 public class MediaType {
 
-    public  static final String TYPE    = Syntax.TOKEN;
-    public  static final String SUBTYPE = Syntax.TOKEN;
-    public  static final String SYNTAX  = "(["+TYPE+"]+)/(["+SUBTYPE+"]+)";
+    // TODO: Clarify whitespace allowed between params, esp LWS.
+    // TODO: Clarify handling of duplicate parameter attributes (e.g. ;a=1;a=2).
 
-    // TODO: Parameters.
+    public  static final String TYPE      = Syntax.TOKEN;
+    public  static final String SUBTYPE   = Syntax.TOKEN;
+    public  static final String ATTRIBUTE = Syntax.TOKEN;
+    public  static final String VALUE     = Syntax.TOKEN;
+    public  static final String PARAMETER = "["+ATTRIBUTE+"]+\\=["+VALUE+"]+";
+    public  static final String SYNTAX    =
+        "(["+TYPE+"]+)/(["+SUBTYPE+"]+)((?:;"+PARAMETER+")*)";
 
     private final String _type;
     private final String _subtype;
+    private final Map<String, String> _parameters;
+
+
+    /**
+     * Constructor.
+     *
+     * @param type       The primary type of the media type.
+     * @param subtype    The sub-type of the media type.
+     * @param parameters The media type parameters.
+     */
+    public MediaType(final String type,
+                     final String subtype,
+                     final Map<? extends String, ? extends String> parameters) {
+        _type = Contract.require().matches("["+TYPE+"]+", type);
+        _subtype = Contract.require().matches("["+SUBTYPE+"]+", subtype);
+        _parameters =
+            Collections.unmodifiableMap(new HashMap<String, String>(parameters));
+    }
 
 
     /**
@@ -80,8 +107,7 @@ public class MediaType {
      * @param subtype The sub-type of the media type.
      */
     public MediaType(final String type, final String subtype) {
-        _type = Contract.require().matches("["+Syntax.TOKEN+"]+", type);
-        _subtype = Contract.require().matches("["+Syntax.TOKEN+"]+", subtype);
+        this(type, subtype, new HashMap<String, String>());
     }
 
 
@@ -95,7 +121,25 @@ public class MediaType {
     public static MediaType parse(final String mediaTypeString) {
         final Matcher m = Pattern.compile(SYNTAX).matcher(mediaTypeString);
         if (m.matches()) {
-            return new MediaType(m.group(1), m.group(2));
+            HashMap<String, String> paramMap = new HashMap<String, String>();
+            String[] params = m.group(3).split(";");
+            for (String param : params) {
+                String paramString = param; // TODO: Tolerate whitespace?
+                if (paramString.length()<1) { continue; } // TODO: Tolerate empty params (e.g. ;;)
+                String[] paramParts = paramString.split("=");
+                if (2==paramParts.length) {
+                    String attribute = paramParts[0];
+                    String value = paramParts[1];
+                    if (attribute.length()>0 && value.length()>0) {
+                        paramMap.put(attribute.toLowerCase(Locale.US), value);
+                    } else {
+                        throw new ClientHttpException(Status.BAD_REQUEST);
+                    }
+                } else {
+                    throw new ClientHttpException(Status.BAD_REQUEST);
+                }
+            }
+            return new MediaType(m.group(1), m.group(2), paramMap);
         }
         throw new ClientHttpException(Status.BAD_REQUEST);
     }
@@ -104,7 +148,7 @@ public class MediaType {
     /**
      * Accessor.
      *
-     * @return Returns the type.
+     * @return Returns the primary type.
      */
     public String getType() {
         return _type;
@@ -114,10 +158,23 @@ public class MediaType {
     /**
      * Accessor.
      *
-     * @return Returns the subtype.
+     * @return Returns the sub-type.
      */
     public String getSubtype() {
         return _subtype;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @param attribute Get the specified parameter.
+     *
+     * @return Returns the parameter value.
+     */
+    public String getParameter(final String attribute) {
+        if (null==attribute) { return null; }
+        return _parameters.get(attribute.toLowerCase(Locale.US));
     }
 
 
