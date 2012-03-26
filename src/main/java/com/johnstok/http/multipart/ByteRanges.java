@@ -38,7 +38,9 @@ import com.johnstok.http.Range;
  *
  * @author Keith Webster Johnston.
  */
-public class ByteRanges {
+public class ByteRanges
+    extends
+        MultipartEntity {
 
     private static final String SLASH_F = "/";                     //$NON-NLS-1$
     private static final String DASH = "-";                        //$NON-NLS-1$
@@ -47,7 +49,6 @@ public class ByteRanges {
     private static final String UTF_8 = "UTF-8";                   //$NON-NLS-1$
     private static final String READ = "r";                        //$NON-NLS-1$
     private static final String HEADER_DELIM = ": ";               //$NON-NLS-1$
-    private static final String CRLF = "\r\n";                     //$NON-NLS-1$
     private static final String BOUNDARY_PREFIX = "--";            //$NON-NLS-1$
 
 

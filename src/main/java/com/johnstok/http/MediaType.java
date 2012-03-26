@@ -19,6 +19,7 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -77,6 +78,18 @@ public class MediaType {
     public  static final String PARAMETER = "["+ATTRIBUTE+"]+\\=["+VALUE+"]+";
     public  static final String SYNTAX    =
         "(["+TYPE+"]+)/(["+SUBTYPE+"]+)((?:;"+PARAMETER+")*)";
+
+    /**
+     *    The "charset" parameter is used with some media types to define the
+     *    character set (section 3.4) of the data. When no explicit charset
+     *    parameter is provided by the sender, media subtypes of the "text" type
+     *    are defined to have a default charset value of "ISO-8859-1" when
+     *    received via HTTP. Data in character sets other than "ISO-8859-1" or
+     *    its subsets MUST be labeled with an appropriate charset value. See
+     *    section 3.4.1 for compatibility problems.
+     */
+    @Specification(name="rfc-2616", section="3.7.1")
+    public static final Charset DEFAULT_TEXT_CHARSET = CharacterSet.ISO_8859_1;
 
     private final String _type;
     private final String _subtype;
