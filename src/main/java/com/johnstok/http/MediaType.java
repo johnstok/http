@@ -71,13 +71,10 @@ public class MediaType {
     // TODO: Clarify whitespace allowed between params, esp LWS.
     // TODO: Clarify handling of duplicate parameter attributes (e.g. ;a=1;a=2).
 
-    public  static final String TYPE      = Syntax.TOKEN;
-    public  static final String SUBTYPE   = Syntax.TOKEN;
-    public  static final String ATTRIBUTE = Syntax.TOKEN;
-    public  static final String VALUE     = Syntax.TOKEN;
-    public  static final String PARAMETER = "["+ATTRIBUTE+"]+\\=["+VALUE+"]+";
-    public  static final String SYNTAX    =
-        "(["+TYPE+"]+)/(["+SUBTYPE+"]+)((?:;"+PARAMETER+")*)";
+    public static final String TYPE      = Syntax.TOKEN;
+    public static final String SUBTYPE   = Syntax.TOKEN;
+    public static final String SYNTAX    =
+        "(["+TYPE+"]+)/(["+SUBTYPE+"]+)((?:;"+Parameter.PARAMETER+")*)";
 
     /**
      *    The "charset" parameter is used with some media types to define the
@@ -134,24 +131,7 @@ public class MediaType {
     public static MediaType parse(final String mediaTypeString) {
         final Matcher m = Pattern.compile(SYNTAX).matcher(mediaTypeString);
         if (m.matches()) {
-            HashMap<String, String> paramMap = new HashMap<String, String>();
-            String[] params = m.group(3).split(";");
-            for (String param : params) {
-                String paramString = param; // TODO: Tolerate whitespace?
-                if (paramString.length()<1) { continue; } // TODO: Tolerate empty params (e.g. ;;)
-                String[] paramParts = paramString.split("=");
-                if (2==paramParts.length) {
-                    String attribute = paramParts[0];
-                    String value = paramParts[1];
-                    if (attribute.length()>0 && value.length()>0) {
-                        paramMap.put(attribute.toLowerCase(Locale.US), value);
-                    } else {
-                        throw new ClientHttpException(Status.BAD_REQUEST);
-                    }
-                } else {
-                    throw new ClientHttpException(Status.BAD_REQUEST);
-                }
-            }
+            final HashMap<String, String> paramMap = Parameter.parse(m.group(3));
             return new MediaType(m.group(1), m.group(2), paramMap);
         }
         throw new ClientHttpException(Status.BAD_REQUEST);
