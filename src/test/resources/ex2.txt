@@ -1,0 +1,13 @@
+GET /foo/bar HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8
+Cache-Control: max-age=0
+Connection: keep-alive
+Host: www.w3.org
+If-Modified-Since: Tue, 29 Jul 2008 15:34:19 GMT
+If-None-Match: "313d-4532b5f92d4c0"
+Referer: http://www.w3.org/Protocols/rfc2616/rfc2616.html
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.140 Safari/535.19
+
