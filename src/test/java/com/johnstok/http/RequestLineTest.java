@@ -36,10 +36,24 @@ public class RequestLineTest {
         // ARRANGE
 
         // ACT
-        RequestLine rl = RequestLine.parse("GET foo HTTP/1.1");
+        final RequestLine rl = RequestLine.parse("GET foo HTTP/1.1");
 
         // ASSERT
         assertEquals("GET", rl.getMethod());
+        assertEquals("foo", rl.getUri());
+        assertEquals("HTTP/1.1", rl.getVersion());
+    }
+
+    @Test
+    public void validRequestLineWithExtensionMethod() {
+
+        // ARRANGE
+
+        // ACT
+        final RequestLine rl = RequestLine.parse("FOO foo HTTP/1.1");
+
+        // ASSERT
+        assertEquals("FOO", rl.getMethod());
         assertEquals("foo", rl.getUri());
         assertEquals("HTTP/1.1", rl.getVersion());
     }
@@ -54,7 +68,7 @@ public class RequestLineTest {
             RequestLine.parse("abc 123");
 
         // ASSERT
-        } catch (ClientHttpException e) {
+        } catch (final ClientHttpException e) {
             assertEquals(Status.BAD_REQUEST, e.getStatus());
         }
     }

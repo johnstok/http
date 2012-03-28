@@ -35,8 +35,9 @@ import java.util.Set;
 })
 public final class Method {
 
+    public static final String EXTENSION_METHOD = Syntax.TOKEN;
     public static final String SYNTAX =
-        "OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT";
+        "OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT|["+EXTENSION_METHOD+"]+";
 
     private static final Set<String> KNOWN_METHODS =
         new HashSet<String>(Arrays.asList(
