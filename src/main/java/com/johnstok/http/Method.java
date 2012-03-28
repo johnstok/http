@@ -29,8 +29,14 @@ import java.util.Set;
  *
  * @author Keith Webster Johnston.
  */
-@Specification(name="rfc-2616", section="9")
+@Specifications({
+    @Specification(name="rfc-2616", section="5.1.1"),
+    @Specification(name="rfc-2616", section="9")
+})
 public final class Method {
+
+    public static final String SYNTAX =
+        "OPTIONS|GET|HEAD|POST|PUT|DELETE|TRACE|CONNECT";
 
     private static final Set<String> KNOWN_METHODS =
         new HashSet<String>(Arrays.asList(
