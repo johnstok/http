@@ -19,9 +19,14 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
-
-@Specification(name="rfc-2616", section="10")
+@Specifications({
+    @Specification(name="rfc-2616", section="6.1.1"),
+    @Specification(name="rfc-2616", section="10")
+})
 public enum Status {
+
+    CONTINUE(                       100, "Continue"),
+    SWITCHING_PROTOCOLS(            101, "Switching Protocols"),
 
     OK(                             200, "OK"),
     CREATED(                        201, "Created"),
@@ -66,6 +71,56 @@ public enum Status {
     VERSION_NOT_SUPPORTED(          505, "Version Not Supported");
 
 
+    public static final String EXTENSION_CODE = "["+Syntax.DIGIT+"]{3}";
+    public static final String REASON_PHRASE = Syntax.SP+Syntax.HT+"["+Syntax.OCTET+"&&[^"+Syntax.CTL+"]]"; // *<TEXT, excluding CR, LF>
+    public static final String SYNTAX =
+        "100" +
+        "|101" +
+
+        "|200" +
+        "|201" +
+        "|202" +
+        "|203" +
+        "|204" +
+        "|205" +
+        "|206" +
+
+        "|300" +
+        "|301" +
+        "|302" +
+        "|303" +
+        "|304" +
+        "|305" +
+        "|307" +
+
+        "|400" +
+        "|401" +
+        "|402" +
+        "|403" +
+        "|404" +
+        "|405" +
+        "|406" +
+        "|407" +
+        "|408" +
+        "|409" +
+        "|410" +
+        "|411" +
+        "|412" +
+        "|413" +
+        "|414" +
+        "|415" +
+        "|416" +
+        "|417" +
+
+        "|500" +
+        "|501" +
+        "|502" +
+        "|503" +
+        "|504" +
+        "|505" +
+        "|"+EXTENSION_CODE;
+
+
     private final String _description;
     private final int    _code;
 
@@ -89,6 +144,56 @@ public enum Status {
 
     public String getDescription() {
         return _description;
+    }
+
+
+    /**
+     * Check if the status is informational.
+     *
+     * @return True if the request is informational; false otherwise.
+     */
+    public boolean isInformational() {
+        return 1==_code/100;
+    }
+
+
+    /**
+     * Check if the status is a success.
+     *
+     * @return True if the request is a success; false otherwise.
+     */
+    public boolean isSuccess() {
+        return 2==_code/100;
+    }
+
+
+    /**
+     * Check if the status is a redirect.
+     *
+     * @return True if the request is a redirect; false otherwise.
+     */
+    public boolean isRedirect() {
+        return 3==_code/100;
+    }
+
+
+    /**
+     * Check if the status is a client error.
+     *
+     * @return True if the request is a client error; false otherwise.
+     */
+    public boolean isClientError() {
+        return 4==_code/100;
+    }
+
+
+    /**
+     * Check if the status is a server error.
+     *
+     * @return True if the request is a server error; false otherwise.
+     */
+    public boolean isServerError() {
+        return 5==_code/100;
     }
 
 
