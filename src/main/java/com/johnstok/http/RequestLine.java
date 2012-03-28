@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
  *
  * @author Keith Webster Johnston.
  */
+@Specification(name="rfc-2616", section="5.1")
 public class RequestLine {
 
     public static final String REQUEST_URI = Syntax.TOKEN; // FIXME.
@@ -43,11 +44,13 @@ public class RequestLine {
     /**
      * Constructor.
      *
-     * @param method
-     * @param uri
-     * @param version
+     * @param method  The HTTP method for the request.
+     * @param uri     The requested URI.
+     * @param version The HTTP version for the request.
      */
-    public RequestLine(final String method, final String uri, final String version) {
+    public RequestLine(final String method,
+                       final String uri,
+                       final String version) {
         _method = method;
         _uri = uri;
         _version = version;
@@ -67,7 +70,7 @@ public class RequestLine {
     /**
      * Accessor.
      *
-     * @return Returns the uri.
+     * @return Returns the URI.
      */
     public final String getUri() {
         return _uri;
