@@ -147,6 +147,68 @@ public final class Header {
     public static final String RETRY_AFTER =
         "Retry-After";                                             //$NON-NLS-1$
 
+    /** AUTHORIZATION: String */
+    private static final String AUTHORIZATION =
+        "Authorization";                                           //$NON-NLS-1$
+
+    /** EXPECT: String */
+    private static final String EXPECT =
+        "Expect";                                                  //$NON-NLS-1$
+
+    /** FROM: String */
+    private static final String FROM =
+        "From";                                                    //$NON-NLS-1$
+
+    /** IF_RANGE: String */
+    private static final String IF_RANGE =
+        "If-Range";                                                //$NON-NLS-1$
+
+    /** MAX_FORWARDS: String */
+    private static final String MAX_FORWARDS =
+        "Max-Forwards";                                            //$NON-NLS-1$
+
+    /** PROXY_AUTHORIZATION: String */
+    private static final String PROXY_AUTHORIZATION =
+        "Proxy-Authorization";                                     //$NON-NLS-1$
+
+    /** REFERER: String */
+    private static final String REFERER =
+        "Referer";                                                 //$NON-NLS-1$
+
+    /** TE: String*/
+    private static final String TE =
+        "TE";                                                      //$NON-NLS-1$
+
+    /** USER_AGENT: String */
+    private static final String USER_AGENT =
+        "User-Agent";                                              //$NON-NLS-1$
+
+
+    private static final Set<String> _requestHeaders =
+        Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList(new String[] {
+                lower(ACCEPT),
+                lower(ACCEPT_CHARSET),
+                lower(ACCEPT_ENCODING),
+                lower(ACCEPT_LANGUAGE),
+                lower(AUTHORIZATION),
+                lower(EXPECT),
+                lower(FROM),
+                lower(HOST),
+                lower(IF_MATCH),
+                lower(IF_MODIFIED_SINCE),
+                lower(IF_NONE_MATCH),
+                lower(IF_RANGE),
+                lower(IF_UNMODIFIED_SINCE),
+                lower(MAX_FORWARDS),
+                lower(PROXY_AUTHORIZATION),
+                lower(RANGE),
+                lower(REFERER),
+                lower(TE),
+                lower(USER_AGENT)
+            })
+        ));
+
 
     private static final Set<String> _responseHeaders =
         Collections.unmodifiableSet(new HashSet<String>(
@@ -159,7 +221,21 @@ public final class Header {
                 lower(RETRY_AFTER),
                 lower(SERVER),
                 lower(VARY),
-                lower(WWW_AUTHENTICATE) })));
+                lower(WWW_AUTHENTICATE)
+            })
+        ));
+
+
+    /**
+     * Determine if a header is allowed for a request message.
+     *
+     * @param header The name of the header.
+     *
+     * @return True if the header is allowed; false otherwise.
+     */
+    public static boolean isRequestHeader(final String header) {
+        return _requestHeaders.contains(lower(header));
+    }
 
 
     /**

@@ -28,4 +28,26 @@ public class HeaderTest {
         // ASSERT
         assertFalse(Header.isResponseHeader(Header.HOST));
     }
+
+    @Test
+    public void retryAfterIsNotARequestHeader() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertFalse(Header.isRequestHeader(Header.RETRY_AFTER));
+    }
+
+    @Test
+    public void hostIsARequestHeader() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertTrue(Header.isRequestHeader(Header.HOST));
+    }
 }
