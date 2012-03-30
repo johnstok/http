@@ -20,7 +20,12 @@
 package com.johnstok.http;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 
 /**
@@ -121,6 +126,57 @@ public final class Header {
     /** WWW_AUTHENTICATE : String. */
     public static final String WWW_AUTHENTICATE =
         "WWW-Authenticate";                                        //$NON-NLS-1$
+
+    /** VARY: String */
+    public static final String VARY =
+        "Vary";                                                    //$NON-NLS-1$
+
+    /** AGE: String */
+    public static final String AGE =
+        "Age";                                                     //$NON-NLS-1$
+
+    /** PROXY_AUTHENTICATE: String */
+    public static final String PROXY_AUTHENTICATE =
+        "Proxy-Auhtenticate";                                      //$NON-NLS-1$
+
+    /** HOST: String */
+    public static final String HOST =
+        "Host";                                                    //$NON-NLS-1$
+
+    /** RETRY_AFTER: String */
+    public static final String RETRY_AFTER =
+        "Retry-After";                                             //$NON-NLS-1$
+
+
+    private static final Set<String> _responseHeaders =
+        Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList(new String[] {
+                lower(ACCEPT_RANGES),
+                lower(AGE),
+                lower(E_TAG),
+                lower(LOCATION),
+                lower(PROXY_AUTHENTICATE),
+                lower(RETRY_AFTER),
+                lower(SERVER),
+                lower(VARY),
+                lower(WWW_AUTHENTICATE) })));
+
+
+    /**
+     * Determine if a header is allowed for a response message.
+     *
+     * @param header The name of the header.
+     *
+     * @return True if the header is allowed; false otherwise.
+     */
+    public static boolean isResponseHeader(final String header) {
+        return _responseHeaders.contains(lower(header));
+    }
+
+
+    private static String lower(final String string) {
+        return (null == string) ? null : string.toLowerCase(Locale.US);
+    }
 
 
     /**
