@@ -1,8 +1,6 @@
 package com.johnstok.http;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class HeaderTest {
@@ -49,5 +47,27 @@ public class HeaderTest {
 
         // ASSERT
         assertTrue(Header.isRequestHeader(Header.HOST));
+    }
+
+    @Test
+    public void retryAfterIsNotAGeneralHeader() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertFalse(Header.isGeneralHeader(Header.RETRY_AFTER));
+    }
+
+    @Test
+    public void dateIsAGeneralHeader() {
+
+        // ARRANGE
+
+        // ACT
+
+        // ASSERT
+        assertTrue(Header.isGeneralHeader(Header.DATE));
     }
 }

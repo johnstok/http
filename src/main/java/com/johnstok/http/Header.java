@@ -183,6 +183,54 @@ public final class Header {
     private static final String USER_AGENT =
         "User-Agent";                                              //$NON-NLS-1$
 
+    /** CACHE_CONTROL : String. */
+    private static final String CACHE_CONTROL =
+        "Cache-Control";                                           //$NON-NLS-1$
+
+    /** CONNECTION : String. */
+    private static final String CONNECTION =
+        "Connection";                                              //$NON-NLS-1$
+
+    /** PRAGMA : String. */
+    private static final String PRAGMA =
+        "Pragma";                                                  //$NON-NLS-1$
+
+    /** TRAILER : String. */
+    private static final String TRAILER =
+        "Trailer";                                                 //$NON-NLS-1$
+
+    /** TRANSFER_ENCODING : String. */
+    private static final String TRANSFER_ENCODING =
+        "Transfer-Encoding";                                       //$NON-NLS-1$
+
+    /** UPGRADE : String. */
+    private static final String UPGRADE =
+        "Upgrade";                                                 //$NON-NLS-1$
+
+    /** VIA : String. */
+    private static final String VIA =
+        "Via";                                                     //$NON-NLS-1$
+
+    /** WARNING : String. */
+    private static final String WARNING =
+        "Warning";                                                 //$NON-NLS-1$
+
+
+    private static final Set<String> _generalHeaders =
+        Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList(new String[] {
+                lower(CACHE_CONTROL),
+                lower(CONNECTION),
+                lower(DATE),
+                lower(PRAGMA),
+                lower(TRAILER),
+                lower(TRANSFER_ENCODING),
+                lower(UPGRADE),
+                lower(VIA),
+                lower(WARNING)
+            })
+        ));
+
 
     private static final Set<String> _requestHeaders =
         Collections.unmodifiableSet(new HashSet<String>(
@@ -224,6 +272,18 @@ public final class Header {
                 lower(WWW_AUTHENTICATE)
             })
         ));
+
+
+    /**
+     * Determine if a header is a general header.
+     *
+     * @param header The name of the header.
+     *
+     * @return True if the header is allowed; false otherwise.
+     */
+    public static boolean isGeneralHeader(final String header) {
+        return _generalHeaders.contains(lower(header));
+    }
 
 
     /**
