@@ -35,6 +35,8 @@ import com.johnstok.http.WeightedValue;
  */
 public class MediaTypeNegotiatorTest {
 
+    // See http://code.google.com/p/mimeparse/source/browse/trunk/test/MIMEParseTest.java
+
     @Test
     public void noSelection() {
 
