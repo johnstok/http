@@ -26,14 +26,69 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
- * Supported HTTP headers.
+ * A message header.
+ *
+ * <pre>
+   HTTP header fields, which include general-header (section 4.5),
+   request-header (section 5.3), response-header (section 6.2), and
+   entity-header (section 7.1) fields, follow the same generic format as
+   that given in Section 3.1 of RFC 822 [9]. Each header field consists
+   of a name followed by a colon (":") and the field value. Field names
+   are case-insensitive. The field value MAY be preceded by any amount
+   of LWS, though a single SP is preferred. Header fields can be
+   extended over multiple lines by preceding each extra line with at
+   least one SP or HT. Applications ought to follow "common form", where
+   one is known or indicated, when generating HTTP constructs, since
+   there might exist some implementations that fail to accept anything
+   beyond the common forms.
+
+       message-header = field-name ":" [ field-value ]
+       field-name     = token
+       field-value    = *( field-content | LWS )
+       field-content  = <the OCTETs making up the field-value
+                        and consisting of either *TEXT or combinations
+                        of token, separators, and quoted-string>
+
+   The field-content does not include any leading or trailing LWS:
+   linear white space occurring before the first non-whitespace
+   character of the field-value or after the last non-whitespace
+   character of the field-value. Such leading or trailing LWS MAY be
+   removed without changing the semantics of the field value. Any LWS
+   that occurs between field-content MAY be replaced with a single SP
+   before interpreting the field value or forwarding the message
+   downstream.
+
+   The order in which header fields with differing field names are
+   received is not significant. However, it is "good practice" to send
+   general-header fields first, followed by request-header or response-
+   header fields, and ending with the entity-header fields.
+
+   Multiple message-header fields with the same field-name MAY be
+   present in a message if and only if the entire field-value for that
+   header field is defined as a comma-separated list [i.e., #(values)].
+   It MUST be possible to combine the multiple header fields into one
+   "field-name: field-value" pair, without changing the semantics of the
+   message, by appending each subsequent field-value to the first, each
+   separated by a comma. The order in which header fields with the same
+   field-name are received is therefore significant to the
+   interpretation of the combined field value, and thus a proxy MUST NOT
+   change the order of these field values when a message is forwarded.
+ * </pre>
  *
  * @author Keith Webster Johnston.
  */
+@Specification(name="rfc-2616", section="4.2")
 public final class Header {
+
+    private static final String WS = "["+Syntax.SP+Syntax.HT+"]*";
+    // Deliberately permissive on whitespace because the spec is ambiguous.
+    public static final String SYNTAX =
+        "(["+Syntax.TOKEN+"]+):"+WS+"("+Syntax.TEXT+")"+WS;
 
     /** ALLOW : String. */
     public static final String ALLOW =
@@ -535,5 +590,71 @@ public final class Header {
     }
 
 
-    private Header() { super(); }
+    /**
+     * Parse a string into a Header.
+     *
+     * @param headerString A string representing the header.
+     *
+     * @return A corresponding header object.
+     */
+    public static Header parse(final String headerString) {
+        final Matcher m = Pattern.compile(SYNTAX).matcher(headerString);
+        if (m.matches()) {
+            return new Header(m.group(1), m.group(2));
+        }
+        throw new ClientHttpException(Status.BAD_REQUEST);
+    }
+
+
+    private final String _name;
+    private final String _value;
+    
+    private Header(String name, String value) {
+        // TODO: Disallow NULL values.
+        _name = name;
+        _value = value;
+    }
+
+
+    public String getName() {
+        return _name;
+    }
+
+
+    public String getValue() {
+        return _value;
+    }
+
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Header other = (Header) obj;
+        if (_name == null) {
+            if (other._name != null)
+                return false;
+        } else if (!_name.toLowerCase(Locale.US).equals(other._name.toLowerCase(Locale.US)))
+            return false;
+        if (_value == null) {
+            if (other._value != null)
+                return false;
+        } else if (!_value.equals(other._value))
+            return false;
+        return true;
+    }
 }
