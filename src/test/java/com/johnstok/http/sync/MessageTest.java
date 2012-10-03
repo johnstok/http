@@ -94,7 +94,7 @@ public class MessageTest {
         assertEquals("Host: www.w3.org", m.getHeader(6));
         assertEquals(
             "The quick brown fox jumped over the lazy dog.",
-            consumeAsString(m.getBody(), "iso-8859-1"));
+            consumeAsString(m.getMessageBody(), "iso-8859-1"));
     }
 
 
