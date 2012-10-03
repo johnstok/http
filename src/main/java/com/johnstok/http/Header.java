@@ -306,10 +306,35 @@ public final class Header {
     /**
      * Determine if a header is a general header.
      *
+     * <pre>
+   There are a few header fields which have general applicability for
+   both request and response messages, but which do not apply to the
+   entity being transferred. These header fields apply only to the
+   message being transmitted.
+
+       general-header = Cache-Control            ; Section 14.9
+                      | Connection               ; Section 14.10
+                      | Date                     ; Section 14.18
+                      | Pragma                   ; Section 14.32
+                      | Trailer                  ; Section 14.40
+                      | Transfer-Encoding        ; Section 14.41
+                      | Upgrade                  ; Section 14.42
+                      | Via                      ; Section 14.45
+                      | Warning                  ; Section 14.46
+
+   General-header field names can be extended reliably only in
+   combination with a change in the protocol version. However, new or
+   experimental header fields may be given the semantics of general
+   header fields if all parties in the communication recognize them to
+   be general-header fields. Unrecognized header fields are treated as
+   entity-header fields.
+     * </pre>
+     *
      * @param header The name of the header.
      *
      * @return True if the header is allowed; false otherwise.
      */
+    @Specification(name="rfc-2616", section="4.5")
     public static boolean isGeneralHeader(final String header) {
         return _generalHeaders.contains(lower(header));
     }
@@ -318,10 +343,46 @@ public final class Header {
     /**
      * Determine if a header is allowed for a request message.
      *
+     * <pre>
+   The request-header fields allow the client to pass additional
+   information about the request, and about the client itself, to the
+   server. These fields act as request modifiers, with semantics
+   equivalent to the parameters on a programming language method
+   invocation.
+
+       request-header = Accept                   ; Section 14.1
+                      | Accept-Charset           ; Section 14.2
+                      | Accept-Encoding          ; Section 14.3
+                      | Accept-Language          ; Section 14.4
+                      | Authorization            ; Section 14.8
+                      | Expect                   ; Section 14.20
+                      | From                     ; Section 14.22
+                      | Host                     ; Section 14.23
+                      | If-Match                 ; Section 14.24
+                      | If-Modified-Since        ; Section 14.25
+                      | If-None-Match            ; Section 14.26
+                      | If-Range                 ; Section 14.27
+                      | If-Unmodified-Since      ; Section 14.28
+                      | Max-Forwards             ; Section 14.31
+                      | Proxy-Authorization      ; Section 14.34
+                      | Range                    ; Section 14.35
+                      | Referer                  ; Section 14.36
+                      | TE                       ; Section 14.39
+                      | User-Agent               ; Section 14.43
+
+   Request-header field names can be extended reliably only in
+   combination with a change in the protocol version. However, new or
+   experimental header fields MAY be given the semantics of request-
+   header fields if all parties in the communication recognize them to
+   be request-header fields. Unrecognized header fields are treated as
+   entity-header fields.
+     * </pre>
+     *
      * @param header The name of the header.
      *
      * @return True if the header is allowed; false otherwise.
      */
+    @Specification(name="rfc-2616", section="5.3")
     public static boolean isRequestHeader(final String header) {
         return _requestHeaders.contains(lower(header));
     }
@@ -330,10 +391,35 @@ public final class Header {
     /**
      * Determine if a header is allowed for a response message.
      *
+     * <pre>
+   The response-header fields allow the server to pass additional
+   information about the response which cannot be placed in the Status-
+   Line. These header fields give information about the server and about
+   further access to the resource identified by the Request-URI.
+
+       response-header = Accept-Ranges           ; Section 14.5
+                       | Age                     ; Section 14.6
+                       | ETag                    ; Section 14.19
+                       | Location                ; Section 14.30
+                       | Proxy-Authenticate      ; Section 14.33
+                       | Retry-After             ; Section 14.37
+                       | Server                  ; Section 14.38
+                       | Vary                    ; Section 14.44
+                       | WWW-Authenticate        ; Section 14.47
+
+   Response-header field names can be extended reliably only in
+   combination with a change in the protocol version. However, new or
+   experimental header fields MAY be given the semantics of response-
+   header fields if all parties in the communication recognize them to
+   be response-header fields. Unrecognized header fields are treated as
+   entity-header fields.
+     * </pre>
+     *
      * @param header The name of the header.
      *
      * @return True if the header is allowed; false otherwise.
      */
+    @Specification(name="rfc-2616", section="6.2")
     public static boolean isResponseHeader(final String header) {
         return _responseHeaders.contains(lower(header));
     }
