@@ -214,6 +214,19 @@ public final class Header {
     /** WARNING : String. */
     private static final String WARNING =
         "Warning";                                                 //$NON-NLS-1$
+    
+    /** CONTENT_LOCATION : String */
+    private static final String CONTENT_LOCATION =
+        "Content-Location";                                        //$NON-NLS-1$
+    
+    /** CONTENT_MD5 : String */
+    private static final String CONTENT_MD5 =
+        "Content-MD5";                                             //$NON-NLS-1$
+    
+    /** EXPIRES : String*/
+    private static final String EXPIRES =
+        "Expires";                                                 //$NON-NLS-1$
+    
 
 
     private static final Set<String> _generalHeaders =
@@ -272,6 +285,22 @@ public final class Header {
                 lower(WWW_AUTHENTICATE)
             })
         ));
+    
+    private static final Set<String> _entityHeaders =
+        Collections.unmodifiableSet(new HashSet<String>(
+            Arrays.asList(new String[] {
+                    lower(ALLOW),
+                    lower(CONTENT_ENCODING),
+                    lower(CONTENT_LANGUAGE),
+                    lower(CONTENT_LENGTH),
+                    lower(CONTENT_LOCATION),
+                    lower(CONTENT_MD5),
+                    lower(CONTENT_RANGE),
+                    lower(CONTENT_TYPE),
+                    lower(EXPIRES),
+                    lower(LAST_MODIFIED)
+            })
+        ));
 
 
     /**
@@ -307,6 +336,47 @@ public final class Header {
      */
     public static boolean isResponseHeader(final String header) {
         return _responseHeaders.contains(lower(header));
+    }
+    
+    
+    /**
+     * Determine if a header is an entity header.
+     *
+     * <pre>
+   Entity-header fields define meta-information about the entity-body or,
+   if no body is present, about the resource identified by the request.
+   Some of this meta-information is OPTIONAL; some might be REQUIRED by
+   portions of this specification.
+
+       entity-header  = Allow                    ; Section 14.7
+                      | Content-Encoding         ; Section 14.11
+                      | Content-Language         ; Section 14.12
+                      | Content-Length           ; Section 14.13
+                      | Content-Location         ; Section 14.14
+                      | Content-MD5              ; Section 14.15
+                      | Content-Range            ; Section 14.16
+                      | Content-Type             ; Section 14.17
+                      | Expires                  ; Section 14.21
+                      | Last-Modified            ; Section 14.29
+                      | extension-header
+
+       extension-header = message-header
+
+   The extension-header mechanism allows additional entity-header fields
+   to be defined without changing the protocol, but these fields cannot
+   be assumed to be recognizable by the recipient. Unrecognized header
+   fields SHOULD be ignored by the recipient and MUST be forwarded by
+   transparent proxies.
+     * </pre>
+     *
+     * @param header The name of the header.
+     *
+     * @return True if the header is allowed; false otherwise.
+     */
+    @Specification(name="rfc-2616", section="7.1")
+    public static boolean isEntityHeader(final String header) {
+        // FIXME: Doesn't allow for extension.
+        return _entityHeaders.contains(lower(header));
     }
 
 
