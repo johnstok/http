@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 /**
  * A HTTP request's URI.
- * 
+ *
  * <pre>
    The Request-URI is a Uniform Resource Identifier (section 3.2) and
    identifies the resource upon which to apply the request.
@@ -90,19 +90,30 @@ import java.util.regex.Pattern;
       should be aware that some pre-HTTP/1.1 proxies have been known to
       rewrite the Request-URI.
  * </pre>
- * 
+ *
  * @author Keith Webster Johnston.
  */
 @Specification(name="rfc-2616", section="5.1.2")
 public class RequestURI {
 
-    public static final String SYNTAX = Syntax.CHAR+"&&[^"+Syntax.CTL+"]"; // FIXME.
+    public static final String SYNTAX = // FIXME: This is a naïve regex.
+        Syntax.CHAR+"&&[^"+Syntax.CTL+"]";           //$NON-NLS-1$ //$NON-NLS-2$
 
     private final String _uri;
 
 
-    public RequestURI(String uri) {
+    public RequestURI(final String uri) {
         _uri = uri; // FIXME: Cannot be NULL or empty.
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return The request URI as a string.
+     */
+    public String getUri() {
+        return _uri;
     }
 
 
@@ -117,7 +128,10 @@ public class RequestURI {
      * @return A corresponding request URI object.
      */
     public static RequestURI parse(final String requestUriString) {
-        final Matcher m = Pattern.compile("(["+SYNTAX+"]+)").matcher(requestUriString);
+        final Matcher m =
+            Pattern
+                .compile("(["+SYNTAX+"]+)")          //$NON-NLS-1$ //$NON-NLS-2$
+                .matcher(requestUriString);
         if (m.matches()) {
             // FIXME: we need to determine which of the 4 types the URI is.
             // Only ABSOLUTE_URI & ABS_PATH are valid java.net.URIs.
