@@ -30,7 +30,7 @@ import com.johnstok.http.TransferCoding;
 
 /**
  * A HTTP message.
- * 
+ *
  * <pre>
    Message Types
 
@@ -66,7 +66,7 @@ import com.johnstok.http.TransferCoding;
  * @author Keith Webster Johnston.
  */
 @Specification(name="rfc-2616", section="4")
-public class Message {
+class Message {
 
     private final String       _startLine;
     private final List<String> _headers;
@@ -77,6 +77,8 @@ public class Message {
      * Constructor.
      *
      * @param is The input stream representing the message.
+     *
+     * @throws IOException If parsing of the message header fails.
      */
     public Message(final InputStream is) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -186,11 +188,11 @@ public class Message {
     public InputStream getMessageBody() {
         return _is;
     }
-    
-    
+
+
     /**
      * Get the entity body.
-     * 
+     *
      * @param codings Array of transfer codings used to decode the message body.
      *                If multiple encodings have been applied to an entity, the
      *                transfer-codings MUST be listed in the order in which they
@@ -198,7 +200,7 @@ public class Message {
      *
      * @return An input stream to consume the message body.
      */
-    public InputStream getEntityBody(TransferCoding... codings) {
+    public InputStream getEntityBody(final TransferCoding... codings) {
         throw new UnsupportedOperationException("Not Implemented.");
     }
 }
