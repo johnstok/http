@@ -31,9 +31,8 @@ import java.util.regex.Pattern;
 @Specification(name="rfc-2616", section="5.1")
 public class RequestLine {
 
-    public static final String REQUEST_URI = Syntax.TOKEN; // FIXME.
     public static final String SYNTAX =
-        "("+Method.SYNTAX+") (["+REQUEST_URI+"]+) ("+Version.SYNTAX+")";
+        "("+Method.SYNTAX+") (["+RequestURI.SYNTAX+"]+) ("+Version.SYNTAX+")";
 
 
     private final String _method;
