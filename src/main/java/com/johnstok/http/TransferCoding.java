@@ -83,7 +83,7 @@ public final class TransferCoding {
 
     private static final String TRANSFER_EXTENSION =
         "(["+Syntax.TOKEN+"]+)((?:;"+Parameter.PARAMETER+")*)";
-    public static final String SYNTAX  = "chunked|"+TRANSFER_EXTENSION;
+    public static final String SYNTAX = "chunked|"+TRANSFER_EXTENSION;
 
 
     /**
