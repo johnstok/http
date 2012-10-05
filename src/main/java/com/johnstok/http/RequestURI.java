@@ -19,8 +19,9 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 
 /**
@@ -100,20 +101,33 @@ public class RequestURI {
         Syntax.CHAR+"&&[^"+Syntax.CTL+"]";           //$NON-NLS-1$ //$NON-NLS-2$
 
     private final String _uri;
+    private final Type   _type;
 
 
-    public RequestURI(final String uri) {
+    public RequestURI(final String uri, final Type type) {
         _uri = uri; // FIXME: Cannot be NULL or empty.
+        _type = type; // FIXME: Cannot be NULL or empty.
     }
 
 
     /**
      * Accessor.
      *
-     * @return The request URI as a string.
+     * @return The raw request URI from the request line as a string.
+     *  This string is neither parsed nor decoded.
      */
     public String getUri() {
         return _uri;
+    }
+
+
+    /**
+     * Accessor.
+     *
+     * @return Returns the type.
+     */
+    public final Type getType() {
+        return _type;
     }
 
 
@@ -128,15 +142,19 @@ public class RequestURI {
      * @return A corresponding request URI object.
      */
     public static RequestURI parse(final String requestUriString) {
-        final Matcher m =
-            Pattern
-                .compile("(["+SYNTAX+"]+)")          //$NON-NLS-1$ //$NON-NLS-2$
-                .matcher(requestUriString);
-        if (m.matches()) {
-            // FIXME: we need to determine which of the 4 types the URI is.
-            // Only ABSOLUTE_URI & ABS_PATH are valid java.net.URIs.
-            return new RequestURI(m.group(1));
+        if ("*".equals(requestUriString)) {
+            return new RequestURI(requestUriString, Type.NO_RESOURCE);
+        } else if (Authority.isValid(requestUriString)) {
+            return new RequestURI(requestUriString, Type.AUTHORITY);
+        } else {
+            try {
+                URI uri = new URI(requestUriString);
+                return new RequestURI(
+                    requestUriString,
+                    (uri.isAbsolute()) ? Type.ABSOLUTE_URI : Type.ABS_PATH);
+            } catch (URISyntaxException e) {
+                throw new ClientHttpException(Status.BAD_REQUEST);
+            }
         }
-        throw new ClientHttpException(Status.BAD_REQUEST);
     }
 }
