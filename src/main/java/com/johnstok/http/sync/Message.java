@@ -86,6 +86,7 @@ class Message {
         int curr = is.read();
 
         // FIXME: Ignore leading CRLF pairs - see RFC-2616§4.1.
+        // FIXME: Apply a maximum length for a URI - see RFC-2616§3.2.1.
         // Read start line
         while (!(13==prev && 10==curr)) {
             baos.write(prev);
