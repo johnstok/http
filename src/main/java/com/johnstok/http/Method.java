@@ -73,16 +73,32 @@ public final class Method {
         + EXTENSION_METHOD
         + "]+";
 
-    private static final Set<Method> KNOWN_METHODS =
-        new HashSet<Method>(Arrays.asList(
-            Method.GET,
-            Method.HEAD,
-            Method.OPTIONS,
-            Method.DELETE,
-            Method.POST,
-            Method.TRACE,
-            Method.CONNECT,
-            Method.PUT
+    private static final Set<String> KNOWN_METHODS =
+        new HashSet<String>(Arrays.asList(
+            "GET",
+            "HEAD",
+            "OPTIONS",
+            "DELETE",
+            "POST",
+            "TRACE",
+            "CONNECT",
+            "PUT"
+        ));
+
+    private static final Set<String> SAFE_METHODS =
+        new HashSet<String>(Arrays.asList(
+            "GET",
+            "HEAD"
+        ));
+
+    private static final Set<String> IDEMPOTENT_METHODS =
+        new HashSet<String>(Arrays.asList(
+            "GET",
+            "HEAD",
+            "PUT",
+            "DELETE",
+            "OPTIONS",
+            "TRACE"
         ));
 
     /** GET : String. */
@@ -119,20 +135,74 @@ public final class Method {
 
     private final String _value;
 
+    /**
+     * Constructor.
+     *
+     * @param value The string representation of the method.
+     */
     private Method(final String value) {
         _value = value; // FIXME: Verify not null or empty.
     }
 
 
+    /**
+     * Check if this method is safe.
+     *
+     * <pre>
+   Implementors should be aware that the software represents the user in
+   their interactions over the Internet, and should be careful to allow
+   the user to be aware of any actions they might take which may have an
+   unexpected significance to themselves or others.
+
+   In particular, the convention has been established that the GET and
+   HEAD methods SHOULD NOT have the significance of taking an action
+   other than retrieval. These methods ought to be considered "safe".
+   This allows user agents to represent other methods, such as POST, PUT
+   and DELETE, in a special way, so that the user is made aware of the
+   fact that a possibly unsafe action is being requested.
+
+   Naturally, it is not possible to ensure that the server does not
+   generate side-effects as a result of performing a GET request; in
+   fact, some dynamic resources consider that a feature. The important
+   distinction here is that the user did not request the side-effects,
+   so therefore cannot be held accountable for them.
+     * </pre>
+     *
+     * @return True if the method is safe, false otherwise.
+     */
     @Specification(name="rfc-2616", section="9.1.1")
     public boolean isSafe() {
-        throw new UnsupportedOperationException();
+        return SAFE_METHODS.contains(_value);
     }
 
 
+    /**
+     * Check if this method is idempotent.
+     *
+     * <pre>
+   Methods can also have the property of "idempotence" in that (aside
+   from error or expiration issues) the side-effects of N > 0 identical
+   requests is the same as for a single request. The methods GET, HEAD,
+   PUT and DELETE share this property. Also, the methods OPTIONS and
+   TRACE SHOULD NOT have side effects, and so are inherently idempotent.
+   However, it is possible that a sequence of several requests is non-
+   idempotent, even if all of the methods executed in that sequence are
+   idempotent. (A sequence is idempotent if a single execution of the
+   entire sequence always yields a result that is not changed by a
+   reexecution of all, or part, of that sequence.) For example, a
+   sequence is non-idempotent if its result depends on a value that is
+   later modified in the same sequence.
+
+   A sequence that never has side effects is idempotent, by definition
+   (provided that no concurrent operations are being executed on the
+   same set of resources).
+     * </pre>
+     *
+     * @return True if the method is idempotent, false otherwise.
+     */
     @Specification(name="rfc-2616", section="9.1.2")
     public boolean isIdempotent() {
-        throw new UnsupportedOperationException();
+        return IDEMPOTENT_METHODS.contains(_value);
     }
 
 
@@ -157,7 +227,7 @@ public final class Method {
      * @return True if the method is recognized, false otherwise.
      */
     public boolean isRecognized() {
-        return KNOWN_METHODS.contains(this);
+        return KNOWN_METHODS.contains(_value);
     }
 
 
@@ -166,7 +236,15 @@ public final class Method {
      *
      * @return The set of known HTTP methods.
      */
-    public static Set<Method> all() { return KNOWN_METHODS; }
+    public static Set<Method> all() {
+        Set<Method> known = new HashSet<Method>();
+
+        for (String m : KNOWN_METHODS) {
+            known.add(Method.parse(m));
+        }
+
+        return known;
+    }
 
 
     /**
@@ -208,7 +286,7 @@ public final class Method {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        result = (prime * result) + ((_value == null) ? 0 : _value.hashCode());
         return result;
     }
 

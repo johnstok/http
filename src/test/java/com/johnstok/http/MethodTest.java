@@ -30,7 +30,6 @@ import org.junit.Test;
  */
 public class MethodTest {
 
-
     @Test
     public void equalityIsCaseSensitive() {
         assertTrue(Method.parse("GET").equals(Method.parse("GET")));
@@ -40,6 +39,7 @@ public class MethodTest {
 
     @Test
     public void specifiedIsRecognized() {
+        assertTrue(Method.parse("GET").isRecognized());
         assertTrue(Method.GET.isRecognized());
     }
 
@@ -47,5 +47,25 @@ public class MethodTest {
     @Test
     public void unspecifiedIsUnrecognized() {
         assertFalse(Method.parse("FOO").isRecognized());
+    }
+
+
+    @Test
+    public void safeMethods() {
+        assertFalse(Method.parse("POST").isSafe());
+        assertTrue(Method.parse("HEAD").isSafe());
+        assertTrue(Method.parse("GET").isSafe());
+    }
+
+
+    @Test
+    public void idempotentMethods() {
+        assertFalse(Method.parse("POST").isIdempotent());
+        assertTrue(Method.parse("HEAD").isIdempotent());
+        assertTrue(Method.parse("GET").isIdempotent());
+        assertTrue(Method.parse("PUT").isIdempotent());
+        assertTrue(Method.parse("DELETE").isIdempotent());
+        assertTrue(Method.parse("OPTIONS").isIdempotent());
+        assertTrue(Method.parse("TRACE").isIdempotent());
     }
 }
