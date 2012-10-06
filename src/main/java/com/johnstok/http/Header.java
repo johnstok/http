@@ -87,8 +87,9 @@ public final class Header {
 
     private static final String WS = "["+Syntax.SP+Syntax.HT+"]*";
     // Deliberately permissive on whitespace because the spec is ambiguous.
+    // TODO: We don't allow quoted strings here.
     public static final String SYNTAX =
-        "(["+Syntax.TOKEN+"]+):"+WS+"("+Syntax.TEXT+")"+WS;
+        "(["+Syntax.TOKEN+"]+):("+WS+Syntax.TEXT+WS+")";
 
     /** ALLOW : String. */
     public static final String ALLOW =
@@ -269,19 +270,19 @@ public final class Header {
     /** WARNING : String. */
     private static final String WARNING =
         "Warning";                                                 //$NON-NLS-1$
-    
+
     /** CONTENT_LOCATION : String */
     private static final String CONTENT_LOCATION =
         "Content-Location";                                        //$NON-NLS-1$
-    
+
     /** CONTENT_MD5 : String */
     private static final String CONTENT_MD5 =
         "Content-MD5";                                             //$NON-NLS-1$
-    
+
     /** EXPIRES : String*/
     private static final String EXPIRES =
         "Expires";                                                 //$NON-NLS-1$
-    
+
 
 
     private static final Set<String> _generalHeaders =
@@ -340,7 +341,7 @@ public final class Header {
                 lower(WWW_AUTHENTICATE)
             })
         ));
-    
+
     private static final Set<String> _entityHeaders =
         Collections.unmodifiableSet(new HashSet<String>(
             Arrays.asList(new String[] {
@@ -478,8 +479,8 @@ public final class Header {
     public static boolean isResponseHeader(final String header) {
         return _responseHeaders.contains(lower(header));
     }
-    
-    
+
+
     /**
      * Determine if a header is an entity header.
      *
@@ -550,11 +551,11 @@ public final class Header {
          */
         final List<WeightedValue> wValues = new ArrayList<WeightedValue>();
 
-        if (null==value || 1>value.trim().length()) { return wValues; }
+        if ((null==value) || (1>value.trim().length())) { return wValues; }
 
         final String[] cRanges = value.split(",");
         for (final String cRange : cRanges) {
-            if (null==cRange || 1>cRange.trim().length()) { continue; }
+            if ((null==cRange) || (1>cRange.trim().length())) { continue; }
             wValues.add(Value.parse(cRange).asWeightedValue("q", 1f));
         }
 
@@ -578,11 +579,11 @@ public final class Header {
          */
         final List<WeightedValue> wValues = new ArrayList<WeightedValue>();
 
-        if (null==value || 1>value.trim().length()) { return wValues; }
+        if ((null==value) || (1>value.trim().length())) { return wValues; }
 
         final String[] eRanges = value.split(",");
         for (final String eRange : eRanges) {
-            if (null==eRange || 1>eRange.trim().length()) { continue; }
+            if ((null==eRange) || (1>eRange.trim().length())) { continue; }
             wValues.add(Value.parse(eRange).asWeightedValue("q", 1f));
         }
 
@@ -608,9 +609,15 @@ public final class Header {
 
     private final String _name;
     private final String _value;
-    
-    private Header(String name, String value) {
+
+    private Header(final String name, final String value) {
         // TODO: Disallow NULL values.
+        // TODO: How do we handle non-ASCII characters - escaping?
+        /*
+         *  TODO: This class has static query methods (isEntityHeader) but the
+         *  Method class has non-static methods (isSafe) - change to be
+         *  consistent.
+         */
         _name = name;
         _value = value;
     }
@@ -626,35 +633,47 @@ public final class Header {
     }
 
 
+    public String getContent() {
+        return _value.replaceAll("\\r\\n[ \\t]+", " ").trim();
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        result = (prime * result) + ((_name == null) ? 0 : _name.hashCode());
+        result = (prime * result) + ((_value == null) ? 0 : _value.hashCode());
         return result;
     }
 
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Header other = (Header) obj;
         if (_name == null) {
-            if (other._name != null)
+            if (other._name != null) {
                 return false;
-        } else if (!_name.toLowerCase(Locale.US).equals(other._name.toLowerCase(Locale.US)))
+            }
+        } else if (!_name.toLowerCase(Locale.US).equals(other._name.toLowerCase(Locale.US))) {
             return false;
+        }
         if (_value == null) {
-            if (other._value != null)
+            if (other._value != null) {
                 return false;
-        } else if (!_value.equals(other._value))
+            }
+        } else if (!_value.equals(other._value)) {
             return false;
+        }
         return true;
     }
 }

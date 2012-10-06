@@ -4,17 +4,30 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class HeaderTest {
-    
+
+    @Test
+    public void getContentRemovesLws() {
+
+        // ARRANGE
+        Header h = Header.parse("header:  a\r\n b ");
+
+        // ASSERT
+        assertEquals("a b", h.getContent());
+        assertEquals("  a\r\n b ", h.getValue());
+    }
+
+
     @Test
     public void headerNamesAreCaseInsensitive() {
-        
+
         // ACT
         Header h1 = Header.parse("Foo:bar");
         Header h2 = Header.parse("foO:bar");
-        
+
         // ASSERT
         assertEquals(h1,h2);
     }
+
 
     @Test
     public void parseSimpleHeader() {
@@ -42,10 +55,10 @@ public class HeaderTest {
 
     @Test
     public void parseHeaderValueHasMultipleLws() {
-        
+
         // ACT
         Header h = Header.parse("Foo:a\r\n b\r\n\tc");
-        
+
         // ASSERT
         assertEquals("Foo", h.getName());
         assertEquals("a\r\n b\r\n\tc", h.getValue());
@@ -60,7 +73,7 @@ public class HeaderTest {
 
         // ASSERT
         assertEquals("Foo", h.getName());
-        assertEquals("bar", h.getValue());
+        assertEquals(" \tbar", h.getValue());
     }
 
 
@@ -72,28 +85,28 @@ public class HeaderTest {
 
         // ASSERT
         assertEquals("Foo", h.getName());
-        assertEquals("bar", h.getValue());
+        assertEquals("bar\t ", h.getValue());
     }
 
 
     @Test
     public void parseHeaderValueHasLeadingLws() {
-        
+
         // ACT
         Header h = Header.parse("Foo:\r\n bar");
-        
+
         // ASSERT
         assertEquals("Foo", h.getName());
         assertEquals("\r\n bar", h.getValue());
     }
-    
-    
+
+
     @Test
     public void parseHeaderValueHasTrailingLws() {
-        
+
         // ACT
         Header h = Header.parse("Foo:bar\r\n\t");
-        
+
         // ASSERT
         assertEquals("Foo", h.getName());
         assertEquals("bar\r\n\t", h.getValue());
@@ -108,7 +121,7 @@ public class HeaderTest {
 
         // ASSERT
         assertEquals("Foo", h.getName());
-        assertEquals("bar", h.getValue());
+        assertEquals(" bar\t", h.getValue());
     }
 
 
