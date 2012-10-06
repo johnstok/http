@@ -157,4 +157,126 @@ public class RequestURI {
             }
         }
     }
+
+
+    /**
+     * Compare two request URIs to see if they match.
+     *
+     * <pre>
+   When comparing two URIs to decide if they match or not, a client
+   SHOULD use a case-sensitive octet-by-octet comparison of the entire
+   URIs, with these exceptions:
+
+        - A port that is empty or not given is equivalent to the default
+          port for that URI-reference;
+
+        - Comparisons of host names MUST be case-insensitive;
+
+        - Comparisons of scheme names MUST be case-insensitive;
+
+        - An empty abs_path is equivalent to an abs_path of "/".
+
+   Characters other than those in the "reserved" and "unsafe" sets (see
+   RFC 2396 [42]) are equivalent to their ""%" HEX HEX" encoding.
+
+   For example, the following three URIs are equivalent:
+
+      http://abc.com:80/~smith/home.html
+      http://ABC.com/%7Esmith/home.html
+      http://ABC.com:/%7esmith/home.html
+     * </pre>
+     *
+     * @return True if the URIs match, false otherwise.
+     */
+    @Specification(name="rfc-2616", section="3.2.3")
+    public boolean matches(final RequestURI requestUri) {
+        // TODO: Do we need to specify the charset here?
+        if (this == requestUri) {
+            return true;
+        }
+        if (null == requestUri) {
+            return false;
+        }
+        if (getClass() != requestUri.getClass()) {
+            return false;
+        }
+
+        URI thisUri = URI.create(_uri);
+        URI thatUri = URI.create(requestUri._uri);
+
+        // Compare schemes
+        if (!caseInsensitiveMatch(thisUri.getScheme(), thatUri.getScheme())) {
+            return false;
+        }
+
+        // Compare authorities
+        if (isRegistryAuthority(thisUri) && isRegistryAuthority(thisUri)) {
+            if (!match(thisUri.getAuthority(), thatUri.getAuthority())) {
+                return false;
+            }
+        } else if (isRegistryAuthority(thisUri)) { // one server-based and one registry-based authority, so not equal.
+            return false;
+        } else {
+            if (!caseInsensitiveMatch(thisUri.getHost(), thatUri.getHost())) {
+                return false;
+            }
+            if (!match(thisUri.getUserInfo(), thatUri.getUserInfo())) {
+                return false;
+            }
+            int thisPort = thisUri.getPort();
+            int thatPort = thatUri.getPort();
+            if (((-1==thisPort)?80:thisPort)!=((-1==thatPort)?80:thatPort)) {
+                return false;
+            }
+        }
+
+        // Compare paths
+        String thisPath = thisUri.getPath();
+        String thatPath = thatUri.getPath();
+        if (!match(
+            ("".equals(thisPath))?"/":thisPath,
+                ("".equals(thatPath))?"/":thatPath)) {
+            return false;
+        }
+
+        // Compare query strings
+        if (!caseInsensitiveMatch(thisUri.getQuery(), thatUri.getQuery())) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private boolean isRegistryAuthority(final URI thisUri) {
+        try {
+            thisUri.parseServerAuthority();
+        } catch (URISyntaxException e) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean match(final String thisString, final String thatString) {
+        if ((null==thisString) && (null==thatString)) {
+            return true;
+        }
+        if (null==thisString) { // thatString != null so not equal.
+            return false;
+        }
+        return thisString.equals(thatString);
+    }
+
+
+    private boolean caseInsensitiveMatch(final String thisString,
+                                         final String thatString) {
+        if ((null==thisString) && (null==thatString)) {
+            return true;
+        }
+        if (null==thisString) { // thatString != null so not equal.
+            return false;
+        }
+        return thisString.equalsIgnoreCase(thatString);
+    }
 }
