@@ -638,6 +638,11 @@ public final class Header {
     }
 
 
+    public <T> T get(final HeaderName<T> headerName) {
+        return headerName.parse(getContent());
+    }
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
