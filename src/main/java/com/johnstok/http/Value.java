@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  *
  * @author Keith Webster Johnston.
  */
+@Deprecated // FIXME: Remove, yse Parameter class instead.
 public class Value {
 
     private final String              _value;
@@ -68,10 +69,9 @@ public class Value {
         final HashMap<String, String> properties = new HashMap<String, String>();
 
         final String[] parts = string.split(";");
+        Pattern p = Pattern.compile("(["+Syntax.TOKEN+"]+)[ ]*=[ ]*(["+Syntax.TOKEN+"]*)");
         for (int i=1; i<parts.length; i++) {
-            final Matcher m =
-                Pattern.compile("("+Syntax.TOKEN+"+)[ ]*=[ ]*("+Syntax.TOKEN+"*)")
-                .matcher(parts[i].trim());
+            final Matcher m = p.matcher(parts[i].trim());
             if (m.matches()) {
                 final int count = m.groupCount();
                 if (m.groupCount()==1) {
