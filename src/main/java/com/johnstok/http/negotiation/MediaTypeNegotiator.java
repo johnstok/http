@@ -115,13 +115,14 @@ public class MediaTypeNegotiator
          *  - malformed mtRange
          *  - malformed value
          */
+        // FIXME: Replace with implementation in the MediaType class.
         final List<WeightedValue> wValues = new ArrayList<WeightedValue>();
 
-        if (null==value || 1>value.trim().length()) { return wValues; }
+        if ((null==value) || (1>value.trim().length())) { return wValues; }
 
         final String[] mtRanges = value.split(",");
         for (final String mtRange : mtRanges) {
-            if (null==mtRange || 1>mtRange.trim().length()) { continue; }
+            if ((null==mtRange) || (1>mtRange.trim().length())) { continue; }
             try {
                 wValues.add(Value.parse(mtRange).asWeightedValue("q", 1f));
             } catch (final NumberFormatException e) {
@@ -187,7 +188,7 @@ public class MediaTypeNegotiator
     @Override
     public MediaType select(final List<WeightedValue> mediaRanges) {
 
-        if (null==mediaRanges || 0==mediaRanges.size()) {
+        if ((null==mediaRanges) || (0==mediaRanges.size())) {
             // Any media type is acceptable - return the first.
             // FIXME: Doesn't handle 0 available media types.
             return _availableMediaTypes.iterator().next();

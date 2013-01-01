@@ -131,9 +131,9 @@ public class MediaTypeNegotiatorTest {
 
         // ASSERT
         assertEquals(3, weights.size());
-        assertEquals(.6f, weights.get(MediaType.XML));
-        assertEquals(.5f, weights.get(MediaType.JSON));
-        assertEquals(.4f, weights.get(MediaType.JPEG));
+        assertEquals(.6f, weights.get(MediaType.XML).floatValue(), 0f);
+        assertEquals(.5f, weights.get(MediaType.JSON).floatValue(), 0f);
+        assertEquals(.4f, weights.get(MediaType.JPEG).floatValue(), 0f);
     }
 
     @Test
@@ -166,7 +166,7 @@ public class MediaTypeNegotiatorTest {
         // ASSERT
         assertEquals(1, ranges.size());
         assertEquals("audio/basic", ranges.get(0).getValue());
-        assertEquals(1f, ranges.get(0).getWeight());
+        assertEquals(1f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -180,9 +180,9 @@ public class MediaTypeNegotiatorTest {
         // ASSERT
         assertEquals(2, ranges.size());
         assertEquals("audio/*", ranges.get(0).getValue());
-        assertEquals(0.2f, ranges.get(0).getWeight());
+        assertEquals(0.2f, ranges.get(0).getWeight(), 0f);
         assertEquals("audio/basic", ranges.get(1).getValue());
-        assertEquals(1f, ranges.get(1).getWeight());
+        assertEquals(1f, ranges.get(1).getWeight(), 0f);
     }
 
     @Test
@@ -190,7 +190,7 @@ public class MediaTypeNegotiatorTest {
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse("application/xml;q=.5");
         assertEquals(1, ranges.size());
         assertEquals("application/xml", ranges.get(0).getValue());
-        assertEquals(.5f, ranges.get(0).getWeight());
+        assertEquals(.5f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -199,7 +199,7 @@ public class MediaTypeNegotiatorTest {
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse("application/xml;q=");
         assertEquals(1, ranges.size());
         assertEquals("application/xml", ranges.get(0).getValue());
-        assertEquals(1f, ranges.get(0).getWeight());
+        assertEquals(1f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -208,7 +208,7 @@ public class MediaTypeNegotiatorTest {
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse("application/xml;q=3");
         assertEquals(1, ranges.size());
         assertEquals("application/xml", ranges.get(0).getValue());
-        assertEquals(1f, ranges.get(0).getWeight());
+        assertEquals(1f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class MediaTypeNegotiatorTest {
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse("application/xml;q=-1");
         assertEquals(1, ranges.size());
         assertEquals("application/xml", ranges.get(0).getValue());
-        assertEquals(0f, ranges.get(0).getWeight());
+        assertEquals(0f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -226,7 +226,7 @@ public class MediaTypeNegotiatorTest {
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse(" *; q=.2");
         assertEquals(1, ranges.size());
         assertEquals("*/*", ranges.get(0).getValue());
-        assertEquals(.2f, ranges.get(0).getWeight());
+        assertEquals(.2f, ranges.get(0).getWeight(), 0f);
     }
 
     @Test
@@ -238,10 +238,10 @@ public class MediaTypeNegotiatorTest {
 
     @Test
     public void acceptExtensionsPreserved() {
-
+        // FIXME: Unclear what this test is trying to assert.
         final List<WeightedValue> ranges = MediaTypeNegotiator.parse("application/xml ; foo=bar;q=.3;b=other");
         assertEquals(1, ranges.size());
         assertEquals("application/xml;b=other", ranges.get(0).getValue());
-        assertEquals(.3f, ranges.get(0).getWeight());
+        assertEquals(.3f, ranges.get(0).getWeight(), 0f);
     }
 }
