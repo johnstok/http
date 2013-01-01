@@ -98,7 +98,7 @@ public class Value {
                                          final float defaultWeight) {
         final String weightProperty = _props.get(weightingPropertyName);
         float weight =
-            (null==weightProperty || weightProperty.trim().isEmpty()) ? defaultWeight :Float.parseFloat(weightProperty);
+            ((null==weightProperty) || weightProperty.trim().isEmpty()) ? defaultWeight :Float.parseFloat(weightProperty);
         if (weight<0) { weight=0; }
         if (weight>defaultWeight) { weight=defaultWeight; }
         return new WeightedValue(_value, weight);
@@ -110,8 +110,8 @@ public class Value {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_props == null) ? 0 : _props.hashCode());
-        result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+        result = (prime * result) + ((_props == null) ? 0 : _props.hashCode());
+        result = (prime * result) + ((_value == null) ? 0 : _value.hashCode());
         return result;
     }
 
