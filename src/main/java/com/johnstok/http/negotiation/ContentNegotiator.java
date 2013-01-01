@@ -43,8 +43,7 @@ import com.johnstok.http.WeightedValue;
 })
 public class ContentNegotiator
     implements
-        Negotiator<String> {
-    // FIXME: Don't convert content codings to string.
+        Negotiator<ContentEncoding> {
 
     private static final WeightedValue ANY =
         new WeightedValue(ContentEncoding.ANY.toString(), 0.001f);
@@ -93,8 +92,8 @@ public class ContentNegotiator
      * @return The encoding selected using the HTTP 1.1 algorithm.
      */
     @Override
-    public String select(final List<WeightedValue> clientEncodings) {
-        if (null == clientEncodings) { return ContentEncoding.IDENTITY.toString(); }
+    public ContentEncoding select(final List<WeightedValue> clientEncodings) {
+        if (null == clientEncodings) { return ContentEncoding.IDENTITY; }
 
         final List<WeightedValue> disallowedEncodings =
             new ArrayList<WeightedValue>();
@@ -113,12 +112,12 @@ public class ContentNegotiator
 
         for (final WeightedValue clientEncoding : allowedEncodings) {
             if (_supportedEncodings.contains(clientEncoding)) {
-                return clientEncoding.getValue();
+                return ContentEncoding.parse(clientEncoding.getValue());
             }
-            if (ContentEncoding.ANY.equals(clientEncoding.getValue())) {
+            if (ContentEncoding.ANY.toString().equals(clientEncoding.getValue())) {
                 for (final WeightedValue supported : _supportedEncodings) {
                     if (!disallowedEncodings.contains(supported)) {
-                        return supported.getValue();
+                        return ContentEncoding.parse(supported.getValue());
                     }
                 }
             }
@@ -126,7 +125,7 @@ public class ContentNegotiator
         if (disallowedEncodings.contains(ANY)
             && !allowedEncodings.contains(IDENTITY)) { return null; }
         if (disallowedEncodings.contains(IDENTITY)) { return null; }
-        return ContentEncoding.IDENTITY.toString();
+        return ContentEncoding.IDENTITY;
     }
 
 
@@ -137,7 +136,7 @@ public class ContentNegotiator
      *
      * @return The encoding selected using the HTTP 1.1 algorithm.
      */
-    public String selectEncoding(final WeightedValue... clientEncodings) {
+    public ContentEncoding selectEncoding(final WeightedValue... clientEncodings) {
         return select(Arrays.asList(clientEncodings));
     }
 }

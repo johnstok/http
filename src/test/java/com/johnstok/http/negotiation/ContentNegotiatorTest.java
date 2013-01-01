@@ -46,7 +46,7 @@ public class ContentNegotiatorTest {
         final ContentNegotiator negotiator = new ContentNegotiator();
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.selectEncoding(
                 new WeightedValue(ContentEncoding.ANY.toString(), 0),
                 new WeightedValue(ContentEncoding.IDENTITY.toString(), 1));
@@ -66,7 +66,7 @@ public class ContentNegotiatorTest {
         final ContentNegotiator negotiator = new ContentNegotiator();
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator
                 .selectEncoding(new WeightedValue(ContentEncoding.ANY.toString(), 0));
 
@@ -86,7 +86,7 @@ public class ContentNegotiatorTest {
             new ContentNegotiator(new WeightedValue("foo", 1));
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.select(new ArrayList<WeightedValue>());
 
         // ASSERT
@@ -107,13 +107,13 @@ public class ContentNegotiatorTest {
                 new WeightedValue("bar", 1));
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.selectEncoding(
                 new WeightedValue("foo", 0.001f),
                 new WeightedValue("bar", 1));
 
         // ASSERT
-        assertEquals("bar", encoding);
+        assertEquals(ContentEncoding.parse("bar"), encoding);
     }
 
 
@@ -128,7 +128,7 @@ public class ContentNegotiatorTest {
             new ContentNegotiator(new WeightedValue("foo", 1));
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.select(new ArrayList<WeightedValue>());
 
         // ASSERT
@@ -146,7 +146,7 @@ public class ContentNegotiatorTest {
         final ContentNegotiator negotiator = new ContentNegotiator();
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.selectEncoding(new WeightedValue(
                 ContentEncoding.IDENTITY.toString(),
                 0));
@@ -173,7 +173,7 @@ public class ContentNegotiatorTest {
         final ContentNegotiator negotiator = new ContentNegotiator();
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.select((List<WeightedValue>) null);
 
         // ASSERT
@@ -194,13 +194,13 @@ public class ContentNegotiatorTest {
                 new WeightedValue("bar", 0.5f));
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.selectEncoding(
                 new WeightedValue("foo", 0),
                 new WeightedValue("*", 1));
 
         // ASSERT
-        assertEquals("bar", encoding);
+        assertEquals(ContentEncoding.parse("bar"), encoding);
     }
 
 
@@ -217,12 +217,12 @@ public class ContentNegotiatorTest {
                 new WeightedValue("bar", 1));
 
         // ACT
-        final String encoding =
+        final ContentEncoding encoding =
             negotiator.selectEncoding(
                 new WeightedValue("foo", 0),
                 new WeightedValue("bar", 1));
 
         // ASSERT
-        assertEquals("bar", encoding);
+        assertEquals(ContentEncoding.parse("bar"), encoding);
     }
 }
