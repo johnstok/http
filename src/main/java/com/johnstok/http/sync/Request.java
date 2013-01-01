@@ -26,6 +26,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import com.johnstok.http.Method;
 import com.johnstok.http.Path;
 import com.johnstok.http.Scheme;
 import com.johnstok.http.ServerHttpException;
@@ -93,8 +94,7 @@ public interface Request {
      *
      * @return
      */
-    // FIXME: Should return Method.
-    String getMethod();
+    Method getMethod();
 
 
     /**
