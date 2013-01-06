@@ -43,8 +43,8 @@ public class RangeTest {
         final Range r = new Range(2L, 2L);
 
         // ASSERT
-        assertEquals(2L, r.getFrom());
-        assertEquals(2L, r.getTo());
+        assertEquals(2L, r.getFrom().longValue());
+        assertEquals(2L, r.getTo().longValue());
         assertTrue(r.isValid());
         assertFalse(r.isSatisfiable(1));
     }
@@ -62,7 +62,7 @@ public class RangeTest {
         // ASSERT
         assertEquals(1, ranges.size());
         assertEquals(null, ranges.get(0).getFrom());
-        assertEquals(2L,  ranges.get(0).getTo());
+        assertEquals(2L,  ranges.get(0).getTo().longValue());
     }
 
 
@@ -77,8 +77,8 @@ public class RangeTest {
 
         // ASSERT
         assertEquals(1, ranges.size());
-        assertEquals(0L,   ranges.get(0).getFrom());
-        assertEquals(2L, ranges.get(0).getTo());
+        assertEquals(0L,   ranges.get(0).getFrom().longValue());
+        assertEquals(2L, ranges.get(0).getTo().longValue());
     }
 
 
@@ -93,7 +93,7 @@ public class RangeTest {
 
         // ASSERT
         assertEquals(1, ranges.size());
-        assertEquals(0L,   ranges.get(0).getFrom());
+        assertEquals(0L,   ranges.get(0).getFrom().longValue());
         assertEquals(null, ranges.get(0).getTo());
     }
 }
