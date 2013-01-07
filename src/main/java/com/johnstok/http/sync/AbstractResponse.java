@@ -39,10 +39,10 @@ public abstract class AbstractResponse
     implements
         Response {
 
-    protected final SimpleDateFormat _dateFormatter;
+    private final SimpleDateFormat _dateFormatter;
+    private final Date             _originationTime = new Date();
+    private final List<String>     _variances = new ArrayList<String>();
 
-    private final Date         _originationTime = new Date();
-    private final List<String> _variances = new ArrayList<String>();
     private Charset            _charset;
     private MediaType          _mediaType;
     private String             _contentEncoding;
@@ -120,5 +120,12 @@ public abstract class AbstractResponse
     @Override
     public void addVariance(final String headerName) {
         _variances.add(headerName);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setHeader(final String name, final Date value) {
+        setHeader(name, _dateFormatter.format(value));
     }
 }
