@@ -40,7 +40,7 @@ public abstract class AbstractRequest
         Request {
 
     private   final InetSocketAddress _address;
-    protected final Charset           _requestUriCharset;
+    protected final Charset           _uriCharset;
     private   final URI               _uri;
 
 
@@ -60,7 +60,7 @@ public abstract class AbstractRequest
         } catch (final URISyntaxException e) {
             throw new ClientHttpException(Status.BAD_REQUEST);
         }
-        _requestUriCharset = uriCharset;
+        _uriCharset = uriCharset;
     }
 
     /** {@inheritDoc} */
