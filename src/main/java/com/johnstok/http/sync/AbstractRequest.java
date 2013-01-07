@@ -19,6 +19,8 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -37,27 +39,24 @@ public abstract class AbstractRequest
     implements
         Request {
 
-    private   final int     _port;
-    private   final String  _host;
-    protected final Charset _requestUriCharset;
-    private   final URI     _requestUri;
+    private   final InetSocketAddress _address;
+    protected final Charset           _requestUriCharset;
+    private   final URI               _uri;
 
 
     /**
      * Constructor.
      *
-     * @param port       The port on which this request was received.
-     * @param host       The host name that received this request.
+     * @param address    The server address that received this request.
+     * @param uri        The raw URI from the request line.
      * @param uriCharset The character set used to parse the request URI.
      */
-    public AbstractRequest(final int port,
-                           final String host,
-                           final String requestUri,
+    public AbstractRequest(final InetSocketAddress address,
+                           final String uri,
                            final Charset uriCharset) {
-        _port = port; // TODO: Must be greater than 0.
-        _host = host; // TODO: Not null.
+        _address = address; // TODO: Not null.
         try {
-            _requestUri = new URI(requestUri);
+            _uri = new URI(uri);
         } catch (final URISyntaxException e) {
             throw new ClientHttpException(Status.BAD_REQUEST);
         }
@@ -94,12 +93,12 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public int getPort() { return _port; }
+    public int getPort() { return _address.getPort(); }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getDomain() { return _host; }
+    public InetAddress getServerAddress() { return _address.getAddress(); }
 
 
     /** {@inheritDoc} */
@@ -111,7 +110,7 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public URI getRequestUri() { return _requestUri; }
+    public URI getRequestUri() { return _uri; }
 
 
     /** {@inheritDoc} */

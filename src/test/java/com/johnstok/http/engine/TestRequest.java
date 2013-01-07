@@ -41,9 +41,8 @@ public class TestRequest
      */
     public TestRequest() {
         super(
-            80,
-            "localhost",                                           //$NON-NLS-1$
-            "/",
+            new InetSocketAddress("localhost", 80),                //$NON-NLS-1$
+            "/",                                                   //$NON-NLS-1$
             Charset.forName("UTF-8"));                             //$NON-NLS-1$
         _version = new Version(1, 1);
         _headers = new HashMap<String, List<String>>();

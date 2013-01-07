@@ -21,6 +21,7 @@ package com.johnstok.http.sync;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -30,7 +31,6 @@ import com.johnstok.http.Method;
 import com.johnstok.http.Path;
 import com.johnstok.http.Scheme;
 import com.johnstok.http.ServerHttpException;
-import com.johnstok.http.Specification;
 import com.johnstok.http.Version;
 
 
@@ -61,16 +61,11 @@ public interface Request {
 
 
     /**
-     * The hostname via which this request was received.
+     * The server address at which this request was received.
      *
-     * Virtual hosting is currently unsupported. As such the 'Host' header
-     * field and request URI 'domain' are ignored. Each of these values can be
-     * accessed directly, if necessary.
-     *
-     * @return The host name, as a string.
+     * @return The IP address of the server.
      */
-    @Specification(name="RFC-2616", section="5.2")
-    String getDomain(); // TODO: Rename to getHost()? Return an InetSocketAddress?
+    InetAddress getServerAddress();
 
 
     /**
