@@ -34,7 +34,14 @@ public abstract class HeaderName<T> {
     // allowed:  [request,response,entity,general]
     // TODO: Reify type?
 
+    @Specifications({
+        @Specification(name="rfc-2616", section="14.6"),
+        @Specification(name="rfc-2616", section="13.2.3")
+    })
     public static final HeaderName<Time> Age = new HeaderName<Time>() {
+
+        // TODO: Implement overflow logic, per 14.6.
+        // Implement cache requirements, per 14.6.
 
         @Override public Time parse(final String content) {
             return Time.parse(content);
