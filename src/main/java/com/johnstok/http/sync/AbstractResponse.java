@@ -20,14 +20,13 @@
 package com.johnstok.http.sync;
 
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import com.johnstok.http.ContentEncoding;
 import com.johnstok.http.Header;
 import com.johnstok.http.MediaType;
+import com.johnstok.http.headers.DateHeader;
 
 
 /**
@@ -39,22 +38,12 @@ public abstract class AbstractResponse
     implements
         Response {
 
-    private final SimpleDateFormat _dateFormatter;
-    private final Date             _originationTime = new Date();
-    private final List<String>     _variances = new ArrayList<String>();
+    private final Date         _originationTime = new Date();
+    private final List<String> _variances = new ArrayList<String>();
 
     private Charset            _charset;
     private MediaType          _mediaType;
     private String             _contentEncoding;
-
-
-    /**
-     * Constructor.
-     */
-    public AbstractResponse() {
-        _dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-        _dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
 
 
     /** {@inheritDoc} */
@@ -126,6 +115,6 @@ public abstract class AbstractResponse
     /** {@inheritDoc} */
     @Override
     public void setHeader(final String name, final Date value) {
-        setHeader(name, _dateFormatter.format(value));
+        setHeader(name, DateHeader.format(value));
     }
 }
