@@ -21,7 +21,6 @@ package com.johnstok.http.sync;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -49,19 +48,11 @@ public interface Request {
 
 
     /**
-     * The port via which this request was received.
-     *
-     * @return The port number, as an integer.
-     */
-    int getPort();
-
-
-    /**
      * The server address at which this request was received.
      *
      * @return The IP address of the server.
      */
-    InetAddress getServerAddress();
+    InetSocketAddress getServerAddress();
 
 
     /**

@@ -19,7 +19,6 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -84,12 +83,7 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public int getPort() { return _address.getPort(); }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public InetAddress getServerAddress() { return _address.getAddress(); }
+    public InetSocketAddress getServerAddress() { return _address; }
 
 
     /** {@inheritDoc} */
