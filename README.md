@@ -1,6 +1,6 @@
 # HTTP
 
-HTTP is a clean-room implementation of the Hypertext Transfer Protocol.
+HTTP is an implementation of the Hypertext Transfer Protocol.
 
 ## Language
 
