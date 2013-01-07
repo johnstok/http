@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright © 2012 Keith Webster Johnston.
+ * Copyright © 2013 Keith Webster Johnston.
  * All rights reserved.
  *
  * This file is part of http.
@@ -15,31 +15,39 @@
  * details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with http.  If not, see <http://www.gnu.org/licenses/>.
+ * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http;
+package com.johnstok.http.headers;
 
+import com.johnstok.http.HeaderName;
+import com.johnstok.http.Specification;
+import com.johnstok.http.Specifications;
+import com.johnstok.http.Time;
 
 /**
- * API for serializing / deserializing headers.
+ * Helper class for working with Age headers.
  *
  * @author Keith Webster Johnston.
  */
-public abstract class HeaderName<T> {
+@Specifications({
+    @Specification(name="rfc-2616", section="14.6"),
+    @Specification(name="rfc-2616", section="13.2.3")
+})
+final class AgeHeader
+    extends
+        HeaderName<Time> {
 
-    public static enum Type {REQUEST, RESPONSE, ENTITY, GENERAL}
 
-    // minOccurs: int
-    // maxOccurs: int
-    // allowed:  [request,response,entity,general]
-    // TODO: Reify type?
+    /** {@inheritDoc} */
+    @Override
+    public Time parse(final String content) {
+        return Time.parse(content);
+    }
 
-    public abstract T parse(String headerValue);
-    public abstract String write(T object);
-//    public boolean isRequestHeader();
-//    public boolean isResponseHeader();
-//    public boolean isGeneralHeader();
-//    public boolean isEntityHeader();
-//    public int getMinOccurs();
-//    public int getMaxOccurs();
+
+    /** {@inheritDoc} */
+    @Override
+    public String write(final Time t) {
+        return t.toString();
+    }
 }
