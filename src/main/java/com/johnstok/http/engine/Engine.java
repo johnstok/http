@@ -36,6 +36,7 @@ import com.johnstok.http.MediaType;
 import com.johnstok.http.Method;
 import com.johnstok.http.Status;
 import com.johnstok.http.WeightedValue;
+import com.johnstok.http.headers.AllowHeader;
 import com.johnstok.http.headers.DateHeader;
 import com.johnstok.http.negotiation.CharsetNegotiator;
 import com.johnstok.http.negotiation.ContentNegotiator;
@@ -826,7 +827,7 @@ public class Engine {
             response.setHeader(Header.CONTENT_LENGTH, "0");    //$NON-NLS-1$
             response.setHeader(
                 Header.ALLOW,
-                Utils.join(resource.getAllowedMethods(), ',').toString());
+                new AllowHeader().write(resource.getAllowedMethods()));
         } else {
             B01_known_method(resource, request, response);
         }
@@ -851,7 +852,7 @@ public class Engine {
             response.setStatus(Status.METHOD_NOT_ALLOWED);
             response.setHeader(
                 Header.ALLOW,
-                Utils.join(resource.getAllowedMethods(), ',').toString());
+                new AllowHeader().write(resource.getAllowedMethods()));
         } else {
             C03_accept_header_present(resource, request, response);
         }

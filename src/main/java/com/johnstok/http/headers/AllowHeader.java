@@ -19,16 +19,44 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.headers;
 
+import java.util.HashSet;
+import java.util.Set;
+import com.johnstok.http.HeaderName;
+import com.johnstok.http.Method;
 import com.johnstok.http.Specification;
+import com.johnstok.http.Specifications;
+import com.johnstok.http.engine.Utils;
 
 
 /**
  * Helper class for working with Allow headers.
  *
+ * TODO: Add doc's from rfc-2616§14.7.
+ *
  * @author Keith Webster Johnston.
  */
-@Specification(name="rfc-2616", section="5.1.1")
-public class AllowHeader {
+@Specifications({
+    @Specification(name="rfc-2616", section="5.1.1"),
+    @Specification(name="rfc-2616", section="14.7")
+})
+public class AllowHeader extends HeaderName<Set<Method>> {
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Method> parse(final String content) {
+        String[] methodStrings = content.split(",");
+        Set<Method> methods = new HashSet<Method>();
+        for (String methodString : methodStrings) {
+            methods.add(Method.parse(methodString.trim()));
+        }
+        return methods;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String write(final Set<Method> methods) {
+        return Utils.join(methods, ',').toString();
+    }
 
     // TODO: Implement logic in section 5.1.1.
 }

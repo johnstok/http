@@ -46,7 +46,7 @@ public abstract class HeaderName<T> {
     };
 
     public abstract T parse(String content);
-    public abstract String write(Time t);
+    public abstract String write(T t);
 //    public boolean isRequestHeader();
 //    public boolean isResponseHeader();
 //    public boolean isGeneralHeader();
