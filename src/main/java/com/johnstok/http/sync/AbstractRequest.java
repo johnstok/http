@@ -26,6 +26,8 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import com.johnstok.http.Path;
 import com.johnstok.http.Scheme;
+import com.johnstok.http.ServerHttpException;
+import com.johnstok.http.Status;
 
 
 /**
@@ -100,12 +102,12 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public final Path getPath(final Charset charset) {
+    public final Path getPath() {
         try {
             URI uri = new URI(getRequestUri());
-            return new Path(uri.getRawPath(), charset);
+            return new Path(uri.getRawPath(), _uriCharset);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e); // FIXME: This can happen if the request was not for a resource ("*").
+            throw new ServerHttpException(Status.INTERNAL_SERVER_ERROR, e); // FIXME: This can happen if the request was not for a resource ("*").
         }
     }
 }

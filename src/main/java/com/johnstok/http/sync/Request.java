@@ -23,13 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
 import com.johnstok.http.Path;
 import com.johnstok.http.Scheme;
-import com.johnstok.http.ServerHttpException;
 import com.johnstok.http.Version;
 
 
@@ -110,13 +108,9 @@ public interface Request {
     /**
      * Get the decoded, normalised path from the request URI.
      *
-     * @param charset The character set used to decode the path.
-     *
      * @return The request path.
-     *
-     * @throws ServerHttpException If the specified URI encoding is unsupported.
      */
-    Path getPath(Charset charset);
+    Path getPath();
 
 
     /**
