@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
 import com.johnstok.http.Path;
-import com.johnstok.http.Scheme;
 import com.johnstok.http.Version;
 
 
@@ -63,14 +62,6 @@ public interface Request {
      * @return The IP address of the server.
      */
     InetAddress getServerAddress();
-
-
-    /**
-     * Get the protocol used for this request.
-     *
-     * @return The protocol scheme.
-     */
-    Scheme getScheme();
 
 
     /**

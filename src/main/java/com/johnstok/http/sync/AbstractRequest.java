@@ -25,7 +25,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import com.johnstok.http.Path;
-import com.johnstok.http.Scheme;
 import com.johnstok.http.ServerHttpException;
 import com.johnstok.http.Status;
 
@@ -91,13 +90,6 @@ public abstract class AbstractRequest
     /** {@inheritDoc} */
     @Override
     public InetAddress getServerAddress() { return _address.getAddress(); }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public final Scheme getScheme() {
-        return (isConfidential()) ? Scheme.https : Scheme.http;
-    }
 
 
     /** {@inheritDoc} */
