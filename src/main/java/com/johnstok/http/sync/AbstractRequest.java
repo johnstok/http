@@ -24,10 +24,8 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import com.johnstok.http.ClientHttpException;
 import com.johnstok.http.Path;
 import com.johnstok.http.Scheme;
-import com.johnstok.http.Status;
 
 
 /**
@@ -41,25 +39,17 @@ public abstract class AbstractRequest
 
     private   final InetSocketAddress _address;
     protected final Charset           _uriCharset;
-    private   final URI               _uri;
 
 
     /**
      * Constructor.
      *
      * @param address    The server address that received this request.
-     * @param uri        The raw URI from the request line.
      * @param uriCharset The character set used to parse the request URI.
      */
     public AbstractRequest(final InetSocketAddress address,
-                           final String uri,
                            final Charset uriCharset) {
         _address = address; // TODO: Not null.
-        try {
-            _uri = new URI(uri);
-        } catch (final URISyntaxException e) {
-            throw new ClientHttpException(Status.BAD_REQUEST);
-        }
         _uriCharset = uriCharset;
     }
 
@@ -110,12 +100,12 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public URI getRequestUri() { return _uri; }
-
-
-    /** {@inheritDoc} */
-    @Override
     public final Path getPath(final Charset charset) {
-        return new Path(getRequestUri().getRawPath(), charset);
+        try {
+            URI uri = new URI(getRequestUri());
+            return new Path(uri.getRawPath(), charset);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e); // FIXME: This can happen if the request was not for a resource ("*").
+        }
     }
 }

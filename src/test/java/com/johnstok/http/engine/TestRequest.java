@@ -34,6 +34,7 @@ public class TestRequest
     private       byte[]                        _body;
     private       boolean                       _confidential;
     private final Version                       _version;
+    private final String                        _uri;
 
 
     /**
@@ -42,10 +43,10 @@ public class TestRequest
     public TestRequest() {
         super(
             new InetSocketAddress("localhost", 80),                //$NON-NLS-1$
-            "/",                                                   //$NON-NLS-1$
             Charset.forName("UTF-8"));                             //$NON-NLS-1$
         _version = new Version(1, 1);
         _headers = new HashMap<String, List<String>>();
+        _uri = "/";                                                //$NON-NLS-1$
     }
 
 
@@ -143,4 +144,11 @@ public class TestRequest
     /** {@inheritDoc} */
     @Override
     public boolean isConfidential() { return _confidential; }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getRequestUri() {
+        return _uri;
+    }
 }
