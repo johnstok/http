@@ -2,7 +2,7 @@
 [ ] parseWeightedCharsets
 [ ] parseWeightedLanguages
 [ ] parseWeightedContentCodings
-[ ] parseRanges
+[x] parseRanges
 [x] parseTime (Age)
 [x] parseMethods (Allow)
 [ ] parseCredentials (Authorization, Proxy-Authorization)
