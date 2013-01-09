@@ -24,7 +24,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import com.johnstok.http.ContentEncoding;
+import com.johnstok.http.ContentCoding;
 import com.johnstok.http.ETag;
 import com.johnstok.http.Header;
 import com.johnstok.http.HttpException;
@@ -887,7 +887,7 @@ public class EngineTest {
 
                 @Override
                 public Set<String> getEncodings() {
-                    return Collections.singleton(ContentEncoding.GZIP.toString());
+                    return Collections.singleton(ContentCoding.GZIP.toString());
                 }
 
                 @Override
@@ -907,7 +907,7 @@ public class EngineTest {
         // ASSERT
         Assert.assertSame(Status.OK, _response.getStatus());
         Assert.assertEquals("da", _response.getHeader(Header.CONTENT_LANGUAGE));
-        Assert.assertEquals(ContentEncoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
+        Assert.assertEquals(ContentCoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertEquals(MediaType.JSON.toString()+"; charset="+UTF_16, _response.getHeader(Header.CONTENT_TYPE));
         Assert.assertEquals(
             "Hello, world!",
@@ -988,7 +988,7 @@ public class EngineTest {
 
         // ACT
         _request.setHeader(
-            Header.ACCEPT_ENCODING, ContentEncoding.GZIP.toString());
+            Header.ACCEPT_ENCODING, ContentCoding.GZIP.toString());
         final Resource resource =
             new TestResource(
                 new HashMap<String, Object>()) {
@@ -1005,7 +1005,7 @@ public class EngineTest {
 
                 @Override
                 public Set<String> getEncodings() {
-                    return Collections.singleton(ContentEncoding.GZIP.toString());
+                    return Collections.singleton(ContentCoding.GZIP.toString());
                 }
         };
 
@@ -1015,7 +1015,7 @@ public class EngineTest {
         // ASSERT
         Assert.assertSame(Status.OK, _response.getStatus());
         Assert.assertEquals(
-            ContentEncoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
+            ContentCoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF_8));
@@ -1026,7 +1026,7 @@ public class EngineTest {
     public void acceptWithUnknownEncodingGivesNoHeader() {
 
         // ACT
-        _request.setHeader(Header.ACCEPT_ENCODING, ContentEncoding.GZIP.toString());
+        _request.setHeader(Header.ACCEPT_ENCODING, ContentCoding.GZIP.toString());
         final Resource resource =
             new TestResource(
                 new HashMap<String, Object>()) {
@@ -1442,7 +1442,7 @@ public class EngineTest {
         // ARRANGE
         _request.setHeader(
             Header.ACCEPT_ENCODING,
-            ContentEncoding.IDENTITY+";q=0,"+ContentEncoding.GZIP);
+            ContentCoding.IDENTITY+";q=0,"+ContentCoding.GZIP);
         final Resource resource = new TestResource(
             new HashMap<String, Object>());
 

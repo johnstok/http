@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import com.johnstok.http.ContentEncoding;
+import com.johnstok.http.ContentCoding;
 import com.johnstok.http.Header;
 import com.johnstok.http.MediaType;
 import com.johnstok.http.headers.DateHeader;
@@ -87,8 +87,9 @@ public abstract class AbstractResponse
     /** {@inheritDoc} */
     @Override
     public void setContentEncoding(final String encoding) {
-        if (ContentEncoding.IDENTITY.equals(encoding)) {
+        if (ContentCoding.IDENTITY.equals(encoding)) {
             // Don't send a header for 'identity'.
+            // FIXME: This doesn't seem to be working - still need code in Engine class for some reason.
             _contentEncoding = null;
             setHeader(Header.CONTENT_ENCODING, (String) null);
         } else {
@@ -100,7 +101,7 @@ public abstract class AbstractResponse
 
     /** {@inheritDoc} */
     @Override
-    public String[] getVariances() {
+    public String[] getVariances() { // TODO: Why do we return an array here?
         return _variances.toArray(new String[_variances.size()]);
     }
 

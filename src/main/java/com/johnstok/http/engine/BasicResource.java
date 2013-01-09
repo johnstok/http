@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.johnstok.http.ContentEncoding;
+import com.johnstok.http.ContentCoding;
 import com.johnstok.http.ETag;
 import com.johnstok.http.Header;
 import com.johnstok.http.LanguageTag;
@@ -98,7 +98,7 @@ public abstract class BasicResource<T>
     /** {@inheritDoc} */
     @Override
     public Set<String> getEncodings() {
-        return Collections.singleton(ContentEncoding.IDENTITY.toString());
+        return Collections.singleton(ContentCoding.IDENTITY.toString());
     }
 
 

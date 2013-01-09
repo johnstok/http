@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * @author Keith Webster Johnston.
  */
 @Specification(name="rfc-2616", section="3.5")
-public final class ContentEncoding {
+public final class ContentCoding {
     // TODO: x-gzip equiv to gzip
     // TODO: x-compress equiv to compress
 
@@ -44,8 +44,8 @@ public final class ContentEncoding {
      * zip) as described in RFC 1952 [25]. This format is a Lempel-Ziv coding
      * (LZ77) with a 32 bit CRC.
      */
-    public static final ContentEncoding GZIP =
-        new ContentEncoding("gzip");                               //$NON-NLS-1$
+    public static final ContentCoding GZIP =
+        new ContentCoding("gzip");                               //$NON-NLS-1$
 
 
     /**
@@ -54,8 +54,8 @@ public final class ContentEncoding {
      * The encoding format produced by the common UNIX file compression program
      * "compress". This format is an adaptive Lempel-Ziv-Welch coding (LZW).
      */
-    public static final ContentEncoding COMPRESS =
-        new ContentEncoding("compress");                           //$NON-NLS-1$
+    public static final ContentCoding COMPRESS =
+        new ContentCoding("compress");                           //$NON-NLS-1$
 
 
     /**
@@ -64,8 +64,8 @@ public final class ContentEncoding {
      * The "zlib" format defined in RFC 1950 [31] in combination with the
      * "deflate" compression mechanism described in RFC 1951 [29].
      */
-    public static final ContentEncoding DEFLATE =
-        new ContentEncoding("deflate");                            //$NON-NLS-1$
+    public static final ContentCoding DEFLATE =
+        new ContentCoding("deflate");                            //$NON-NLS-1$
 
 
     /**
@@ -75,19 +75,19 @@ public final class ContentEncoding {
      * This content-coding is used only in the Accept-Encoding header, and
      * SHOULD NOT be used in the Content-Encoding header.
      */
-    public static final ContentEncoding IDENTITY =
-        new ContentEncoding("identity");                           //$NON-NLS-1$
+    public static final ContentCoding IDENTITY =
+        new ContentCoding("identity");                           //$NON-NLS-1$
 
 
     /** ANY : String. */
-    public static final ContentEncoding ANY =
-        new ContentEncoding("*");                                  //$NON-NLS-1$
+    public static final ContentCoding ANY =
+        new ContentCoding("*");                                  //$NON-NLS-1$
 
 
     private final String _name;
 
 
-    private ContentEncoding(final String name) { _name=name; }
+    private ContentCoding(final String name) { _name=name; }
 
 
     /**
@@ -97,10 +97,10 @@ public final class ContentEncoding {
      *
      * @return A corresponding content coding object.
      */
-    public static ContentEncoding parse(final String contentCodingString) {
+    public static ContentCoding parse(final String contentCodingString) {
         final Matcher m = Pattern.compile(SYNTAX).matcher(contentCodingString);
         if (m.matches()) {
-            return new ContentEncoding(contentCodingString);
+            return new ContentCoding(contentCodingString);
         }
         throw new ClientHttpException(Status.BAD_REQUEST);
     }
@@ -128,7 +128,7 @@ public final class ContentEncoding {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ContentEncoding other = (ContentEncoding) obj;
+        final ContentCoding other = (ContentCoding) obj;
         if (_name == null) {
             if (other._name != null) {
                 return false;

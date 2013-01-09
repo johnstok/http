@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import com.johnstok.http.ContentEncoding;
+import com.johnstok.http.ContentCoding;
 import com.johnstok.http.Specification;
 import com.johnstok.http.Specifications;
 import com.johnstok.http.WeightedValue;
@@ -43,12 +43,12 @@ import com.johnstok.http.WeightedValue;
 })
 public class ContentNegotiator
     implements
-        Negotiator<ContentEncoding> {
+        Negotiator<ContentCoding> {
 
     private static final WeightedValue ANY =
-        new WeightedValue(ContentEncoding.ANY.toString(), 0.001f);
+        new WeightedValue(ContentCoding.ANY.toString(), 0.001f);
     private static final WeightedValue IDENTITY =
-        new WeightedValue(ContentEncoding.IDENTITY.toString(), 0.001f);
+        new WeightedValue(ContentCoding.IDENTITY.toString(), 0.001f);
 
     private final Set<WeightedValue> _supportedEncodings;
 
@@ -92,8 +92,8 @@ public class ContentNegotiator
      * @return The encoding selected using the HTTP 1.1 algorithm.
      */
     @Override
-    public ContentEncoding select(final List<WeightedValue> clientEncodings) {
-        if (null == clientEncodings) { return ContentEncoding.IDENTITY; }
+    public ContentCoding select(final List<WeightedValue> clientEncodings) {
+        if (null == clientEncodings) { return ContentCoding.IDENTITY; }
 
         final List<WeightedValue> disallowedEncodings =
             new ArrayList<WeightedValue>();
@@ -112,12 +112,12 @@ public class ContentNegotiator
 
         for (final WeightedValue clientEncoding : allowedEncodings) {
             if (_supportedEncodings.contains(clientEncoding)) {
-                return ContentEncoding.parse(clientEncoding.getValue());
+                return ContentCoding.parse(clientEncoding.getValue());
             }
-            if (ContentEncoding.ANY.toString().equals(clientEncoding.getValue())) {
+            if (ContentCoding.ANY.toString().equals(clientEncoding.getValue())) {
                 for (final WeightedValue supported : _supportedEncodings) {
                     if (!disallowedEncodings.contains(supported)) {
-                        return ContentEncoding.parse(supported.getValue());
+                        return ContentCoding.parse(supported.getValue());
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class ContentNegotiator
         if (disallowedEncodings.contains(ANY)
             && !allowedEncodings.contains(IDENTITY)) { return null; }
         if (disallowedEncodings.contains(IDENTITY)) { return null; }
-        return ContentEncoding.IDENTITY;
+        return ContentCoding.IDENTITY;
     }
 
 
@@ -136,7 +136,7 @@ public class ContentNegotiator
      *
      * @return The encoding selected using the HTTP 1.1 algorithm.
      */
-    public ContentEncoding selectEncoding(final WeightedValue... clientEncodings) {
+    public ContentCoding selectEncoding(final WeightedValue... clientEncodings) {
         return select(Arrays.asList(clientEncodings));
     }
 }

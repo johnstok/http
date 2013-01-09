@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import com.johnstok.http.ContentEncoding;
+import com.johnstok.http.ContentCoding;
 import com.johnstok.http.ETag;
 import com.johnstok.http.Header;
 import com.johnstok.http.HttpException;
@@ -77,7 +77,7 @@ public class Engine {
             Header.parseAcceptEncoding(
                 request.getHeader(Header.ACCEPT_ENCODING));
         final ContentNegotiator negotiator = new ContentNegotiator(encodings_provided);
-        ContentEncoding selected = negotiator.select(clientEncodings);
+        ContentCoding selected = negotiator.select(clientEncodings);
         return (null==selected) ? null : selected.toString(); // FIXME: Should return ContentEncoding.
     }
 
@@ -595,7 +595,7 @@ public class Engine {
         } else {                                          // Choose an encoding.
             final String encoding = first(availableEncodings);
             if (null!=encoding) { // TODO: Can't we assume encoding is never NULL?
-                if (!ContentEncoding.IDENTITY.toString().equals(encoding)) {
+                if (!ContentCoding.IDENTITY.toString().equals(encoding)) {
                     response.setContentEncoding(encoding);
                 }
                 response.addVariance(Header.CONTENT_ENCODING);
@@ -614,7 +614,7 @@ public class Engine {
         if (null==encoding) {
             response.setStatus(Status.NOT_ACCEPTABLE);
         } else {
-            if (!ContentEncoding.IDENTITY.toString().equals(encoding)) {
+            if (!ContentCoding.IDENTITY.toString().equals(encoding)) {
                 response.setContentEncoding(encoding);
             }
             response.addVariance(Header.CONTENT_ENCODING);

@@ -24,7 +24,7 @@ import org.junit.Test;
 
 
 /**
- * Tests for the {@link ContentEncoding} class.
+ * Tests for the {@link ContentCoding} class.
  *
  * @author Keith Webster Johnston.
  */
@@ -38,7 +38,7 @@ public class ContentCodingTest {
         // ACT
 
         // ASSERT
-        assertEquals("gzip", ContentEncoding.parse("gzip").toString());
+        assertEquals("gzip", ContentCoding.parse("gzip").toString());
     }
 
 
@@ -51,8 +51,8 @@ public class ContentCodingTest {
 
         // ASSERT
         assertEquals(
-            ContentEncoding.parse("GZIP"),
-            ContentEncoding.parse("gzip"));
+            ContentCoding.parse("GZIP"),
+            ContentCoding.parse("gzip"));
     }
 
 
@@ -63,7 +63,7 @@ public class ContentCodingTest {
 
         // ACT
         try {
-            ContentEncoding.parse("");
+            ContentCoding.parse("");
 
         // ASSERT
         } catch (ClientHttpException e) {
@@ -79,7 +79,7 @@ public class ContentCodingTest {
 
         // ACT
         try {
-            ContentEncoding.parse("abc:123");
+            ContentCoding.parse("abc:123");
 
             // ASSERT
         } catch (ClientHttpException e) {
