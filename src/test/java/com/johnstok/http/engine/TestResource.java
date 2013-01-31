@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import com.johnstok.http.MediaType;
-import com.johnstok.http.engine.BasicResource;
-import com.johnstok.http.engine.Resource;
 import com.johnstok.http.sync.BodyReader;
 import com.johnstok.http.sync.BodyWriter;
 
@@ -53,5 +51,12 @@ public class TestResource
     @Override
     public Set<MediaType> getContentTypesProvided() {
         return null;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean willSendResponseEntity() {
+        return false;
     }
 }

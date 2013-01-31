@@ -60,6 +60,12 @@ public class RegexDispatcherTest {
         public BodyWriter getWriter(final MediaType mediaType) {
             throw new UnsupportedOperationException("Method not implemented.");
         }
+
+        /** {@inheritDoc} */
+        @Override
+        public boolean willSendResponseEntity() {
+            throw new UnsupportedOperationException("Method not implemented.");
+        }
     }
 
 

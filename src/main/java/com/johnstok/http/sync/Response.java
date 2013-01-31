@@ -79,14 +79,6 @@ public interface Response {
 
 
     /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    boolean hasBody();
-
-
-    /**
      * The time at which the server originated the response message.
      *
      * @return

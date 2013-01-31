@@ -84,13 +84,6 @@ public class ResponseAdapter
 
     /** {@inheritDoc} */
     @Override
-    public boolean hasBody() {
-        return _response.hasBody();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Date getOriginationTime() {
         return _response.getOriginationTime();
     }

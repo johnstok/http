@@ -81,13 +81,6 @@ public class TestResponse
     }
 
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasBody() {
-        return _outputStream.size()>0;
-    }
-
-
     public void setBody(final byte[] body) throws IOException {
         _outputStream.reset();
         _outputStream.write(body);
