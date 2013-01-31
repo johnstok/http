@@ -457,4 +457,12 @@ public interface Resource {
      * @return An array of {@link Header}s.
      */
     Header[] getVariances();
+
+
+    /**
+     * Does this resource include a body.
+     *
+     * @return True if the resource has a body, false otherwise.
+     */
+    boolean willSendResponseEntity();
 }
