@@ -313,4 +313,11 @@ public final class Method {
         }
         return true;
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return _value;
+    }
 }
