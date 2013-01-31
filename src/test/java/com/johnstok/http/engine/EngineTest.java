@@ -1196,7 +1196,7 @@ public class EngineTest {
 
 
     @Test
-    public void postResourceCanReturnOk() {
+    public void postResourceCanReturnOk() throws Exception {
 
         // ARRANGE
         _request.setMethod(Method.POST);

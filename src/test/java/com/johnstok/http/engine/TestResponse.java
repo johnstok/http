@@ -8,6 +8,7 @@ package com.johnstok.http.engine;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.TimeZone;
 import com.johnstok.http.Status;
 import com.johnstok.http.sync.AbstractResponse;
-import com.johnstok.http.sync.BodyWriter;
 
 
 /**
@@ -33,7 +33,8 @@ public class TestResponse
     private final SimpleDateFormat              _dateFormatter;
     private final HashMap<String, List<String>> _headers =
         new HashMap<String, List<String>>();
-    private byte[]                               _body;
+    private final ByteArrayOutputStream         _outputStream =
+        new ByteArrayOutputStream();
 
 
     /**
@@ -71,33 +72,25 @@ public class TestResponse
     @Override
     public String getHeader(final String name) {
         final List<String> values = _headers.get(name);
-        return (null==values || 0==values.size()) ? null : values.get(0);
+        return ((null==values) || (0==values.size())) ? null : values.get(0);
     }
 
 
     public String getBodyAsString(final Charset charset) {
-        return new String(_body, charset);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void write(final BodyWriter value) throws IOException {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        value.write(outputStream);
-        _body = outputStream.toByteArray();
+        return new String(_outputStream.toByteArray(), charset);
     }
 
 
     /** {@inheritDoc} */
     @Override
     public boolean hasBody() {
-        return null!=_body;
+        return _outputStream.size()>0;
     }
 
 
-    public void setBody(final byte[] body) {
-        _body=body;
+    public void setBody(final byte[] body) throws IOException {
+        _outputStream.reset();
+        _outputStream.write(body);
     }
 
 
@@ -105,5 +98,19 @@ public class TestResponse
     @Override
     public void setHeader(final String name, final Date value) {
         setHeader(name, _dateFormatter.format(value));
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected OutputStream getOutputStream() throws IOException {
+        return _outputStream;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    protected void close() throws IOException {
+        /* No Op */
     }
 }

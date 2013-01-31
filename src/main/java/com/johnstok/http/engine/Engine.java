@@ -188,20 +188,14 @@ public class Engine {
             response.setStatus(Status.MULTIPLE_CHOICES);
             // TODO: Write choices in body.
         } else {
-            try {
-                response.setStatus(Status.OK);
+            response.setStatus(Status.OK);
 
-                attachEtag(resource, request, response);
-                attachLastModified(resource, request, response);
+            attachEtag(resource, request, response);
+            attachLastModified(resource, request, response);
 
-                // TODO: Set 'Expires' header.
+            // TODO: Set 'Expires' header.
 
-                response.write(resource.getWriter(response.getMediaType()));
-            } catch (final IOException e) {
-                // TODO Handle committed responses.
-                // TODO Log exception.
-                response.setStatus(Status.INTERNAL_SERVER_ERROR);
-            }
+            response.write(resource.getWriter(response.getMediaType()));
             response.setStatus(Status.OK);
         }
     }

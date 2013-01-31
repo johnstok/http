@@ -19,7 +19,6 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import com.johnstok.http.MediaType;
@@ -28,6 +27,10 @@ import com.johnstok.http.Status;
 
 /**
  * Responsibility: model the response to a HTTP request.
+ *
+ * TODO: Explicitly document the behaviour of a response once it is committed.
+ * Responses will be automatically committed immediately prior to writing the
+ * response body.
  *
  * @author Keith Webster Johnston.
  */
@@ -72,7 +75,7 @@ public interface Response {
      *
      * @param value
      */
-    void write(BodyWriter value) throws IOException;
+    void write(BodyWriter value);
 
 
     /**
