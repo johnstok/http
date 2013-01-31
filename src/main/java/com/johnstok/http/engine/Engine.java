@@ -150,7 +150,7 @@ public class Engine {
                      final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if (response.hasBody()) {
+        if (resource.willSendResponseEntity()) {
             O18_multiple_representations(resource, request, response);
         } else {
             /*
