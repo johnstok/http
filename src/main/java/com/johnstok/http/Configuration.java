@@ -17,20 +17,46 @@
  * You should have received a copy of the GNU General Public License
  * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.engine;
+package com.johnstok.http;
+
 
 
 /**
- * TODO: Add a description for this type.
+ * Configuration parameters for HTTP processing.
  *
  * @author Keith Webster Johnston.
  */
 public interface Configuration {
 
+
     /**
-     * See http://webmachine.basho.com/streambody.html.
+     * The maximum length of a request body.
      *
-     * @param sizeInBytes
+     * @param size Size in bytes.
      */
-    void set_max_recv_body(int sizeInBytes);
+    void getMaxRequestBodySize(int size);
+
+
+    /**
+     * The maximum length of the start line of a HTTP message.
+     *
+     * @param size Size in bytes.
+     */
+    void getMaxInitialLineSize(int size);
+
+
+    /**
+     * The maximum length of all headers in a message.
+     *
+     * @param size Size in bytes.
+     */
+    void getMaxHeaderSize(int size);
+
+
+    /**
+     * The maximum length of each chunk when using "chunked" encoding.
+     *
+     * @param size Size in bytes.
+     */
+    void getMaxChunkSize(int size);
 }
