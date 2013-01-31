@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Collection;
 
@@ -62,6 +63,7 @@ public final class Utils {
             return null;
         }
     }
+
 
     /**
      * Join a collection of strings with a specified delimiter.
@@ -103,4 +105,18 @@ public final class Utils {
     }
 
     private Utils() { super(); }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param resourcePath
+     * @return
+     */
+    public static URL getResource(final String resourcePath) {
+        return
+            Thread.currentThread()
+                  .getContextClassLoader()
+                  .getResource(resourcePath);
+    }
 }
