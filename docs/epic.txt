@@ -1,0 +1,9 @@
+Headers
+Query parsing
+Conneg
+REST engine
+Security (see also rfc-2617)
+Sessions
+Caching
+Chunked encoding
+Connection mgmt, pipelining & continue
