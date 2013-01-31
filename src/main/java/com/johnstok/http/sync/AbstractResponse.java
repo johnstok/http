@@ -19,13 +19,17 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import com.johnstok.http.ContentCoding;
 import com.johnstok.http.Header;
 import com.johnstok.http.MediaType;
+import com.johnstok.http.engine.Utils;
 import com.johnstok.http.headers.DateHeader;
 
 
@@ -44,6 +48,7 @@ public abstract class AbstractResponse
     private Charset            _charset;
     private MediaType          _mediaType;
     private String             _contentEncoding;
+    private boolean            _committed;
 
 
     /** {@inheritDoc} */
@@ -118,4 +123,49 @@ public abstract class AbstractResponse
     public void setHeader(final String name, final Date value) {
         setHeader(name, DateHeader.format(value));
     }
+
+
+    /**
+     * Perform final actions on the response prior to writing the body.
+     */
+    protected void commit() throws IOException {
+        _committed = true;
+        if (_variances.size()>0) {
+            setHeader(
+                Header.VARY,
+                Utils.join(Arrays.asList(getVariances()), ',').toString());
+        }
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void write(final BodyWriter value) {
+        try {
+            commit();
+            value.write(getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace(); // FIXME: Log the error!
+        } finally {
+            try {
+                close();
+            } catch (IOException e) {
+                e.printStackTrace(); // FIXME: Log the error!
+            }
+        }
+    }
+
+
+    /**
+     * Query if the status line and headers have been sent to the client.
+     */
+    public boolean isCommitted() {
+        return _committed;
+    }
+
+
+    protected abstract OutputStream getOutputStream() throws IOException;
+
+
+    protected abstract void close() throws IOException;
 }
