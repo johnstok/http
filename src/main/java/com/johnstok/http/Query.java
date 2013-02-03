@@ -20,13 +20,12 @@
 package com.johnstok.http;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -56,13 +55,13 @@ public class Query {
             if (0==param.trim().length()) { continue; }
             String[] paramParts = param.split("=");
             if (1==paramParts.length) {
-                String key = decode(paramParts[0].trim(), charset);
+                String key = Utils.decode(paramParts[0].trim(), charset);
                 if (0==key.length()) { continue; }
                 List<String> values = _params.get(key);
                 if (null==values) { _params.put(key, new ArrayList<String>()); }
             } else if (2==paramParts.length) {
-                String key = decode(paramParts[0].trim(), charset);
-                String value = decode(paramParts[1].trim(), charset);
+                String key = Utils.decode(paramParts[0].trim(), charset);
+                String value = Utils.decode(paramParts[1].trim(), charset);
                 if (0==key.length()) { continue; }
                 List<String> values = _params.get(key);
                 if (null==values) { _params.put(key, new ArrayList<String>()); }
@@ -144,14 +143,5 @@ public class Query {
      */
     boolean hasParam(final String paramName) {
         return null!=getQueryValue(paramName);
-    }
-
-
-    private String decode(final String trim, final Charset charset) {
-        try {
-            return URLDecoder.decode(trim, charset.name());
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedCharsetException(charset.name());
-        }
     }
 }

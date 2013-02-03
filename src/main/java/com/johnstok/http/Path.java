@@ -19,8 +19,6 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import com.johnstok.http.engine.Utils;
@@ -47,7 +45,7 @@ public class Path {
 
         final String[] segments = rawPath.split("/");
         for (final String s : segments) {
-            final String segment = decode(s, encodingCharset);
+            final String segment = Utils.decode(s, encodingCharset);
             if ((segment.length()>0) && !".".equals(segment)) {
                 if ("..".equals(segment) && (_segments.size()>0)) {
                     final int lastIndex = _segments.size()-1;
@@ -84,15 +82,6 @@ public class Path {
      */
     public String getSegment(final int index) {
         return _segments.get(index);
-    }
-
-
-    private String decode(final String segment, final Charset encodingCharset) {
-        try {
-            return URLDecoder.decode(segment, encodingCharset.name());
-        } catch (final UnsupportedEncodingException e) {
-            throw new ClientHttpException(Status.BAD_REQUEST, e);
-        }
     }
 
 

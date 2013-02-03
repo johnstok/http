@@ -24,8 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.security.MessageDigest;
 import java.util.Collection;
 
@@ -118,5 +122,21 @@ public final class Utils {
             Thread.currentThread()
                   .getContextClassLoader()
                   .getResource(resourcePath);
+    }
+
+
+    /**
+     * TODO: Add a description for this method.
+     *
+     * @param trim
+     * @param charset
+     * @return
+     */
+    public static String decode(final String trim, final Charset charset) {
+        try {
+            return URLDecoder.decode(trim, charset.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedCharsetException(charset.name());
+        }
     }
 }
