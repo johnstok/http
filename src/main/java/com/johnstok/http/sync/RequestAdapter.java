@@ -25,7 +25,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
-import com.johnstok.http.Path;
+import com.johnstok.http.RequestURI;
 import com.johnstok.http.Version;
 
 
@@ -53,7 +53,7 @@ public class RequestAdapter
 
     /** {@inheritDoc} */
     @Override
-    public String getRequestUri() {
+    public RequestURI getRequestUri() {
         return _delegate.getRequestUri();
     }
 
@@ -95,13 +95,6 @@ public class RequestAdapter
 
     /** {@inheritDoc} */
     @Override
-    public Path getPath() {
-        return _delegate.getPath();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public String getHeader(final String headerName) {
         return _delegate.getHeader(headerName);
     }
@@ -131,36 +124,7 @@ public class RequestAdapter
 
     /** {@inheritDoc} */
     @Override
-    public String getQueryValue(final String paramName) {
-        return _delegate.getQueryValue(paramName);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getQueryValue(final String paramName,
-                                final String defaultValue) {
-        return _delegate.getQueryValue(paramName, defaultValue);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, List<String>> getQueryValues() {
-        return _delegate.getQueryValues();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public boolean hasHeader(final String headerName) {
         return _delegate.hasHeader(headerName);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasQueryValue(final String paramName) {
-        return _delegate.hasQueryValue(paramName);
     }
 }

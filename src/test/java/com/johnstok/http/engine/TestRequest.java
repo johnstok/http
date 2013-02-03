@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
+import com.johnstok.http.RequestURI;
 import com.johnstok.http.Version;
 import com.johnstok.http.sync.AbstractRequest;
 import com.johnstok.http.sync.Request;
@@ -34,7 +35,7 @@ public class TestRequest
     private       byte[]                        _body;
     private       boolean                       _confidential;
     private final Version                       _version;
-    private final String                        _uri;
+    private final RequestURI                    _uri;
 
 
     /**
@@ -46,7 +47,7 @@ public class TestRequest
             Charset.forName("UTF-8"));                             //$NON-NLS-1$
         _version = new Version(1, 1);
         _headers = new HashMap<String, List<String>>();
-        _uri = "/";                                                //$NON-NLS-1$
+        _uri = RequestURI.parse("/");                              //$NON-NLS-1$
     }
 
 
@@ -82,21 +83,6 @@ public class TestRequest
     /** {@inheritDoc} */
     @Override
     public InetSocketAddress getClientAddress() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, List<String>> getQueryValues() {
-        throw new UnsupportedOperationException("Method not implemented.");
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getQueryValue(final String paramName,
-                                final String defaultValue) {
         throw new UnsupportedOperationException("Method not implemented.");
     }
 
@@ -148,7 +134,7 @@ public class TestRequest
 
     /** {@inheritDoc} */
     @Override
-    public String getRequestUri() {
+    public RequestURI getRequestUri() {
         return _uri;
     }
 }

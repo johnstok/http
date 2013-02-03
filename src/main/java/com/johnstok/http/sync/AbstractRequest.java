@@ -20,12 +20,7 @@
 package com.johnstok.http.sync;
 
 import java.net.InetSocketAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import com.johnstok.http.Path;
-import com.johnstok.http.ServerHttpException;
-import com.johnstok.http.Status;
 
 
 /**
@@ -53,24 +48,11 @@ public abstract class AbstractRequest
         _uriCharset = uriCharset;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasQueryValue(final String paramName) {
-        return null!=getQueryValue(paramName);
-    }
-
 
     /** {@inheritDoc} */
     @Override
     public boolean hasHeader(final String headerName) {
         return null!=getHeader(headerName);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String getQueryValue(final String paramName) {
-        return getQueryValue(paramName, null);
     }
 
 
@@ -84,16 +66,4 @@ public abstract class AbstractRequest
     /** {@inheritDoc} */
     @Override
     public InetSocketAddress getServerAddress() { return _address; }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public final Path getPath() {
-        try {
-            URI uri = new URI(getRequestUri());
-            return new Path(uri.getRawPath(), _uriCharset);
-        } catch (URISyntaxException e) {
-            throw new ServerHttpException(Status.INTERNAL_SERVER_ERROR, e); // FIXME: This can happen if the request was not for a resource ("*").
-        }
-    }
 }

@@ -25,7 +25,7 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
-import com.johnstok.http.Path;
+import com.johnstok.http.RequestURI;
 import com.johnstok.http.Version;
 
 
@@ -44,7 +44,7 @@ public interface Request {
      *
      * @return The request URI, as a string.
      */
-    String getRequestUri();
+    RequestURI getRequestUri();
 
 
     /**
@@ -88,15 +88,9 @@ public interface Request {
 
 
     /**
-     * Get the decoded, normalised path from the request URI.
-     *
-     * @return The request path.
-     */
-    Path getPath();
-
-
-    /**
      * Look up the value of an incoming request header.
+     *
+     * TODO: What if there are multiple headers with the same name?
      *
      * @param headerName The name of the required header value.
      *
@@ -106,6 +100,8 @@ public interface Request {
 
     /**
      * Look up the value of an incoming request header.
+     *
+     * TODO: What if there are multiple headers with the same name?
      *
      * @param headerName The name of the required header value.
      * @param defaultValue The default value to return if no such header
@@ -135,38 +131,6 @@ public interface Request {
 
 
     /**
-     * Given the name of a key, look up the corresponding value in the query
-     * string.
-     *
-     * @param paramName The name of the required query parameter.
-     *
-     * @return Returns the decoded query value.
-     */
-    String getQueryValue(String paramName);
-
-
-    /**
-     * Given the name of a key and a default value if not present, look up the
-     * corresponding value in the query string.
-     *
-     * @param paramName The name of the required query parameter.
-     * @param defaultValue The default value to return if no such parameter
-     *  exists.
-     *
-     * @return Returns the decoded query value.
-     */
-    String getQueryValue(String paramName, String defaultValue);
-
-
-    /**
-     * Get all available query values.
-     *
-     * @return A map containing all decoded query values.
-     */
-    Map<String, List<String>> getQueryValues();
-
-
-    /**
      * Does this request have at least one header with the specified name.
      *
      * @param headerName The name of the required header.
@@ -174,14 +138,4 @@ public interface Request {
      * @return True if the request has such a header; false otherwise.
      */
     boolean hasHeader(String headerName);
-
-
-    /**
-     * Does this request have at least one query param with the specified name.
-     *
-     * @param paramName The name of the required query param.
-     *
-     * @return True if the request has such a param; false otherwise.
-     */
-    boolean hasQueryValue(String paramName);
 }

@@ -100,24 +100,15 @@ public class RequestURI {
     public static final String SYNTAX = // FIXME: This is a naïve regex.
         Syntax.CHAR+"&&[^"+Syntax.CTL+"]";           //$NON-NLS-1$ //$NON-NLS-2$
 
-    private final String _uri;
+    private final String _rawUri;
     private final Type   _type;
+    private final URI    _uri;
 
 
-    public RequestURI(final String uri, final Type type) {
-        _uri = uri; // FIXME: Cannot be NULL or empty.
+    public RequestURI(final String value, final Type type, final URI uri) {
+        _rawUri = value; // FIXME: Cannot be NULL or empty.
         _type = type; // FIXME: Cannot be NULL or empty.
-    }
-
-
-    /**
-     * Accessor.
-     *
-     * @return The raw request URI from the request line as a string.
-     *  This string is neither parsed nor decoded.
-     */
-    public String getUri() {
-        return _uri;
+        _uri = uri;
     }
 
 
@@ -143,15 +134,24 @@ public class RequestURI {
      */
     public static RequestURI parse(final String requestUriString) {
         if ("*".equals(requestUriString)) {
-            return new RequestURI(requestUriString, Type.NO_RESOURCE);
+            return new RequestURI(requestUriString, Type.NO_RESOURCE, null);
         } else if (Authority.isValid(requestUriString)) {
-            return new RequestURI(requestUriString, Type.AUTHORITY);
+            try {
+                return
+                    new RequestURI(
+                        requestUriString,
+                        Type.AUTHORITY,
+                        new URI("//"+requestUriString));
+            } catch (URISyntaxException e) {
+                throw new ClientHttpException(Status.BAD_REQUEST);
+            }
         } else {
             try {
                 URI uri = new URI(requestUriString);
                 return new RequestURI(
                     requestUriString,
-                    (uri.isAbsolute()) ? Type.ABSOLUTE_URI : Type.ABS_PATH);
+                    (uri.isAbsolute()) ? Type.ABSOLUTE_URI : Type.ABS_PATH,
+                    uri);
             } catch (URISyntaxException e) {
                 throw new ClientHttpException(Status.BAD_REQUEST);
             }
@@ -201,8 +201,8 @@ public class RequestURI {
             return false;
         }
 
-        URI thisUri = URI.create(_uri);
-        URI thatUri = URI.create(requestUri._uri);
+        URI thisUri = URI.create(_rawUri);
+        URI thatUri = URI.create(requestUri._rawUri);
 
         // Compare schemes
         if (!caseInsensitiveMatch(thisUri.getScheme(), thatUri.getScheme())) {
@@ -278,5 +278,22 @@ public class RequestURI {
             return false;
         }
         return thisString.equalsIgnoreCase(thatString);
+    }
+
+
+    /**
+     * Convert the request URI to a {@link URI} object.
+     *
+     * @return The URI representation of this request URI.
+     */
+    public URI toUri() {
+        return _uri;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return _rawUri;
     }
 }

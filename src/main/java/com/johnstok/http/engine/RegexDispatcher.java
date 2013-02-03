@@ -20,8 +20,6 @@
 package com.johnstok.http.engine;
 
 import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -70,19 +68,14 @@ public class RegexDispatcher<T>
     public Resource dispatch(final Request request,
                              final Response response) throws HttpException {
 
-            try {
-                final String encodedPath = new URI(request.getRequestUri()).getRawPath();
+            final String encodedPath = request.getRequestUri().toUri().getRawPath();
 
-                final Class<? extends Resource> clazz = selectResourceBinding(encodedPath);
-                if (null==clazz) {
-                    throw new ClientHttpException(Status.NOT_FOUND);
-                }
-
-                return constructResource(request, response, clazz);
-            } catch (URISyntaxException e) {
-                // FIXME: Either use request.getPath or use RequestURI.
-                throw new RuntimeException(e);
+            final Class<? extends Resource> clazz = selectResourceBinding(encodedPath);
+            if (null==clazz) {
+                throw new ClientHttpException(Status.NOT_FOUND);
             }
+
+            return constructResource(request, response, clazz);
     }
 
 
