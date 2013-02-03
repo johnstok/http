@@ -35,22 +35,9 @@ import com.johnstok.http.Status;
 public final class DateHeader {
     // TODO: Consider using regex to parse dates, as described in the spec.
 
-    private static final SimpleDateFormat RFC_822;
-    private static final SimpleDateFormat RFC_850;
-    private static final SimpleDateFormat ANSI_C;
-
-
-    static {
-        RFC_822 =
-            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz"); //$NON-NLS-1$
-        RFC_822.setTimeZone(TimeZone.getTimeZone("GMT"));          //$NON-NLS-1$
-        RFC_850 =
-            new SimpleDateFormat("EEE, dd-MMM-yy HH:mm:ss zzz");   //$NON-NLS-1$
-        RFC_850.setTimeZone(TimeZone.getTimeZone("GMT"));          //$NON-NLS-1$
-        ANSI_C =
-            new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy");      //$NON-NLS-1$
-        ANSI_C.setTimeZone(TimeZone.getTimeZone("GMT"));           //$NON-NLS-1$
-    }
+    private static final String RFC_822 = "EEE, dd MMM yyyy HH:mm:ss zzz";
+    private static final String RFC_850 = "EEE, dd-MMM-yy HH:mm:ss zzz";
+    private static final String ANSI_C  = "EEE MMM dd HH:mm:ss yyyy";
 
 
     private DateHeader() { super(); }
@@ -65,17 +52,17 @@ public final class DateHeader {
      */
     public static Date parse(final String value) {
         try {
-            return RFC_822.parse(value);
+            return parse(RFC_822, value);
         } catch (final ParseException e) {
             // Continue.
         }
         try {
-            return RFC_850.parse(value);
+            return parse(RFC_850, value);
         } catch (final ParseException e) {
             // Continue.
         }
         try {
-            return ANSI_C.parse(value);
+            return parse(ANSI_C, value);
         } catch (final ParseException e) {
             throw new ClientHttpException(Status.BAD_REQUEST);
         }
@@ -91,21 +78,9 @@ public final class DateHeader {
      */
     public static boolean isValidDate(final String value) {
         try {
-            RFC_822.parse(value);
+            parse(value);
             return true;
-        } catch (final ParseException e) {
-            // Continue.
-        }
-        try {
-            RFC_850.parse(value);
-            return true;
-        } catch (final ParseException e) {
-            // Continue.
-        }
-        try {
-            ANSI_C.parse(value);
-            return true;
-        } catch (final ParseException e) {
+        } catch (final ClientHttpException e) {
             return false;
         }
     }
@@ -119,6 +94,16 @@ public final class DateHeader {
      * @return The date formatted as an HTTP date string.
      */
     public static String format(final Date date) {
-        return RFC_822.format(date);
+        SimpleDateFormat sdf = new SimpleDateFormat(RFC_822);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));              //$NON-NLS-1$
+        return sdf.format(date);
+    }
+
+
+    private static Date parse(final String format,
+                              final String value) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));              //$NON-NLS-1$
+        return sdf.parse(value);
     }
 }
