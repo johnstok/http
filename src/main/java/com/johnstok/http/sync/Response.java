@@ -19,6 +19,8 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import com.johnstok.http.MediaType;
@@ -36,12 +38,18 @@ import com.johnstok.http.Status;
  */
 public interface Response {
 
+    /*
+     * Set status message;
+     * Redirect - by throwing exception?
+     * Remove header?
+     */
+
     /**
      * Mutator.
      *
      * @param status The new status to set.
      */
-    void setStatus(Status code);
+    void setStatus(Status status);
 
 
     /**
@@ -75,15 +83,18 @@ public interface Response {
      *
      * @param value
      */
-    void write(BodyWriter value);
-
+    OutputStream getBody() throws IOException;
 
     /**
-     * The time at which the server originated the response message.
-     *
-     * @return
+     * Query if the status line and headers have been sent to the client.
      */
-    Date getOriginationTime();
+    boolean isCommitted();
+
+
+    void close() throws IOException;
+
+
+    // TODO: Move everything below here elsewhere - it is logic on top of the HTTP message format.
 
 
     /**
@@ -93,6 +104,14 @@ public interface Response {
      * @param value
      */
     void setHeader(String name, Date value);
+
+
+    /**
+     * The time at which the server originated the response message.
+     *
+     * @return
+     */
+    Date getOriginationTime();
 
 
     /**

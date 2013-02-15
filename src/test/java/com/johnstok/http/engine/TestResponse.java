@@ -96,14 +96,14 @@ public class TestResponse
 
     /** {@inheritDoc} */
     @Override
-    protected OutputStream getOutputStream() throws IOException {
+    public OutputStream getBody() throws IOException {
         return _outputStream;
     }
 
 
     /** {@inheritDoc} */
     @Override
-    protected void close() throws IOException {
+    public void close() throws IOException {
         /* No Op */
     }
 }

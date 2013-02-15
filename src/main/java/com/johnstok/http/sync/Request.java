@@ -109,7 +109,7 @@ public interface Request {
      *
      * @return Returns the header value as a string.
      */
-    String getHeader(String headerName, String defaultValue);
+    String getHeader(String headerName, String defaultValue); // TODO: Implement this in AbstractRequest, based on getHeaders().
 
 
     /**
@@ -118,6 +118,9 @@ public interface Request {
      * @return A map containing the header values for this request.
      */
     Map<String, List<String>> getHeaders();
+
+    // TODO: boolean hasHeader(String headerName);
+    // TODO: List<String> getHeaders(String headerName);
 
 
     /**

@@ -42,7 +42,6 @@ import com.johnstok.http.negotiation.CharsetNegotiator;
 import com.johnstok.http.negotiation.ContentNegotiator;
 import com.johnstok.http.negotiation.LanguageNegotiator;
 import com.johnstok.http.negotiation.MediaTypeNegotiator;
-import com.johnstok.http.sync.BodyReader;
 import com.johnstok.http.sync.Request;
 import com.johnstok.http.sync.Response;
 
@@ -195,8 +194,16 @@ public class Engine {
 
             // TODO: Set 'Expires' header.
 
-            response.write(resource.getWriter(response.getMediaType()));
             response.setStatus(Status.OK);
+            try {
+                resource.getWriter(response.getMediaType()).write(response.getBody());
+            } catch (IOException e) {
+                try {
+                    response.close();
+                } catch (IOException ce) {
+                    ce.printStackTrace(); // FIXME: Log the error!
+                }
+            }
         }
     }
 

@@ -20,7 +20,6 @@
 package com.johnstok.http.sync;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,6 +129,9 @@ public abstract class AbstractResponse
      * Perform final actions on the response prior to writing the body.
      */
     protected void commit() throws IOException {
+        if (_committed) {
+            throw new IllegalStateException("Already committed.");
+        }
         _committed = true;
         if (_variances.size()>0) {
             setHeader(
@@ -141,34 +143,9 @@ public abstract class AbstractResponse
 
     /** {@inheritDoc} */
     @Override
-    public void write(final BodyWriter value) {
-        try {
-            commit();
-            value.write(getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace(); // FIXME: Log the error!
-        } finally {
-            try {
-                close();
-            } catch (IOException e) {
-                e.printStackTrace(); // FIXME: Log the error!
-            }
-        }
-    }
-
-
-    /**
-     * Query if the status line and headers have been sent to the client.
-     */
     public boolean isCommitted() {
         return _committed;
     }
-
-
-    protected abstract OutputStream getOutputStream() throws IOException;
-
-
-    protected abstract void close() throws IOException;
 
 
     protected Status map(final int code) {

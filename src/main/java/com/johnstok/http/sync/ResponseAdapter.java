@@ -19,6 +19,8 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import com.johnstok.http.MediaType;
@@ -77,13 +79,6 @@ public class ResponseAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void write(final BodyWriter value) {
-        _response.write(value);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Date getOriginationTime() {
         return _response.getOriginationTime();
     }
@@ -135,5 +130,26 @@ public class ResponseAdapter
     @Override
     public void addVariance(final String headerName) {
         _response.addVariance(headerName);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public OutputStream getBody() throws IOException {
+        return _response.getBody();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isCommitted() {
+        return _response.isCommitted();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void close() throws IOException {
+        _response.close();
     }
 }
