@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import com.johnstok.http.MediaType;
-import com.johnstok.http.sync.BodyReader;
-import com.johnstok.http.sync.BodyWriter;
 
 
 /**

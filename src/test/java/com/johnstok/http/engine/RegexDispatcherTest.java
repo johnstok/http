@@ -13,8 +13,6 @@ import org.junit.Test;
 import com.johnstok.http.ClientHttpException;
 import com.johnstok.http.MediaType;
 import com.johnstok.http.Status;
-import com.johnstok.http.sync.BodyReader;
-import com.johnstok.http.sync.BodyWriter;
 
 
 /**

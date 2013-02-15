@@ -32,8 +32,6 @@ import com.johnstok.http.MediaType;
 import com.johnstok.http.Method;
 import com.johnstok.http.Specification;
 import com.johnstok.http.Specifications;
-import com.johnstok.http.sync.BodyReader;
-import com.johnstok.http.sync.BodyWriter;
 
 
 /**
