@@ -17,12 +17,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with http.  If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.sync;
+package com.johnstok.http;
 
 import java.io.IOException;
 import java.io.InputStream;
-import com.johnstok.http.RequestLine;
-import com.johnstok.http.Specification;
 
 
 /**
