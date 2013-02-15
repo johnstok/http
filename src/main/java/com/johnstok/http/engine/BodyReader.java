@@ -17,24 +17,26 @@
  * You should have received a copy of the GNU General Public License
  * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.sync;
+package com.johnstok.http.engine;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import com.johnstok.http.HttpException;
 
 
 /**
- * API for writing the body of a response.
+ * API for reading the body of a request.
  *
  * @author Keith Webster Johnston.
  */
-public interface BodyWriter {
+public interface BodyReader {
+
 
     /**
-     * Write the body to the supplied output stream.
+     * Read the body from the supplied input stream.
      *
-     * @param outputStream The output stream to write to.
+     * @param inputStream The input stream to read from.
      */
-    void write(OutputStream outputStream) throws IOException;
-
+    void read(InputStream inputStream) throws IOException, HttpException;
+    // FIXME: Do we need to throw both these exceptions?
 }
