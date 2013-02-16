@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
+import com.johnstok.http.Configuration;
 import com.johnstok.http.MediaType;
 import com.johnstok.http.Status;
 
@@ -30,34 +31,70 @@ import com.johnstok.http.Status;
 /**
  * Responsibility: model the response to a HTTP request.
  *
+ * TODO: Document state machine:
+ *  - when can the status be set;
+ *  - when can headers be set;
+ *  - what happens if a method is called at wrong time? (Ans. IllStEx);
+ *  - response is committed when getOutputStream is called.
+ *
  * TODO: Explicitly document the behaviour of a response once it is committed.
  * Responses will be automatically committed immediately prior to writing the
  * response body.
+ *
+ * TODO:Document default vales for:
+ *  - status line
+ *  - headers
+ *  - body
+ *
+ * TODO: Should we allow the HTTP version to be set?
  *
  * @author Keith Webster Johnston.
  */
 public interface Response {
 
     /*
-     * Set status message;
      * Redirect - by throwing exception?
      * Remove header?
      */
+
 
     /**
      * Mutator.
      *
      * @param status The new status to set.
      */
+    @Deprecated
     void setStatus(Status status);
+
+
+    /**
+     * Mutator.
+     *
+     * @param statusCode   The HTTP status code for the response.
+     *  <br>Allowed values are 0 (inclusive) to 1000 (exclusive).
+     * @param reasonPhrase The HTTP reason phrase for the response.
+     *  <br>This value will be URL encoded using the ISO-8859-1 character-set
+     *  before transmission to the client.
+     *  <br>TODO: Document how the length of this string interacts with
+     *  {@link Configuration#getMaxInitialLineSize(int)}.
+     */
+    void setStatus(int statusCode, String reasonPhrase);
 
 
     /**
      * Accessor.
      *
-     * @return The current status of the response.
+     * @return The current status code of the response.
      */
-    Status getStatus();
+    int getStatusCode();
+
+
+    /**
+     * Accessor.
+     *
+     * @return The current reason phrase of the response.
+     */
+    String getReasonPhrase();
 
 
     /**
@@ -91,7 +128,12 @@ public interface Response {
     boolean isCommitted();
 
 
-    void close() throws IOException;
+    /**
+     * End the response.
+     *
+     * @throws IOException If an error occurs while closing the connection.
+     */
+    void close() throws IOException; // TODO: Remove throwing of IOException - what can a client of the API do except report.
 
 
     // TODO: Move everything below here elsewhere - it is logic on top of the HTTP message format.

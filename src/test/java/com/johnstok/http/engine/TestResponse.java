@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
-import com.johnstok.http.Status;
 import com.johnstok.http.sync.AbstractResponse;
 
 
@@ -29,12 +28,13 @@ public class TestResponse
     extends
         AbstractResponse {
 
-    private Status                              _status;
     private final SimpleDateFormat              _dateFormatter;
     private final HashMap<String, List<String>> _headers =
         new HashMap<String, List<String>>();
     private final ByteArrayOutputStream         _outputStream =
         new ByteArrayOutputStream();
+    private String _reasonPhrase;
+    private int    _code;
 
 
     /**
@@ -43,20 +43,6 @@ public class TestResponse
     public TestResponse() {
         _dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
         _dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Status getStatus() {
-        return _status;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setStatus(final Status status) {
-        _status = status;
     }
 
 
@@ -105,5 +91,27 @@ public class TestResponse
     @Override
     public void close() throws IOException {
         /* No Op */
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setStatus(final int code, final String reasonPhrase) {
+        _code = code;
+        _reasonPhrase = reasonPhrase;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public int getStatusCode() {
+        return _code;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getReasonPhrase() {
+        return _reasonPhrase;
     }
 }

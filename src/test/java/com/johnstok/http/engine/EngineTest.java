@@ -172,7 +172,8 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NO_CONTENT, _response.getStatus());
+        Assert.assertSame(
+            Status.NO_CONTENT.getCode(), _response.getStatusCode());
     }
 
 
@@ -201,7 +202,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.ACCEPTED, _response.getStatus());
+        Assert.assertSame(Status.ACCEPTED.getCode(), _response.getStatusCode());
     }
 
 
@@ -217,7 +218,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.METHOD_NOT_ALLOWED, _response.getStatus());
+        Assert.assertSame(Status.METHOD_NOT_ALLOWED.getCode(), _response.getStatusCode());
     }
 
 
@@ -237,7 +238,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.REQUEST_ENTITY_TOO_LARGE, _response.getStatus());
+        Assert.assertSame(Status.REQUEST_ENTITY_TOO_LARGE.getCode(), _response.getStatusCode());
     }
 
 
@@ -257,7 +258,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.FORBIDDEN, _response.getStatus());
+        Assert.assertSame(Status.FORBIDDEN.getCode(), _response.getStatusCode());
     }
 
 
@@ -279,7 +280,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.PRECONDITION_FAILED, _response.getStatus());
+        Assert.assertSame(Status.PRECONDITION_FAILED.getCode(), _response.getStatusCode());
     }
 
 
@@ -306,7 +307,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.PRECONDITION_FAILED, _response.getStatus());
+        Assert.assertSame(Status.PRECONDITION_FAILED.getCode(), _response.getStatusCode());
     }
 
 
@@ -328,7 +329,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_MODIFIED, _response.getStatus());
+        Assert.assertSame(Status.NOT_MODIFIED.getCode(), _response.getStatusCode());
     }
 
 
@@ -349,7 +350,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.PRECONDITION_FAILED, _response.getStatus());
+        Assert.assertSame(Status.PRECONDITION_FAILED.getCode(), _response.getStatusCode());
     }
 
 
@@ -370,7 +371,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.PRECONDITION_FAILED, _response.getStatus());
+        Assert.assertSame(Status.PRECONDITION_FAILED.getCode(), _response.getStatusCode());
     }
 
 
@@ -404,7 +405,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -441,7 +442,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -466,7 +467,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_MODIFIED, _response.getStatus());
+        Assert.assertSame(Status.NOT_MODIFIED.getCode(), _response.getStatusCode());
     }
 
 
@@ -488,7 +489,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_MODIFIED, _response.getStatus());
+        Assert.assertSame(Status.NOT_MODIFIED.getCode(), _response.getStatusCode());
     }
 
 
@@ -522,7 +523,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -559,7 +560,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -591,7 +592,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -623,7 +624,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -659,7 +660,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -695,7 +696,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             "Hello, world!",
             _response.getBodyAsString(UTF8));
@@ -719,7 +720,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.PRECONDITION_FAILED, _response.getStatus());
+        Assert.assertSame(Status.PRECONDITION_FAILED.getCode(), _response.getStatusCode());
     }
 
 
@@ -743,7 +744,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.GONE, _response.getStatus());
+        Assert.assertSame(Status.GONE.getCode(), _response.getStatusCode());
     }
 
 
@@ -776,7 +777,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.MOVED_PERMANENTLY, _response.getStatus());
+        Assert.assertSame(Status.MOVED_PERMANENTLY.getCode(), _response.getStatusCode());
         Assert.assertEquals(TARGET_URI, _response.getHeader(Header.LOCATION));
     }
 
@@ -810,7 +811,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.TEMPORARY_REDIRECT, _response.getStatus());
+        Assert.assertSame(Status.TEMPORARY_REDIRECT.getCode(), _response.getStatusCode());
         Assert.assertEquals(TARGET_URI, _response.getHeader(Header.LOCATION));
     }
 
@@ -833,7 +834,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_FOUND, _response.getStatus());
+        Assert.assertSame(Status.NOT_FOUND.getCode(), _response.getStatusCode());
     }
 
 
@@ -855,7 +856,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertNull(_response.getHeader(Header.CONTENT_LANGUAGE));
         Assert.assertNull(_response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertNull(_response.getHeader(Header.CONTENT_TYPE));
@@ -903,7 +904,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals("da", _response.getHeader(Header.CONTENT_LANGUAGE));
         Assert.assertEquals(ContentCoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertEquals(MediaType.JSON.toString()+"; charset="+UTF_16, _response.getHeader(Header.CONTENT_TYPE));
@@ -942,7 +943,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals("en", _response.getHeader(Header.CONTENT_LANGUAGE));
         Assert.assertEquals(
             "Hello, world!",
@@ -973,7 +974,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertNull(_response.getHeader(Header.CONTENT_LANGUAGE));
         Assert.assertEquals(
             "Hello, world!",
@@ -1011,7 +1012,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(
             ContentCoding.GZIP.toString(), _response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertEquals(
@@ -1044,7 +1045,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertNull(_response.getHeader(Header.CONTENT_ENCODING));
         Assert.assertEquals(
             "Hello, world!",
@@ -1076,7 +1077,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(MediaType.HTML.toString(), _response.getHeader(Header.CONTENT_TYPE));
         Assert.assertEquals(
             "Hello, world!",
@@ -1113,7 +1114,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(MediaType.HTML.toString()+"; charset="+UTF_8, _response.getHeader(Header.CONTENT_TYPE));
         Assert.assertEquals(
             "Hello, world!",
@@ -1145,7 +1146,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals(MediaType.HTML.toString(), _response.getHeader(Header.CONTENT_TYPE));
         Assert.assertEquals(
             "Hello, world!",
@@ -1169,7 +1170,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.BAD_REQUEST, _response.getStatus());
+        Assert.assertSame(Status.BAD_REQUEST.getCode(), _response.getStatusCode());
     }
 
 
@@ -1185,7 +1186,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
         Assert.assertEquals("0", _response.getHeader(Header.CONTENT_LENGTH));
         Assert.assertEquals(
             Utils.join(resource.getAllowedMethods(), ',').toString(),
@@ -1225,7 +1226,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.OK, _response.getStatus());
+        Assert.assertSame(Status.OK.getCode(), _response.getStatusCode());
     }
 
 
@@ -1258,7 +1259,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NO_CONTENT, _response.getStatus());
+        Assert.assertSame(Status.NO_CONTENT.getCode(), _response.getStatusCode());
         Assert.assertTrue(Arrays.equals(body, baos.toByteArray()));
         // TODO: Assert last modified attached?
         // TODO: Assert ETag added?
@@ -1295,7 +1296,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.MOVED_PERMANENTLY, _response.getStatus());
+        Assert.assertSame(Status.MOVED_PERMANENTLY.getCode(), _response.getStatusCode());
         Assert.assertEquals(TARGET_URI, _response.getHeader(Header.LOCATION));
     }
 
@@ -1326,7 +1327,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.CONFLICT, _response.getStatus());
+        Assert.assertSame(Status.CONFLICT.getCode(), _response.getStatusCode());
     }
 
 
@@ -1360,7 +1361,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.CREATED, _response.getStatus());
+        Assert.assertSame(Status.CREATED.getCode(), _response.getStatusCode());
         Assert.assertTrue(Arrays.equals(body, baos.toByteArray()));
         Assert.assertEquals(createdPath, _response.getHeader(Header.LOCATION));
         // TODO: Assert last modified attached?
@@ -1384,7 +1385,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.SERVICE_UNAVAILABLE, _response.getStatus());
+        Assert.assertSame(Status.SERVICE_UNAVAILABLE.getCode(), _response.getStatusCode());
     }
 
 
@@ -1431,7 +1432,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_ACCEPTABLE, _response.getStatus());
+        Assert.assertSame(Status.NOT_ACCEPTABLE.getCode(), _response.getStatusCode());
     }
 
     @Test
@@ -1448,7 +1449,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_ACCEPTABLE, _response.getStatus());
+        Assert.assertSame(Status.NOT_ACCEPTABLE.getCode(), _response.getStatusCode());
     }
 
 
@@ -1469,7 +1470,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_ACCEPTABLE, _response.getStatus());
+        Assert.assertSame(Status.NOT_ACCEPTABLE.getCode(), _response.getStatusCode());
     }
 
 
@@ -1492,7 +1493,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_ACCEPTABLE, _response.getStatus());
+        Assert.assertSame(Status.NOT_ACCEPTABLE.getCode(), _response.getStatusCode());
     }
 
 
@@ -1509,7 +1510,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.UNAUTHORIZED, _response.getStatus());
+        Assert.assertSame(Status.UNAUTHORIZED.getCode(), _response.getStatusCode());
     }
 
 
@@ -1529,7 +1530,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_IMPLEMENTED, _response.getStatus());
+        Assert.assertSame(Status.NOT_IMPLEMENTED.getCode(), _response.getStatusCode());
     }
 
 
@@ -1550,7 +1551,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.UNSUPPORTED_MEDIA_TYPE, _response.getStatus());
+        Assert.assertSame(Status.UNSUPPORTED_MEDIA_TYPE.getCode(), _response.getStatusCode());
     }
 
 
@@ -1566,7 +1567,7 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.NOT_IMPLEMENTED, _response.getStatus());
+        Assert.assertSame(Status.NOT_IMPLEMENTED.getCode(), _response.getStatusCode());
     }
 
 
@@ -1586,6 +1587,6 @@ public class EngineTest {
         _engine.process(resource, _request, _response);
 
         // ASSERT
-        Assert.assertSame(Status.REQUEST_URI_TOO_LONG, _response.getStatus());
+        Assert.assertSame(Status.REQUEST_URI_TOO_LONG.getCode(), _response.getStatusCode());
     }
 }

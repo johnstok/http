@@ -51,20 +51,6 @@ public class ResponseAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void setStatus(final Status code) {
-        _response.setStatus(code);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Status getStatus() {
-        return _response.getStatus();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void setHeader(final String name, final String value) {
         _response.setHeader(name, value);
     }
@@ -151,5 +137,34 @@ public class ResponseAdapter
     @Override
     public void close() throws IOException {
         _response.close();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public void setStatus(final int code, final String message) {
+        _response.setStatus(code, message);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public int getStatusCode() {
+        return _response.getStatusCode();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public String getReasonPhrase() {
+        return _response.getReasonPhrase();
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("deprecation")
+    public void setStatus(final Status status) {
+        _response.setStatus(status);
     }
 }
