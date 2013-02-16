@@ -76,7 +76,7 @@ public class TestRequest
 
     /** {@inheritDoc} */
     @Override
-    public Method getMethod() { return _method; }
+    public String getMethod() { return _method.toString(); }
 
 
     /** {@inheritDoc} */
@@ -88,7 +88,7 @@ public class TestRequest
 
     /** {@inheritDoc} */
     @Override
-    public Version getVersion() { return _version; }
+    public String getVersion() { return _version.toString(); }
 
 
     /**

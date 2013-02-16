@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import com.johnstok.http.Method;
-import com.johnstok.http.Version;
 
 
 /**
@@ -73,14 +71,14 @@ public class RequestAdapter
 
     /** {@inheritDoc} */
     @Override
-    public Method getMethod() {
+    public String getMethod() {
         return _delegate.getMethod();
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public Version getVersion() {
+    public String getVersion() {
         return _delegate.getVersion();
     }
 

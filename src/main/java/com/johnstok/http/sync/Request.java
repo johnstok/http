@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
-import com.johnstok.http.Method;
-import com.johnstok.http.Version;
 
 
 /**
@@ -63,19 +61,19 @@ public interface Request {
 
 
     /**
-     * The HTTP method used by the client.
+     * The HTTP request method used by the client.
      *
-     * @return
+     * @return The method, as a string.
      */
-    Method getMethod();
+    String getMethod();
 
 
     /**
      * The HTTP version used by the client.
      *
-     * @return A {@link Version} object.
+     * @return The version, as a string.
      */
-    Version getVersion();
+    String getVersion();
 
 
     /**

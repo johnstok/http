@@ -505,7 +505,7 @@ public class Engine {
     private void L07_is_POST_method(final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if ((Method.POST==request.getMethod()) && resource.allowsPostToMissing()) { // L7, M7
+        if ((Method.POST==Method.parse(request.getMethod())) && resource.allowsPostToMissing()) { // L7, M7
             N11_redirect(resource, request, response);
         } else {
             setStatus(response, Status.NOT_FOUND);
@@ -529,7 +529,7 @@ public class Engine {
     private void M05_is_POST_method(final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if ((Method.POST==request.getMethod()) && resource.allowsPostToMissing()) { // M5, N5
+        if ((Method.POST==Method.parse(request.getMethod())) && resource.allowsPostToMissing()) { // M5, N5
             N11_redirect(resource, request, response);
         } else {
             setStatus(response, Status.GONE);
@@ -565,7 +565,7 @@ public class Engine {
     private void M16_is_DELETE_method(final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if (Method.DELETE==request.getMethod()) {  // M16
+        if (Method.DELETE==Method.parse(request.getMethod())) {  // M16
             // FIXME: Something fishy here - no O20 decision.
             final boolean accepted = resource.delete();
             if (accepted) {
@@ -823,7 +823,7 @@ public class Engine {
     private void B04_options(final Resource resource,
                      final Request request,
                         final Response response) throws HttpException {
-        if (Method.OPTIONS==request.getMethod()) {
+        if (Method.OPTIONS==Method.parse(request.getMethod())) {
             setStatus(response, Status.OK);
             response.setHeader(Header.CONTENT_LENGTH, "0");    //$NON-NLS-1$
             response.setHeader(
@@ -874,7 +874,7 @@ public class Engine {
     private void N16_is_POST_method(final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if (Method.POST==request.getMethod()) {
+        if (Method.POST==Method.parse(request.getMethod())) {
             N11_redirect(resource, request, response);
         } else {
             O16_is_PUT_method(resource, request, response);
@@ -904,7 +904,7 @@ public class Engine {
     private void O16_is_PUT_method(final Resource resource,
                      final Request request,
                      final Response response) throws HttpException {
-        if (Method.PUT==request.getMethod()) {
+        if (Method.PUT==Method.parse(request.getMethod())) {
             O14_conflict(resource, request, response);
         } else {
             O18_multiple_representations(resource, request, response);
