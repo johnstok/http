@@ -25,7 +25,6 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
-import com.johnstok.http.RequestURI;
 import com.johnstok.http.Version;
 
 
@@ -53,7 +52,7 @@ public class RequestAdapter
 
     /** {@inheritDoc} */
     @Override
-    public RequestURI getRequestUri() {
+    public String getRequestUri() {
         return _delegate.getRequestUri();
     }
 

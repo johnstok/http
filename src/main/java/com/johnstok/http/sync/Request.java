@@ -25,7 +25,6 @@ import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import com.johnstok.http.Method;
-import com.johnstok.http.RequestURI;
 import com.johnstok.http.Version;
 
 
@@ -44,7 +43,7 @@ public interface Request {
      *
      * @return The request URI, as a string.
      */
-    RequestURI getRequestUri();
+    String getRequestUri();
 
 
     /**
