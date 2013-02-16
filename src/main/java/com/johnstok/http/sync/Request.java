@@ -91,7 +91,8 @@ public interface Request {
      *
      * @param headerName The name of the required header value.
      *
-     * @return Returns the header value as a string
+     * @return The value as a string; {@code null} if no value exists for the
+     *  specified header name.
      */
     String getHeader(String headerName);
 
@@ -104,7 +105,8 @@ public interface Request {
      * @param defaultValue The default value to return if no such header
      *  exists.
      *
-     * @return Returns the header value as a string.
+     * @return Returns the value, as a string; {@code defaultValue} if no value
+     *  exists.
      */
     String getHeader(String headerName, String defaultValue); // TODO: Implement this in AbstractRequest, based on getHeaders().
 
@@ -112,12 +114,24 @@ public interface Request {
     /**
      * Get all available header values.
      *
+     * TODO: Document that this must be an immutable collection.
+     *
      * @return A map containing the header values for this request.
      */
     Map<String, List<String>> getHeaders();
 
-    // TODO: boolean hasHeader(String headerName);
-    // TODO: List<String> getHeaders(String headerName);
+
+    /**
+     * Look up all the values for a specified header name.
+     *
+     * TODO: Document that this must be an immutable collection.
+     *
+     * @param headerName The name of the required header value.
+     *
+     * @return The values, as a list of strings; {@code null} if no values exist
+     *  for the specified header name.
+     */
+    List<String> getHeaders(String headerName);
 
 
     /**

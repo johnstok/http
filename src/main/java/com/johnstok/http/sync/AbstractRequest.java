@@ -21,6 +21,7 @@ package com.johnstok.http.sync;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
+import java.util.List;
 
 
 /**
@@ -51,15 +52,32 @@ public abstract class AbstractRequest
 
     /** {@inheritDoc} */
     @Override
-    public boolean hasHeader(final String headerName) {
+    public final boolean hasHeader(final String headerName) {
         return null!=getHeader(headerName);
     }
 
 
     /** {@inheritDoc} */
     @Override
-    public String getHeader(final String headerName) {
+    public final String getHeader(final String headerName) {
         return getHeader(headerName, null);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public final List<String> getHeaders(final String headerName) {
+        return getHeaders().get(headerName);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public final String getHeader(final String headerName,
+                                  final String defaultValue) {
+        List<String> values = getHeaders(headerName);
+        if ((null==values) || (0==values.size())) { return defaultValue; }
+        return values.get(0);
     }
 
 

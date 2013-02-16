@@ -59,18 +59,6 @@ public class TestRequest
 
     /** {@inheritDoc} */
     @Override
-    public String getHeader(final String headerName,
-                            final String defaultValue) {
-        final List<String> values = _headers.get(headerName);
-        if ((null==values) || (0==values.size())) {
-            return defaultValue;
-        }
-        return values.get(0);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public Map<String, List<String>> getHeaders() { return _headers; }
 
 

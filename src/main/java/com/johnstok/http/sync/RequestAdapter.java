@@ -124,4 +124,11 @@ public class RequestAdapter
     public boolean hasHeader(final String headerName) {
         return _delegate.hasHeader(headerName);
     }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<String> getHeaders(final String headerName) {
+        return _delegate.getHeaders(headerName);
+    }
 }
