@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Date;
 import com.johnstok.http.MediaType;
-import com.johnstok.http.Status;
 
 
 /**
@@ -158,13 +157,5 @@ public class ResponseAdapter
     @Override
     public String getReasonPhrase() {
         return _response.getReasonPhrase();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    @SuppressWarnings("deprecation")
-    public void setStatus(final Status status) {
-        _response.setStatus(status);
     }
 }

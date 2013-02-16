@@ -25,7 +25,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import com.johnstok.http.Configuration;
 import com.johnstok.http.MediaType;
-import com.johnstok.http.Status;
 
 
 /**
@@ -56,15 +55,6 @@ public interface Response {
      * Redirect - by throwing exception?
      * Remove header?
      */
-
-
-    /**
-     * Mutator.
-     *
-     * @param status The new status to set.
-     */
-    @Deprecated
-    void setStatus(Status status);
 
 
     /**

@@ -28,7 +28,6 @@ import java.util.List;
 import com.johnstok.http.ContentCoding;
 import com.johnstok.http.Header;
 import com.johnstok.http.MediaType;
-import com.johnstok.http.Status;
 import com.johnstok.http.engine.Utils;
 import com.johnstok.http.headers.DateHeader;
 
@@ -145,12 +144,5 @@ public abstract class AbstractResponse
     @Override
     public boolean isCommitted() {
         return _committed;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public final void setStatus(final Status code) {
-        setStatus(code.getCode(), code.getReasonPhrase());
     }
 }
