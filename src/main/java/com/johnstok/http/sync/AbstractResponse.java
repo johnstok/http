@@ -151,6 +151,6 @@ public abstract class AbstractResponse
     /** {@inheritDoc} */
     @Override
     public final void setStatus(final Status code) {
-        setStatus(code.getCode(), code.getDescription());
+        setStatus(code.getCode(), code.getReasonPhrase());
     }
 }

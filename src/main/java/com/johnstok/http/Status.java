@@ -121,18 +121,18 @@ public enum Status {
         "|"+EXTENSION_CODE;
 
 
-    private final String _description;
+    private final String _reasonPhrase;
     private final int    _code;
 
 
     /**
      * Constructor.
      *
-     * @param code        The integer code for the status.
-     * @param description The default description for the status.
+     * @param code         The integer code for the status.
+     * @param reasonPhrase The reason phrase for the status.
      */
-    private Status(final int code, final String description) {
-        _description = description;
+    private Status(final int code, final String reasonPhrase) {
+        _reasonPhrase = reasonPhrase;
         _code = code;
     }
 
@@ -142,8 +142,8 @@ public enum Status {
     }
 
 
-    public String getDescription() {
-        return _description;
+    public String getReasonPhrase() {
+        return _reasonPhrase;
     }
 
 
@@ -153,7 +153,7 @@ public enum Status {
      * @return True if the request is informational; false otherwise.
      */
     public boolean isInformational() {
-        return 1==_code/100;
+        return 1==(_code/100);
     }
 
 
@@ -163,7 +163,7 @@ public enum Status {
      * @return True if the request is a success; false otherwise.
      */
     public boolean isSuccess() {
-        return 2==_code/100;
+        return 2==(_code/100);
     }
 
 
@@ -173,7 +173,7 @@ public enum Status {
      * @return True if the request is a redirect; false otherwise.
      */
     public boolean isRedirect() {
-        return 3==_code/100;
+        return 3==(_code/100);
     }
 
 
@@ -183,7 +183,7 @@ public enum Status {
      * @return True if the request is a client error; false otherwise.
      */
     public boolean isClientError() {
-        return 4==_code/100;
+        return 4==(_code/100);
     }
 
 
@@ -193,7 +193,7 @@ public enum Status {
      * @return True if the request is a server error; false otherwise.
      */
     public boolean isServerError() {
-        return 5==_code/100;
+        return 5==(_code/100);
     }
 
 
