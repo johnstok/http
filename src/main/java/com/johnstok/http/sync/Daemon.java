@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.engine;
+package com.johnstok.http.sync;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
