@@ -27,5 +27,11 @@ package com.johnstok.http.sync;
  */
 public interface Handler {
 
+    /**
+     * Handle a HTTP request.
+     *
+     * @param request  The incoming HTTP request.
+     * @param response The outgoing HTTP response.
+     */
     void handle(Request request, Response response);
 }
