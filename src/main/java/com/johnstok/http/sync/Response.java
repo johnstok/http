@@ -21,10 +21,7 @@ package com.johnstok.http.sync;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Date;
 import com.johnstok.http.Configuration;
-import com.johnstok.http.MediaType;
 
 
 /**
@@ -35,6 +32,8 @@ import com.johnstok.http.MediaType;
  *  - when can headers be set;
  *  - what happens if a method is called at wrong time? (Ans. IllStEx);
  *  - response is committed when getOutputStream is called.
+ *
+ *  NEW ==> COMMITTED ==> CLOSED
  *
  * TODO: Explicitly document the behaviour of a response once it is committed.
  * Responses will be automatically committed immediately prior to writing the
@@ -112,6 +111,7 @@ public interface Response {
      */
     OutputStream getBody() throws IOException;
 
+
     /**
      * Query if the status line and headers have been sent to the client.
      */
@@ -124,72 +124,4 @@ public interface Response {
      * @throws IOException If an error occurs while closing the connection.
      */
     void close() throws IOException; // TODO: Remove throwing of IOException - what can a client of the API do except report.
-
-
-    // TODO: Move everything below here elsewhere - it is logic on top of the HTTP message format.
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param name
-     * @param value
-     */
-    void setHeader(String name, Date value);
-
-
-    /**
-     * The time at which the server originated the response message.
-     *
-     * @return
-     */
-    Date getOriginationTime();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param charset
-     */
-    void setCharset(Charset charset);
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param mediaType
-     */
-    void setMediaType(MediaType mediaType);
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param encoding
-     */
-    void setContentEncoding(String encoding);
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    MediaType getMediaType();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @return
-     */
-    String[] getVariances();
-
-
-    /**
-     * TODO: Add a description for this method.
-     *
-     * @param headerName
-     */
-    void addVariance(String headerName);
 }

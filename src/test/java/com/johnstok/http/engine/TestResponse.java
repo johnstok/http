@@ -12,7 +12,6 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -70,13 +69,6 @@ public class TestResponse
     public void setBody(final byte[] body) throws IOException {
         _outputStream.reset();
         _outputStream.write(body);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setHeader(final String name, final Date value) {
-        setHeader(name, _dateFormatter.format(value));
     }
 
 

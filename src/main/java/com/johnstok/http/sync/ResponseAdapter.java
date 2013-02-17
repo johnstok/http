@@ -21,9 +21,6 @@ package com.johnstok.http.sync;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Date;
-import com.johnstok.http.MediaType;
 
 
 /**
@@ -41,7 +38,7 @@ public class ResponseAdapter
     /**
      * Constructor.
      *
-     * @param response
+     * @param response The response this adapter will delegate to.
      */
     public ResponseAdapter(final Response response) {
         _response = response; // FIXME: Check for NULL.
@@ -59,62 +56,6 @@ public class ResponseAdapter
     @Override
     public String getHeader(final String name) {
         return _response.getHeader(name);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public Date getOriginationTime() {
-        return _response.getOriginationTime();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setHeader(final String name, final Date value) {
-        _response.setHeader(name, value);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setCharset(final Charset charset) {
-        _response.setCharset(charset);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setMediaType(final MediaType mediaType) {
-        _response.setMediaType(mediaType);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void setContentEncoding(final String encoding) {
-        _response.setContentEncoding(encoding);
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public MediaType getMediaType() {
-        return _response.getMediaType();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public String[] getVariances() {
-        return _response.getVariances();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void addVariance(final String headerName) {
-        _response.addVariance(headerName);
     }
 
 

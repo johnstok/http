@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import com.johnstok.http.ContentCoding;
 import com.johnstok.http.ETag;
 import com.johnstok.http.Header;
@@ -38,6 +40,7 @@ import com.johnstok.http.Status;
 import com.johnstok.http.WeightedValue;
 import com.johnstok.http.headers.AllowHeader;
 import com.johnstok.http.headers.DateHeader;
+import com.johnstok.http.headers.VaryHeader;
 import com.johnstok.http.negotiation.CharsetNegotiator;
 import com.johnstok.http.negotiation.ContentNegotiator;
 import com.johnstok.http.negotiation.LanguageNegotiator;
@@ -52,6 +55,14 @@ import com.johnstok.http.sync.Response;
  * @author Keith Webster Johnston.
  */
 public class Engine {
+
+    private final Date              _now       = new Date();
+    private final SortedSet<String> _variances = new TreeSet<String>();
+
+    private Charset            _charset;
+    private MediaType          _mediaType;
+
+
 
     private MediaType accept(final Request request,
                              final Set<MediaType> content_types_provided) {
@@ -138,7 +149,7 @@ public class Engine {
              * see section 14.19.
              */
             setStatus(response, Status.CREATED);
-            attachEtag(resource, request, response); // TODO: Use variant as per current request.
+            attachEtag(resource, response); // TODO: Confirm how Vary header interacts with this.
             attachLastModified(resource, request, response);
             // TODO: Provide an entity if available.
         }
@@ -172,7 +183,7 @@ public class Engine {
              * fields.
              */
             setStatus(response, Status.NO_CONTENT);
-            attachEtag(resource, request, response); // TODO: Use variant as per current request.
+            attachEtag(resource, response); // TODO: Confirm how Vary header interacts with this.
             attachLastModified(resource, request, response);
         }
     }
@@ -189,14 +200,13 @@ public class Engine {
         } else {
             setStatus(response, Status.OK);
 
-            attachEtag(resource, request, response);
+            attachEtag(resource, response);
             attachLastModified(resource, request, response);
-
+            attachVary(response);
             // TODO: Set 'Expires' header.
 
-            setStatus(response, Status.OK);
             try {
-                resource.getWriter(response.getMediaType()).write(response.getBody());
+                resource.getWriter(getMediaType(response)).write(response.getBody());
             } catch (IOException e) {
                 try {
                     response.close();
@@ -219,7 +229,6 @@ public class Engine {
                                     final Response response) {
 
         final Date lastModified = resource.getLastModifiedDate();
-        final Date messageOriginationTime = response.getOriginationTime();
 
         /*
          * An origin server MUST NOT send a Last-Modified date which
@@ -231,7 +240,10 @@ public class Engine {
         if (null!=lastModified) {
             response.setHeader(
                 Header.LAST_MODIFIED,
-                (lastModified.after(messageOriginationTime)) ? messageOriginationTime : lastModified);
+                DateHeader.format(
+                    (lastModified.after(_now))
+                        ? _now
+                        : lastModified));
         }
     }
 
@@ -243,9 +255,7 @@ public class Engine {
      * @param response The response to which the ETag will be attached.
      */
     private void attachEtag(final Resource resource,
-                            final Request request,
                             final Response response) {
-        // FIXME: ETags depend on variants.
         final ETag eTag = resource.generateEtag(calculateEtagBase(response));
         if (null!=eTag) { response.setHeader(E_TAG, eTag.getValue()); }
     }
@@ -257,7 +267,7 @@ public class Engine {
                               final Response response) {
         try {
             response.setHeader(Header.SERVER, "wm4j/1.0.0");
-            response.setHeader(Header.DATE, response.getOriginationTime());
+            response.setHeader(Header.DATE, DateHeader.format(_now));
             B12_service_available(resource, request, response);
         } catch (final HttpException e) {
             // TODO handle committed responses.
@@ -336,11 +346,6 @@ public class Engine {
         } else {
             setStatus(response, Status.PRECONDITION_FAILED);
         }
-    }
-
-
-    private String calculateEtagBase(final Response response) {
-        return ""; // FIXME: MD5 of values of headers mentioned in `Vary` header.
     }
 
 
@@ -597,9 +602,9 @@ public class Engine {
             final String encoding = first(availableEncodings);
             if (null!=encoding) { // TODO: Can't we assume encoding is never NULL?
                 if (!ContentCoding.IDENTITY.toString().equals(encoding)) {
-                    response.setContentEncoding(encoding);
+                    setContentEncoding(response, encoding);
                 }
-                response.addVariance(Header.CONTENT_ENCODING);
+                addVariance(Header.CONTENT_ENCODING);
             }
             G07_resource_exists(resource, request, response);
         }
@@ -616,9 +621,9 @@ public class Engine {
             setStatus(response, Status.NOT_ACCEPTABLE);
         } else {
             if (!ContentCoding.IDENTITY.toString().equals(encoding)) {
-                response.setContentEncoding(encoding);
+                setContentEncoding(response, encoding);
             }
-            response.addVariance(Header.CONTENT_ENCODING);
+            addVariance(Header.CONTENT_ENCODING);
             G07_resource_exists(resource, request, response);
         }
     }
@@ -638,8 +643,8 @@ public class Engine {
         } else {
             final Charset cs = first(resource.getCharsetsProvided());
             if(null!=cs) {
-                response.setCharset(cs);
-                response.addVariance(Header.CONTENT_TYPE);
+                setCharset(response, cs);
+                addVariance(Header.CONTENT_TYPE);
             }
             F06_accept_encoding_header_exists(resource, request, response);
         }
@@ -655,8 +660,8 @@ public class Engine {
         if (null==charset) {
             setStatus(response, Status.NOT_ACCEPTABLE);
         } else {
-            response.setCharset(charset);
-            response.addVariance(Header.CONTENT_TYPE);
+            setCharset(response, charset);
+            addVariance(Header.CONTENT_TYPE);
             F06_accept_encoding_header_exists(resource, request, response);
         }
     }
@@ -677,7 +682,7 @@ public class Engine {
             final LanguageTag lt = first(resource.getLanguages());
             if (null!=lt) {
                 response.setHeader(Header.CONTENT_LANGUAGE, lt.toString());
-                response.addVariance(Header.CONTENT_LANGUAGE);
+                addVariance(Header.CONTENT_LANGUAGE);
             }
             E05_accept_charset_header_exists(resource, request, response);
         }
@@ -694,7 +699,7 @@ public class Engine {
             setStatus(response, Status.NOT_ACCEPTABLE);
         } else {
             response.setHeader(Header.CONTENT_LANGUAGE, language.toString());
-            response.addVariance(Header.CONTENT_LANGUAGE);
+            addVariance(Header.CONTENT_LANGUAGE);
             E05_accept_charset_header_exists(resource, request, response);
         }
     }
@@ -714,8 +719,8 @@ public class Engine {
         } else {
             final MediaType mt = first(resource.getContentTypesProvided());
             if (null!=mt) {
-                response.setMediaType(mt);
-                response.addVariance(Header.CONTENT_TYPE);
+                setMediaType(response, mt);
+                addVariance(Header.CONTENT_TYPE);
             }
             D04_accept_language_header_exists(resource, request, response);
         }
@@ -731,8 +736,8 @@ public class Engine {
         if (null==mediaType) {
             setStatus(response, Status.NOT_ACCEPTABLE);
         } else {
-            response.setMediaType(mediaType);
-            response.addVariance(Header.CONTENT_TYPE);
+            setMediaType(response, mediaType);
+            addVariance(Header.CONTENT_TYPE);
             D04_accept_language_header_exists(resource, request, response);
         }
     }
@@ -926,5 +931,68 @@ public class Engine {
 
     private static void setStatus(final Response response, final Status status) {
         response.setStatus(status.getCode(), status.getReasonPhrase());
+    }
+
+
+    private String calculateEtagBase(final Response response) {
+        ArrayList<String> headerValues = new ArrayList<>();
+        for (String variance : _variances) {
+            if (null==variance) { continue; }
+            headerValues.add(response.getHeader(variance));
+        }
+        return Utils.join(headerValues, '-').toString();
+    }
+
+
+    private MediaType getMediaType(final Response response) {
+        return _mediaType;
+    }
+
+
+    private void setMediaType(final Response response,
+                              final MediaType mediaType) {
+        // TODO: What if the media type has a charset property?
+        _mediaType = mediaType;
+        setContentType(response);
+
+    }
+
+
+    private void addVariance(final String header) {
+        _variances.add(header);
+    }
+
+
+    private void setCharset(final Response response, final Charset charset) {
+        _charset = charset;
+        if (null==_mediaType) { _mediaType = MediaType.TEXT; }
+        setContentType(response);
+
+    }
+
+
+    private void setContentEncoding(final Response response,
+                                    final String encoding) {
+        if (ContentCoding.IDENTITY.equals(encoding)) {
+            // Don't send a header for 'identity'.
+            // FIXME: This doesn't seem to be working - still need code in Engine class for some reason.
+            response.setHeader(Header.CONTENT_ENCODING, (String) null); // TODO: response.clearHeader(String headerName);
+        } else {
+            response.setHeader(Header.CONTENT_ENCODING, encoding);
+        }
+
+    }
+
+
+    private void setContentType(final Response response) {
+        response.setHeader(
+            Header.CONTENT_TYPE,
+            _mediaType+((null==_charset) ? "" : "; charset="+_charset));
+    }
+
+
+    private void attachVary(final Response response) {
+        VaryHeader vh = new VaryHeader();
+        response.setHeader(VARY, vh.write(_variances));
     }
 }
