@@ -96,6 +96,7 @@ public interface Request {
      */
     String getHeader(String headerName);
 
+
     /**
      * Look up the value of an incoming request header.
      *
@@ -108,7 +109,7 @@ public interface Request {
      * @return Returns the value, as a string; {@code defaultValue} if no value
      *  exists.
      */
-    String getHeader(String headerName, String defaultValue); // TODO: Implement this in AbstractRequest, based on getHeaders().
+    String getHeader(String headerName, String defaultValue);
 
 
     /**
