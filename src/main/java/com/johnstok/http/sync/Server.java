@@ -31,16 +31,16 @@ import java.net.InetSocketAddress;
 public interface Server {
 
     /**
-     * Start the daemon.
+     * Start the server.
      *
-     * @param address The network address on which the daemon should listen.
+     * @param address The network address on which the server should listen.
      *
      * @throws IOException If connection to the specified address fails.
      */
     void startup(InetSocketAddress address) throws IOException; // TODO: Use a library specific exception.
 
     /**
-     * Stop the daemon.
+     * Stop the server.
      *
      * @throws IOException If disconnection from the network address fails.
      */
