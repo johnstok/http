@@ -19,6 +19,8 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
+import java.io.IOException;
+
 
 /**
  * API for synchronous HTTP request handling.
@@ -32,6 +34,8 @@ public interface Handler {
      *
      * @param request  The incoming HTTP request.
      * @param response The outgoing HTTP response.
+     *
+     * @throws IOException If reading from / writing to the client fails.
      */
-    void handle(Request request, Response response);
+    void handle(Request request, Response response) throws IOException;
 }
