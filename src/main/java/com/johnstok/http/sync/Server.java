@@ -28,7 +28,7 @@ import java.net.InetSocketAddress;
  *
  * @author Keith Webster Johnston.
  */
-public interface Daemon {
+public interface Server {
 
     /**
      * Start the daemon.
