@@ -177,8 +177,8 @@ public class MediaType {
         final int prime = 31;
         int result = 1;
         result =
-            prime * result + ((_subtype == null) ? 0 : _subtype.hashCode());
-        result = prime * result + ((_type == null) ? 0 : _type.hashCode());
+            (prime * result) + ((_subtype == null) ? 0 : _subtype.hashCode());
+        result = (prime * result) + ((_type == null) ? 0 : _type.hashCode());
         return result;
     }
 
@@ -257,6 +257,8 @@ public class MediaType {
     public static final MediaType XML = new MediaType("application", "xml");
     public static final MediaType JPEG = new MediaType("image", "jpeg");
     public static final MediaType JSON = new MediaType("application", "json");
+    public static final MediaType BINARY = new MediaType("application", "octet-stream");
+    public static final MediaType TEXT = new MediaType("text", "plain");
 
 
     /**
