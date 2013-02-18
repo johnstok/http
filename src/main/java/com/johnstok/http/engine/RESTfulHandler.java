@@ -19,6 +19,7 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.engine;
 
+import java.io.IOException;
 import com.johnstok.http.sync.Handler;
 import com.johnstok.http.sync.Request;
 import com.johnstok.http.sync.Response;
@@ -48,7 +49,8 @@ public class RESTfulHandler
 
     /** {@inheritDoc} */
     @Override
-    public void handle(final Request request, final Response response) {
+    public void handle(final Request request,
+                       final Response response) throws IOException {
         final Resource r = _dispatcher.dispatch(request, response);
         new Engine().process(r, request, response);
     }

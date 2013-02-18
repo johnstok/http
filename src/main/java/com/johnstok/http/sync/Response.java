@@ -33,11 +33,20 @@ import com.johnstok.http.Configuration;
  *  - what happens if a method is called at wrong time? (Ans. IllStEx);
  *  - response is committed when getOutputStream is called.
  *
- *  NEW ==> COMMITTED ==> CLOSED
+ *  NEW  ==getBody()==>  COMMITTED  ==body.close()==> COMPLETE
  *
  * TODO: Explicitly document the behaviour of a response once it is committed.
- * Responses will be automatically committed immediately prior to writing the
- * response body.
+ * Responses will be automatically committed when the body output stream is
+ * retrieved.
+ *
+ * TODO: The handler MAY flush and/or close body output stream. However,
+ * the server will flush & close the body output stream (if necessary) when the
+ * handler has returned successfully (i.e. no exception thrown). If a handler
+ * wraps the provided OS it will need to ensure that all data is flushed prior
+ * to return.
+ *
+ * TODO: How will the server behave if an error is returned? Describe both
+ * committed and uncommitted scenarios.
  *
  * TODO:Document default vales for:
  *  - status line
@@ -107,6 +116,8 @@ public interface Response {
     /**
      * TODO: Add a description for this method.
      *
+     * TODO: What happens if this method is called more than once? Is the same object returned? IlStEx?
+     *
      * @param value
      */
     OutputStream getBody() throws IOException;
@@ -118,10 +129,5 @@ public interface Response {
     boolean isCommitted();
 
 
-    /**
-     * End the response.
-     *
-     * @throws IOException If an error occurs while closing the connection.
-     */
-    void close() throws IOException; // TODO: Remove throwing of IOException - what can a client of the API do except report.
+    // TODO: void reset(); // Throws IlStEx if committed.
 }

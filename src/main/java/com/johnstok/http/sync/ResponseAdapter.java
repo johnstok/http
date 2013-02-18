@@ -75,13 +75,6 @@ public class ResponseAdapter
 
     /** {@inheritDoc} */
     @Override
-    public void close() throws IOException {
-        _response.close();
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void setStatus(final int code, final String message) {
         _response.setStatus(code, message);
     }

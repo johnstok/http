@@ -152,7 +152,7 @@ public class EngineTest {
 
 
     @Test
-    public void deleteResourceCanBeEnacted() {
+    public void deleteResourceCanBeEnacted() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.DELETE);
@@ -178,7 +178,7 @@ public class EngineTest {
 
 
     @Test
-    public void deleteResourceCannotBeEnacted() {
+    public void deleteResourceCannotBeEnacted() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.DELETE);
@@ -207,7 +207,7 @@ public class EngineTest {
 
 
     @Test
-    public void disallowedMethodGivesNotImplemented() {
+    public void disallowedMethodGivesNotImplemented() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.DELETE);
@@ -223,7 +223,7 @@ public class EngineTest {
 
 
     @Test
-    public void entityTooLarge() {
+    public void entityTooLarge() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -243,7 +243,7 @@ public class EngineTest {
 
 
     @Test
-    public void forbidden() {
+    public void forbidden() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -263,7 +263,7 @@ public class EngineTest {
 
 
     @Test
-    public void deleteWithWildcardIfnonematchGivesPreconditionFailed() { // I13, J18
+    public void deleteWithWildcardIfnonematchGivesPreconditionFailed() throws IOException { // I13, J18
 
         // ARRANGE
         _request.setHeader(Header.IF_NONE_MATCH, "*");
@@ -286,7 +286,7 @@ public class EngineTest {
 
 
     @Test
-    public void deleteWithMatchedIfnonematchGivesPreconditionFailed() { // K13, J18
+    public void deleteWithMatchedIfnonematchGivesPreconditionFailed() throws IOException { // K13, J18
 
         // ARRANGE
         _request.setHeader(Header.IF_NONE_MATCH, "foo"); // FIXME: This value should be quoted - engine needs to parse as an entity-tag.
@@ -313,7 +313,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithMatchedIfnonematchGivesNotModified() { // K13, J18
+    public void getWithMatchedIfnonematchGivesNotModified() throws IOException { // K13, J18
 
         // ARRANGE
         _request.setHeader(Header.IF_NONE_MATCH, "foo");
@@ -334,7 +334,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithLessRecentIfunmodifiedsinceGivesPreconditionFailed() { // H12
+    public void getWithLessRecentIfunmodifiedsinceGivesPreconditionFailed() throws IOException { // H12
 
         // ARRANGE
         _request.setHeader(Header.IF_UNMODIFIED_SINCE, DateHeader.format(new Date(0)));
@@ -355,7 +355,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithUnmatchedIfmatchGivesPreconditionFailed() { // G11
+    public void getWithUnmatchedIfmatchGivesPreconditionFailed() throws IOException { // G11
 
         // ARRANGE
         _request.setHeader(Header.IF_MATCH, "foo");
@@ -376,7 +376,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithFutureIfmodifiedsinceReturnsOk() { // L15
+    public void getWithFutureIfmodifiedsinceReturnsOk() throws IOException { // L15
 
         // ARRANGE
         final Date d = new Date(Long.MAX_VALUE);
@@ -413,7 +413,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithLessRecentIfmodifiedsinceReturnsOk() { // L17
+    public void getWithLessRecentIfmodifiedsinceReturnsOk() throws IOException { // L17
 
         // ARRANGE
         final Date d = new Date(0);
@@ -450,7 +450,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithSameIfmodifiedsinceReturnsNotModified() { // L17
+    public void getWithSameIfmodifiedsinceReturnsNotModified() throws IOException { // L17
 
         // ARRANGE
         final Date d = new Date(1000);
@@ -472,7 +472,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithMoreRecentIfmodifiedsinceReturnsNotModified() { // L17
+    public void getWithMoreRecentIfmodifiedsinceReturnsNotModified() throws IOException { // L17
 
         // ARRANGE
         final Date d = new Date(2000);
@@ -494,7 +494,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithMoreRecentIfunmodifiedsinceReturnsOk() { // H12
+    public void getWithMoreRecentIfunmodifiedsinceReturnsOk() throws IOException { // H12
 
         // ARRANGE
         final Date d = new Date();
@@ -531,7 +531,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithSameIfunmodifiedsinceReturnsOk() { // H12
+    public void getWithSameIfunmodifiedsinceReturnsOk() throws IOException { // H12
 
         // ARRANGE
         final Date d = new Date(1000); // HTTP uses millisecond precision ;-)
@@ -568,7 +568,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithInvalidIfmodifiedsinceReturnsOk() { // L14
+    public void getWithInvalidIfmodifiedsinceReturnsOk() throws IOException { // L14
 
         // ARRANGE
         _request.setHeader(Header.IF_MODIFIED_SINCE, "foo");
@@ -600,7 +600,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithInvalidIfunmodifiedsinceReturnsOk() { // H11
+    public void getWithInvalidIfunmodifiedsinceReturnsOk() throws IOException { // H11
 
         // ARRANGE
         _request.setHeader(Header.IF_UNMODIFIED_SINCE, "foo");
@@ -632,7 +632,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithMatchedIfmatchReturnsOk() { // G11
+    public void getWithMatchedIfmatchReturnsOk() throws IOException { // G11
 
         // ARRANGE
         _request.setHeader(Header.IF_MATCH, "foo");
@@ -668,7 +668,7 @@ public class EngineTest {
 
 
     @Test
-    public void getWithWildcardIfmatchReturnsOk() { // G09
+    public void getWithWildcardIfmatchReturnsOk() throws IOException { // G09
 
         // ARRANGE
         _request.setHeader(Header.IF_MATCH, "*");
@@ -704,7 +704,7 @@ public class EngineTest {
 
 
     @Test
-    public void getForNonExistentResourceGivesPreconditionFailed() {
+    public void getForNonExistentResourceGivesPreconditionFailed() throws IOException {
 
         // ARRANGE
         _request.setHeader(Header.IF_MATCH, "*");
@@ -725,7 +725,7 @@ public class EngineTest {
 
 
     @Test
-    public void getForNonExistentResourceGivesGone() {
+    public void getForNonExistentResourceGivesGone() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -749,7 +749,7 @@ public class EngineTest {
 
 
     @Test
-    public void getForNonExistentResourceGivesMovedPermanently() {
+    public void getForNonExistentResourceGivesMovedPermanently() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -783,7 +783,7 @@ public class EngineTest {
 
 
     @Test
-    public void getForNonExistentResourceGivesMovedTemporarily() {
+    public void getForNonExistentResourceGivesMovedTemporarily() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -817,7 +817,7 @@ public class EngineTest {
 
 
     @Test
-    public void getForNonExistentResourceGivesNotFound() {
+    public void getForNonExistentResourceGivesNotFound() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -839,7 +839,7 @@ public class EngineTest {
 
 
     @Test
-    public void getResourceCanReturnOk() {
+    public void getResourceCanReturnOk() throws IOException {
 
         // ACT
         final Resource resource =
@@ -867,7 +867,7 @@ public class EngineTest {
 
 
     @Test
-    public void requestConnegWithoutAcceptSelectsDefaults() {
+    public void requestConnegWithoutAcceptSelectsDefaults() throws IOException {
 
         // ACT
         final Resource resource =
@@ -915,7 +915,7 @@ public class EngineTest {
 
 
     @Test
-    public void okWithConnegReturnsLanguage() {
+    public void okWithConnegReturnsLanguage() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT_LANGUAGE, "en");
@@ -951,7 +951,7 @@ public class EngineTest {
     }
 
     @Test
-    public void acceptWithUnknownLanguageGivesNoHeader() {
+    public void acceptWithUnknownLanguageGivesNoHeader() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT_LANGUAGE, "en");
@@ -983,7 +983,7 @@ public class EngineTest {
 
 
     @Test
-    public void okWithConnegReturnsEncoding() {
+    public void okWithConnegReturnsEncoding() throws IOException {
 
         // ACT
         _request.setHeader(
@@ -1022,7 +1022,7 @@ public class EngineTest {
 
 
     @Test
-    public void acceptWithUnknownEncodingGivesNoHeader() {
+    public void acceptWithUnknownEncodingGivesNoHeader() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT_ENCODING, ContentCoding.GZIP.toString());
@@ -1054,7 +1054,7 @@ public class EngineTest {
 
 
     @Test
-    public void okWithConnegReturnsMediaType() {
+    public void okWithConnegReturnsMediaType() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT, MediaType.HTML.toString());
@@ -1086,7 +1086,7 @@ public class EngineTest {
 
 
     @Test
-    public void okWithConnegReturnsCharset() {
+    public void okWithConnegReturnsCharset() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT_CHARSET, "utf-8");
@@ -1123,7 +1123,7 @@ public class EngineTest {
 
 
     @Test
-    public void acceptWithUnknownCharsetGivesNoCharset() {
+    public void acceptWithUnknownCharsetGivesNoCharset() throws IOException {
 
         // ACT
         _request.setHeader(Header.ACCEPT_CHARSET, "utf-8");
@@ -1155,7 +1155,7 @@ public class EngineTest {
 
 
     @Test
-    public void malformed() {
+    public void malformed() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -1175,7 +1175,7 @@ public class EngineTest {
 
 
     @Test
-    public void optionsRequested() {
+    public void optionsRequested() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.OPTIONS);
@@ -1267,7 +1267,7 @@ public class EngineTest {
 
 
     @Test
-    public void putForMissingResourceCanBeRedirected() {
+    public void putForMissingResourceCanBeRedirected() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.PUT);
@@ -1302,7 +1302,7 @@ public class EngineTest {
 
 
     @Test
-    public void putForMissingResourceCanCauseConflict() {
+    public void putForMissingResourceCanCauseConflict() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.PUT);
@@ -1370,7 +1370,7 @@ public class EngineTest {
 
 
     @Test
-    public void serviceUnavailable() {
+    public void serviceUnavailable() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -1415,7 +1415,7 @@ public class EngineTest {
     }
 
     @Test
-    public void unacceptableRequestCharsetGivesNotAcceptable() {
+    public void unacceptableRequestCharsetGivesNotAcceptable() throws IOException {
 
         // ARRANGE
         _request.setHeader(Header.ACCEPT_CHARSET, "UTF-8");
@@ -1436,7 +1436,7 @@ public class EngineTest {
     }
 
     @Test
-    public void unacceptableRequestEncodingGivesNotAcceptable() {
+    public void unacceptableRequestEncodingGivesNotAcceptable() throws IOException {
 
         // ARRANGE
         _request.setHeader(
@@ -1454,7 +1454,7 @@ public class EngineTest {
 
 
     @Test
-    public void unacceptableRequestLanguageGivesNotAcceptable() {
+    public void unacceptableRequestLanguageGivesNotAcceptable() throws IOException {
 
         // ARRANGE
         _request.setHeader(Header.ACCEPT_LANGUAGE, Locale.UK.toString());
@@ -1475,7 +1475,7 @@ public class EngineTest {
 
 
     @Test
-    public void unacceptableRequestMediaTypeGivesNotAcceptable() {
+    public void unacceptableRequestMediaTypeGivesNotAcceptable() throws IOException {
 
         // ARRANGE
         _request.setHeader(Header.ACCEPT, "text/html");
@@ -1498,7 +1498,7 @@ public class EngineTest {
 
 
     @Test
-    public void unauthorized() {
+    public void unauthorized() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -1515,7 +1515,7 @@ public class EngineTest {
 
 
     @Test
-    public void unimplementedContentHeader() {
+    public void unimplementedContentHeader() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(
@@ -1535,7 +1535,7 @@ public class EngineTest {
 
 
     @Test
-    public void unknownContentType() {
+    public void unknownContentType() throws IOException {
 
         // ARRANGE
         _request.setHeader(Header.CONTENT_TYPE, "text/html");
@@ -1556,7 +1556,7 @@ public class EngineTest {
 
 
     @Test
-    public void unknownMethodGivesNotImplemented() {
+    public void unknownMethodGivesNotImplemented() throws IOException {
 
         // ARRANGE
         _request.setMethod(Method.parse("FOO"));                   //$NON-NLS-1$
@@ -1572,7 +1572,7 @@ public class EngineTest {
 
 
     @Test
-    public void uriTooLong() {
+    public void uriTooLong() throws IOException {
 
         // ARRANGE
         final Resource resource = new TestResource(

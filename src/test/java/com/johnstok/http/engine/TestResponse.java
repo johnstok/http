@@ -81,13 +81,6 @@ public class TestResponse
 
     /** {@inheritDoc} */
     @Override
-    public void close() throws IOException {
-        /* No Op */
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
     public void setStatus(final int code, final String reasonPhrase) {
         _code = code;
         _reasonPhrase = reasonPhrase;
