@@ -33,8 +33,8 @@ public class TestResource
 
     /** {@inheritDoc} */
     @Override
-    public Map<MediaType, ? extends BodyReader> getContentTypesAccepted() {
-        return new HashMap<MediaType, BodyReader>();
+    public Map<MediaType, ? extends BodyReader<?>> getContentTypesAccepted() {
+        return new HashMap<MediaType, BodyReader<?>>();
     }
 
 

@@ -82,7 +82,7 @@ public interface Resource {
      *
      * @return A map of media type => body reader.
      */
-    public Map<MediaType, ? extends BodyReader> getContentTypesAccepted();
+    public Map<MediaType, ? extends BodyReader<?>> getContentTypesAccepted();
 
 //-- TODO ^
 

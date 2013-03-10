@@ -21,15 +21,16 @@ package com.johnstok.http.engine;
 
 import java.io.IOException;
 import java.io.InputStream;
-import com.johnstok.http.HttpException;
 
 
 /**
  * API for reading the body of a request.
  *
+ * @param <T> The type of object the reader will create.
+ *
  * @author Keith Webster Johnston.
  */
-public interface BodyReader {
+public interface BodyReader<T> {
 
 
     /**
@@ -37,6 +38,5 @@ public interface BodyReader {
      *
      * @param inputStream The input stream to read from.
      */
-    void read(InputStream inputStream) throws IOException, HttpException;
-    // FIXME: Do we need to throw both these exceptions?
+    T read(InputStream inputStream) throws IOException;
 }

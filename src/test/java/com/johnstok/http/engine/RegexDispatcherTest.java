@@ -43,7 +43,7 @@ public class RegexDispatcherTest {
 
         /** {@inheritDoc} */
         @Override
-        public Map<MediaType, ? extends BodyReader> getContentTypesAccepted() {
+        public Map<MediaType, ? extends BodyReader<?>> getContentTypesAccepted() {
             throw new UnsupportedOperationException("Method not implemented.");
         }
 

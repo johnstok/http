@@ -82,7 +82,7 @@ public class EngineTest {
 
     private static final class SimpleBodyReader
         implements
-            BodyReader {
+            BodyReader<byte[]> {
 
         private final ByteArrayOutputStream _baos;
         private final String                _createdPath;
@@ -110,12 +110,14 @@ public class EngineTest {
 
 
         @Override
-        public void read(final InputStream inputStream) throws IOException, HttpException {
+        public byte[] read(final InputStream inputStream) throws IOException, HttpException {
             if (!_resource.exists()) {
                 _response.setHeader(Header.LOCATION, _createdPath);
             }
 
             Utils.copy(inputStream, _baos);
+
+            return _baos.toByteArray();
         }
     }
 
@@ -1250,7 +1252,7 @@ public class EngineTest {
             }
 
             @Override
-            public Map<MediaType, ? extends BodyReader> getContentTypesAccepted() {
+            public Map<MediaType, ? extends BodyReader<?>> getContentTypesAccepted() {
                 return Collections.singletonMap(MediaType.ANY, new SimpleBodyReader(baos, null, this, _response));
             }
         };
@@ -1352,7 +1354,7 @@ public class EngineTest {
             }
 
             @Override
-            public Map<MediaType, ? extends BodyReader> getContentTypesAccepted() {
+            public Map<MediaType, ? extends BodyReader<?>> getContentTypesAccepted() {
                 return Collections.singletonMap(MediaType.ANY, new SimpleBodyReader(baos, createdPath, this, _response));
             }
         };
