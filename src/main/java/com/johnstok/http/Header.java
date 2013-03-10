@@ -204,83 +204,83 @@ public final class Header {
         "Retry-After";                                             //$NON-NLS-1$
 
     /** AUTHORIZATION: String */
-    private static final String AUTHORIZATION =
+    public static final String AUTHORIZATION =
         "Authorization";                                           //$NON-NLS-1$
 
     /** EXPECT: String */
-    private static final String EXPECT =
+    public static final String EXPECT =
         "Expect";                                                  //$NON-NLS-1$
 
     /** FROM: String */
-    private static final String FROM =
+    public static final String FROM =
         "From";                                                    //$NON-NLS-1$
 
     /** IF_RANGE: String */
-    private static final String IF_RANGE =
+    public static final String IF_RANGE =
         "If-Range";                                                //$NON-NLS-1$
 
     /** MAX_FORWARDS: String */
-    private static final String MAX_FORWARDS =
+    public static final String MAX_FORWARDS =
         "Max-Forwards";                                            //$NON-NLS-1$
 
     /** PROXY_AUTHORIZATION: String */
-    private static final String PROXY_AUTHORIZATION =
+    public static final String PROXY_AUTHORIZATION =
         "Proxy-Authorization";                                     //$NON-NLS-1$
 
     /** REFERER: String */
-    private static final String REFERER =
+    public static final String REFERER =
         "Referer";                                                 //$NON-NLS-1$
 
     /** TE: String*/
-    private static final String TE =
+    public static final String TE =
         "TE";                                                      //$NON-NLS-1$
 
     /** USER_AGENT: String */
-    private static final String USER_AGENT =
+    public static final String USER_AGENT =
         "User-Agent";                                              //$NON-NLS-1$
 
     /** CACHE_CONTROL : String. */
-    private static final String CACHE_CONTROL =
+    public static final String CACHE_CONTROL =
         "Cache-Control";                                           //$NON-NLS-1$
 
     /** CONNECTION : String. */
-    private static final String CONNECTION =
+    public static final String CONNECTION =
         "Connection";                                              //$NON-NLS-1$
 
     /** PRAGMA : String. */
-    private static final String PRAGMA =
+    public static final String PRAGMA =
         "Pragma";                                                  //$NON-NLS-1$
 
     /** TRAILER : String. */
-    private static final String TRAILER =
+    public static final String TRAILER =
         "Trailer";                                                 //$NON-NLS-1$
 
     /** TRANSFER_ENCODING : String. */
-    private static final String TRANSFER_ENCODING =
+    public static final String TRANSFER_ENCODING =
         "Transfer-Encoding";                                       //$NON-NLS-1$
 
     /** UPGRADE : String. */
-    private static final String UPGRADE =
+    public static final String UPGRADE =
         "Upgrade";                                                 //$NON-NLS-1$
 
     /** VIA : String. */
-    private static final String VIA =
+    public static final String VIA =
         "Via";                                                     //$NON-NLS-1$
 
     /** WARNING : String. */
-    private static final String WARNING =
+    public static final String WARNING =
         "Warning";                                                 //$NON-NLS-1$
 
     /** CONTENT_LOCATION : String */
-    private static final String CONTENT_LOCATION =
+    public static final String CONTENT_LOCATION =
         "Content-Location";                                        //$NON-NLS-1$
 
     /** CONTENT_MD5 : String */
-    private static final String CONTENT_MD5 =
+    public static final String CONTENT_MD5 =
         "Content-MD5";                                             //$NON-NLS-1$
 
     /** EXPIRES : String*/
-    private static final String EXPIRES =
+    public static final String EXPIRES =
         "Expires";                                                 //$NON-NLS-1$
 
 
