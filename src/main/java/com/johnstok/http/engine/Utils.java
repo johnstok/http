@@ -154,4 +154,21 @@ public final class Utils {
             System.err.println("Error closing closeable: "+e.getMessage()); // FIXME: Log a warning.
         }
     }
+
+
+    /**
+     * Check that the supplied object is not NULL.
+     *
+     * @param object The object reference to test.
+     *
+     * @return The {@code object} parameter.
+     *
+     * @throws IllegalArgumentException if the object reference is NULL.
+     */
+    public static <T> T checkNotNull(final T object) {
+        if (null==object) {
+            throw new IllegalArgumentException("Object cannot be NULL.");
+        }
+        return object;
+    }
 }
