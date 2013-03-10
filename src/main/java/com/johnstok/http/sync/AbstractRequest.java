@@ -22,6 +22,7 @@ package com.johnstok.http.sync;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.List;
+import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -45,8 +46,8 @@ public abstract class AbstractRequest
      */
     public AbstractRequest(final InetSocketAddress address,
                            final Charset uriCharset) {
-        _address = address; // TODO: Not null.
-        _uriCharset = uriCharset;
+        _address = Utils.checkNotNull(address);
+        _uriCharset = Utils.checkNotNull(uriCharset);
     }
 
 

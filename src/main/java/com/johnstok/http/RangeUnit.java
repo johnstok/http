@@ -21,6 +21,7 @@ package com.johnstok.http;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -60,8 +61,7 @@ public class RangeUnit {
      * @param unit The string representation of the range unit.
      */
     public RangeUnit(final String unit) {
-        // TODO: Reject null.
-        _unit = unit;
+        _unit = Utils.checkNotNull(unit);
     }
 
 
@@ -80,7 +80,7 @@ public class RangeUnit {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_unit == null) ? 0 : _unit.hashCode());
+        result = (prime * result) + ((_unit == null) ? 0 : _unit.hashCode());
         return result;
     }
 

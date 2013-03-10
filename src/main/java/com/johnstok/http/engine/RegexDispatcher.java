@@ -60,7 +60,7 @@ public class RegexDispatcher<T>
      */
     public RegexDispatcher(final T configuration) {
         _bindings      = new LinkedHashMap<Pattern, Class<? extends Resource>>();
-        _configuration = configuration; // FIXME: Check for NULL.
+        _configuration = Utils.checkNotNull(configuration);
     }
 
 

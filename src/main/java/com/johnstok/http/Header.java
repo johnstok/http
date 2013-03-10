@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -611,15 +612,14 @@ public final class Header {
     private final String _value;
 
     private Header(final String name, final String value) {
-        // TODO: Disallow NULL values.
         // TODO: How do we handle non-ASCII characters - escaping?
         /*
          *  TODO: This class has static query methods (isEntityHeader) but the
          *  Method class has non-static methods (isSafe) - change to be
          *  consistent.
          */
-        _name = name;
-        _value = value;
+        _name = Utils.checkNotNull(name);
+        _value = Utils.checkNotNull(value);
     }
 
 

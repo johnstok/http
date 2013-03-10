@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
+import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -44,7 +45,7 @@ public class RequestAdapter
      * @param delegate
      */
     public RequestAdapter(final Request delegate) {
-        _delegate = delegate; // FIXME: Check for NULL.
+        _delegate = Utils.checkNotNull(delegate);
     }
 
 
