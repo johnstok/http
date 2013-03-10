@@ -20,6 +20,7 @@
 package com.johnstok.http.engine;
 
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -137,6 +138,20 @@ public final class Utils {
             return URLDecoder.decode(trim, charset.name());
         } catch (UnsupportedEncodingException e) {
             throw new UnsupportedCharsetException(charset.name());
+        }
+    }
+
+
+    /**
+     * Close a closeable object, logging any exception.
+     *
+     * @param closeable The object to close.
+     */
+    public static void close(final Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            System.err.println("Error closing closeable: "+e.getMessage()); // FIXME: Log a warning.
         }
     }
 }
