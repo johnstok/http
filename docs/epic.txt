@@ -1,9 +1,66 @@
-Headers
-Query parsing
-Conneg
-REST engine
-Security (see also rfc-2617)
-Sessions
-Caching
-Chunked encoding
-Connection mgmt, pipelining & continue
+[ ] Headers
+[ ] Query param parsing
+[ ] Matrix param parsing
+[ ] Conneg
+[ ] REST engine
+[ ] Sessions?
+[x] Caching
+[ ] Chunked encoding
+[ ] Connection mgmt, pipelining & continue
+[ ] Dispatch
+     - based on path & method
+     - decoding? No.
+     - Default regex [^/]+
+     - Invocation : explicit or by reflection?
+     - type conversion for invocation
+     - default values for invocation
+
+--
+
+REST Resource
+ - 2** return
+ - 3** throw
+ - 4** throw
+ - 5** throw
+ - Interface per HTTP method?
+ - conneg & conditional execution
+   - explicit
+   - filter
+   - template method
+
+MVC
+ - How does a controller differ from a handler?
+ - How does a view differ from a body writer?
+ 
+--
+
+Security
+ - Authentication
+ - Confidentiality
+ - Hashing
+ - Document signing
+ - rfc 2617
+
+--
+
+[ ] Asset serving (i.e. default servlet)
+[ ] HTTPException accepts body (& headers?) in constructor
+[ ] Readers / Writers
+     - XMLSAXBodyReader
+     - JSONBodyReader
+     - ChunkedStringBodyWriter
+     - ChunkedByteBodyWriter
+     - EventSourceBodyWriter
+[ ] URL templating
+[ ] Max size for readers
+[ ] Cookies
+[ ] BodyWriter can set?
+     - Content-Length
+     - Content-Type
+     - Content-Encoding
+     - Other?
+[ ] Confirm charset names for Charset class are consistent with those in HTTP
+[ ] MultipartBodyReader (using Mime4J)
+[ ] HandlerAdapter - acts like a filter calls a delegate
+[ ] Request.setAttribute(key,value)
+[ ] Form processing and validation (see play framework)
