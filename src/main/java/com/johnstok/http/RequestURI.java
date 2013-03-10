@@ -94,7 +94,12 @@ import java.net.URISyntaxException;
  *
  * @author Keith Webster Johnston.
  */
-@Specification(name="rfc-2616", section="5.1.2")
+@Specifications({
+    @Specification(name="rfc-2616", section="3.2"),
+    @Specification(name="rfc-2616", section="5.1.2"),
+    @Specification(name="rfc-3986"),
+    @Specification(name="rfc-2396")
+})
 public class RequestURI {
 
     public static final String SYNTAX = // FIXME: This is a naïve regex.
@@ -283,6 +288,9 @@ public class RequestURI {
 
     /**
      * Convert the request URI to a {@link URI} object.
+     *
+     * <p>Note that the URI class always encodes / decodes using the UTF-8
+     * character set.</p>
      *
      * @return The URI representation of this request URI.
      */
