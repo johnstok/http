@@ -93,6 +93,13 @@ public final class TransferCoding {
         new TransferCoding("chunked");                             //$NON-NLS-1$
 
 
+    /**
+     * IDENTITY : TransferCoding.
+     */
+    public static final TransferCoding IDENTITY =
+        new TransferCoding("identity");                            //$NON-NLS-1$
+
+
     private final String _name;
     private final Map<String, String> _parameters;
 
@@ -166,7 +173,7 @@ public final class TransferCoding {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+        result = (prime * result) + ((_name == null) ? 0 : _name.hashCode());
         return result;
     }
 
