@@ -258,7 +258,7 @@ public class Engine {
                               final Request request,
                               final Response response) throws IOException {
         try {
-            response.setHeader(Header.SERVER, "wm4j/1.0.0");
+            response.setHeader(Header.SERVER, "http/1.0.0");
             response.setHeader(Header.DATE, DateHeader.format(_now));
             B12_service_available(resource, request, response);
         } catch (final HttpException e) {
