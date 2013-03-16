@@ -34,7 +34,7 @@ public interface BodyWriter {
      * Write the body to the supplied output stream.
      *
      * @param outputStream The output stream to write to.
+     *  <p>The supplied output stream will not be closed.
      */
     void write(OutputStream outputStream) throws IOException;
-
 }

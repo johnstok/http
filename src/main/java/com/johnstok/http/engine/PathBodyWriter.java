@@ -53,7 +53,6 @@ public final class PathBodyWriter
         try {
             Utils.copy(is, os);
         } finally {
-            Utils.close(os);
             Utils.close(is);
         }
     }
