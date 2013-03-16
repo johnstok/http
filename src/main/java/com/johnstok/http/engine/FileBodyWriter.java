@@ -51,7 +51,7 @@ public class FileBodyWriter
     @Override
     @SuppressWarnings("resource")
     public void write(final OutputStream outputStream) throws IOException {
-        FileInputStream fis = new FileInputStream(_file);
+        final FileInputStream fis = new FileInputStream(_file);
         try {
             Utils.copy(fis, outputStream);
         } finally {
