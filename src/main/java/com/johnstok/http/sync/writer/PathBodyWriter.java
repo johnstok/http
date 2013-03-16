@@ -17,13 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.engine;
+package com.johnstok.http.sync.writer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import com.johnstok.http.engine.Utils;
 import com.johnstok.http.sync.BodyWriter;
 
 /**

@@ -17,43 +17,47 @@
  * You should have received a copy of the GNU General Public License
  * along with http. If not, see <http://www.gnu.org/licenses/>.
  *---------------------------------------------------------------------------*/
-package com.johnstok.http.engine;
+package com.johnstok.http.sync.writer;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
+import com.johnstok.http.engine.Utils;
 import com.johnstok.http.sync.BodyWriter;
 
+
 /**
- * A body writer that reads from a URL.
+ * Writes a message body from a file.
  *
  * @author Keith Webster Johnston.
  */
-public final class URLBodyWriter
+public class FileBodyWriter
     implements
         BodyWriter {
 
-    private final URL _url;
+    private final File _file;
 
 
     /**
      * Constructor.
      *
-     * @param url The URL to read from.
+     * @param file The file to write.
      */
-    public URLBodyWriter(final URL url) {
-        _url = Utils.checkNotNull(url);
+    public FileBodyWriter(final File file) {
+        _file = Utils.checkNotNull(file);
     }
 
 
+    /** {@inheritDoc} */
     @Override
-    public void write(final OutputStream os) throws IOException {
-        final InputStream is = _url.openStream();
+    @SuppressWarnings("resource")
+    public void write(final OutputStream outputStream) throws IOException {
+        final FileInputStream fis = new FileInputStream(_file);
         try {
-            Utils.copy(is, os);
+            Utils.copy(fis, outputStream);
         } finally {
-            Utils.close(is);
+            Utils.close(fis);
         }
     }
 }
