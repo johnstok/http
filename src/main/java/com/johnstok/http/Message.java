@@ -86,12 +86,12 @@ class Message {
         // FIXME: Ignore leading CRLF pairs - see RFC-2616§4.1.
         // FIXME: Apply a maximum length for a URI - see RFC-2616§3.2.1.
         // Read start line
-        while (!(13==prev && 10==curr)) {
+        while (!((13==prev) && (10==curr))) {
             baos.write(prev);
             prev = curr;
             curr = is.read();
         }
-        _startLine = new String(baos.toByteArray(), "iso-8859-1");
+        _startLine = new String(baos.toByteArray(), "iso-8859-1"); // TODO: Confirm this encoding is right - shouldn't it be ASCII?
 
         // Read headers
         _headers = new ArrayList<String>();
@@ -101,7 +101,7 @@ class Message {
             baos = new ByteArrayOutputStream();
             prev = is.read();
             curr = is.read();
-            while (!(13==prev && 10==curr)) {
+            while (!((13==prev) && (10==curr))) {
                 baos.write(prev);
                 prev = curr;
                 curr = is.read();
