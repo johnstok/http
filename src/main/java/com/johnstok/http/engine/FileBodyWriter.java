@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import com.johnstok.http.sync.BodyWriter;
 
 
 /**

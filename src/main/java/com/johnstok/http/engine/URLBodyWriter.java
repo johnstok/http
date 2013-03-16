@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import com.johnstok.http.sync.BodyWriter;
 
 /**
  * A body writer that reads from a URL.

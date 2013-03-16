@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import com.johnstok.http.Specification;
+import com.johnstok.http.sync.BodyReader;
 
 
 /**

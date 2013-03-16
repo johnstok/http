@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import com.johnstok.http.sync.BodyWriter;
 
 /**
  * A body writer that reads from a {@link Path}.

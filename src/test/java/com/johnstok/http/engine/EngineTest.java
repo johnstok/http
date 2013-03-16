@@ -34,6 +34,8 @@ import com.johnstok.http.Method;
 import com.johnstok.http.ServerHttpException;
 import com.johnstok.http.Status;
 import com.johnstok.http.headers.DateHeader;
+import com.johnstok.http.sync.BodyReader;
+import com.johnstok.http.sync.BodyWriter;
 import com.johnstok.http.sync.Response;
 
 

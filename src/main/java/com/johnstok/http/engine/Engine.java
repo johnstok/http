@@ -45,6 +45,7 @@ import com.johnstok.http.negotiation.CharsetNegotiator;
 import com.johnstok.http.negotiation.ContentNegotiator;
 import com.johnstok.http.negotiation.LanguageNegotiator;
 import com.johnstok.http.negotiation.MediaTypeNegotiator;
+import com.johnstok.http.sync.BodyReader;
 import com.johnstok.http.sync.Request;
 import com.johnstok.http.sync.Response;
 
