@@ -19,6 +19,10 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,4 +125,51 @@ public class ETag {
 
 
     // TODO: Entity Tag equality - defined outside of 3.11.
+
+
+    /**
+     * Calculate the ETag for a file.
+     *
+     * @param file The file to analyse.
+     *
+     * @return The ETag, as a string.
+     */
+    public static String eTag(final File file) { // TODO: Return an ETag rather than a string.
+        try {
+            return
+                    eTag(
+                            file.length(),
+                            file.lastModified(),
+                            file.getCanonicalPath());
+        } catch (final IOException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Calculate the ETag for a resource.
+     *
+     * @return The ETag, as a string.
+     */
+    public static String eTag(final long length,
+                              final long lastModified,
+                              final String path) { // TODO: Return an ETag rather than a string.
+        try {
+            final String uid =
+                    length
+                            +":"+lastModified                                  //$NON-NLS-1$
+                            +":"+path;                                         //$NON-NLS-1$
+
+            final MessageDigest m =
+                    MessageDigest.getInstance("MD5");                  //$NON-NLS-1$
+            final byte[] data = uid.getBytes();
+            m.update(data, 0, data.length);
+            final BigInteger i = new BigInteger(1, m.digest());
+            return String.format("%1$032X", i);                    //$NON-NLS-1$
+
+        } catch (final Exception e) {
+            // FIXME: Log error?
+            return null;
+        }
+    }
 }
