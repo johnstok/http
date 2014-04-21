@@ -44,18 +44,15 @@ public final class PathBodyWriter
      *
      * @param path The path to read from.
      */
-    PathBodyWriter(final Path path) {
+    public PathBodyWriter(final Path path) {
         _resourcePath = Utils.checkNotNull(path);
     }
 
 
     @Override
     public void write(final OutputStream os) throws IOException {
-        final InputStream is = Files.newInputStream(_resourcePath);
-        try {
+        try (InputStream is = Files.newInputStream(_resourcePath)) {
             Utils.copy(is, os);
-        } finally {
-            Utils.close(is);
         }
     }
 }

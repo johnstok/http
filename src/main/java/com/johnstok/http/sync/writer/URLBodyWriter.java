@@ -50,11 +50,8 @@ public final class URLBodyWriter
 
     @Override
     public void write(final OutputStream os) throws IOException {
-        final InputStream is = _url.openStream();
-        try {
+        try (InputStream is = _url.openStream()) {
             Utils.copy(is, os);
-        } finally {
-            Utils.close(is);
         }
     }
 }

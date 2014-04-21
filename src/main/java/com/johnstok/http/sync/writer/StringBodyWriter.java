@@ -56,12 +56,8 @@ public class StringBodyWriter
     /** {@inheritDoc} */
     @Override
     public void write(final OutputStream outputStream) throws IOException {
-        final InputStream is =
-            new ByteArrayInputStream(_string.getBytes(_charset)); // FIXME: duplicates string in memory as a byte array.
-        try {
+        try (InputStream is = new ByteArrayInputStream(_string.getBytes(_charset))) { // FIXME: duplicates string in memory as a byte array.
             Utils.copy(is, outputStream);
-        } finally {
-            Utils.close(is);
         }
     }
 }
