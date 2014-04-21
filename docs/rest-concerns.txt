@@ -1,0 +1,14 @@
+ - Service availability => managed via 'Server' interface, config via JMX
+ - Message constraints (malformed, URI too long, unknown method) => managed via 'Server' impl
+ - Resource authentication/authorization => resource implements 'Secure' interface
+ - Conneg => resource implements 4x '*Negotiable' interface
+ - Conditional requests => implement Taggable, Modifiable interfaces
+ - New resource object for each request - how does dispatch work?
+ - Redirects are handled by throwing the relevant exception.
+ - Multiple choices handled by throwing relevant exception.
+ - Caching is supported via a 'Cacheable' interface.
+ - OPTIONS support?
+ - TRACE support?
+ - HEAD support?
+ - Continue support
+ - Consider making 'Status' an interface, then 5x enum's - 1 each for different class of status code (success, redirect, etc.)
