@@ -24,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import com.johnstok.http.engine.Utils;
+import java.util.Objects;
+
+import com.johnstok.http.IO;
 import com.johnstok.http.sync.BodyWriter;
 
 
@@ -48,8 +50,8 @@ public class StringBodyWriter
      * @param charset The character set used to encode the string.
      */
     public StringBodyWriter(final String string, final Charset charset) {
-        _string = Utils.checkNotNull(string);
-        _charset = Utils.checkNotNull(charset);
+        _string = Objects.requireNonNull(string);
+        _charset = Objects.requireNonNull(charset);
     }
 
 
@@ -57,7 +59,7 @@ public class StringBodyWriter
     @Override
     public void write(final OutputStream outputStream) throws IOException {
         try (InputStream is = new ByteArrayInputStream(_string.getBytes(_charset))) { // FIXME: duplicates string in memory as a byte array.
-            Utils.copy(is, outputStream);
+            IO.copy(is, outputStream);
         }
     }
 }

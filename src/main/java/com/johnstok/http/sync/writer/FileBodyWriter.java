@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import com.johnstok.http.engine.Utils;
+import java.util.Objects;
+
+import com.johnstok.http.IO;
 import com.johnstok.http.sync.BodyWriter;
 
 
@@ -45,7 +47,7 @@ public class FileBodyWriter
      * @param file The file to write.
      */
     public FileBodyWriter(final File file) {
-        _file = Utils.checkNotNull(file);
+        _file = Objects.requireNonNull(file);
     }
 
 
@@ -54,7 +56,7 @@ public class FileBodyWriter
     @SuppressWarnings("resource")
     public void write(final OutputStream outputStream) throws IOException {
         try (FileInputStream fis = new FileInputStream(_file)) {
-            Utils.copy(fis, outputStream);
+            IO.copy(fis, outputStream);
         }
     }
 }

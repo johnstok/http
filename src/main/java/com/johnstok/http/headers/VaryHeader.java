@@ -24,7 +24,6 @@ import java.util.TreeSet;
 import com.johnstok.http.HeaderName;
 import com.johnstok.http.Specification;
 import com.johnstok.http.Specifications;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -53,6 +52,6 @@ public class VaryHeader extends HeaderName<SortedSet<String>> {
     /** {@inheritDoc} */
     @Override
     public String write(final SortedSet<String> methods) {
-        return Utils.join(methods, ',').toString();
+        return String.join(",", methods);
     }
 }

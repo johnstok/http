@@ -21,7 +21,6 @@ package com.johnstok.http;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -45,7 +44,7 @@ public class Path {
 
         final String[] segments = rawPath.split("/");
         for (final String s : segments) {
-            final String segment = Utils.decode(s, encodingCharset);
+            final String segment = UrlCodec.decode(s, encodingCharset);
             if ((segment.length()>0) && !".".equals(segment)) {
                 if ("..".equals(segment) && (_segments.size()>0)) {
                     final int lastIndex = _segments.size()-1;
@@ -88,6 +87,6 @@ public class Path {
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return "/"+Utils.join(_segments, '/');
+        return "/"+String.join("/", _segments);
     }
 }

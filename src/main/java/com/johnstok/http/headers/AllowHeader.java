@@ -21,11 +21,12 @@ package com.johnstok.http.headers;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.johnstok.http.HeaderName;
 import com.johnstok.http.Method;
 import com.johnstok.http.Specification;
 import com.johnstok.http.Specifications;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -55,7 +56,8 @@ public class AllowHeader extends HeaderName<Set<Method>> {
     /** {@inheritDoc} */
     @Override
     public String write(final Set<Method> methods) {
-        return Utils.join(methods, ',').toString();
+        return
+            methods.stream().map(Method::toString).collect(Collectors.joining(","));
     }
 
     // TODO: Implement logic in section 5.1.1.

@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import com.johnstok.http.engine.Utils;
+import java.util.Objects;
+
+import com.johnstok.http.IO;
 import com.johnstok.http.sync.BodyWriter;
 
 /**
@@ -44,14 +46,14 @@ public final class URLBodyWriter
      * @param url The URL to read from.
      */
     public URLBodyWriter(final URL url) {
-        _url = Utils.checkNotNull(url);
+        _url = Objects.requireNonNull(url);
     }
 
 
     @Override
     public void write(final OutputStream os) throws IOException {
         try (InputStream is = _url.openStream()) {
-            Utils.copy(is, os);
+            IO.copy(is, os);
         }
     }
 }

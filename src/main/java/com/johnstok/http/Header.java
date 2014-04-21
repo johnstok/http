@@ -19,16 +19,9 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -618,8 +611,8 @@ public final class Header {
          *  Method class has non-static methods (isSafe) - change to be
          *  consistent.
          */
-        _name = Utils.checkNotNull(name);
-        _value = Utils.checkNotNull(value);
+        _name = Objects.requireNonNull(name);
+        _value = Objects.requireNonNull(value);
     }
 
 

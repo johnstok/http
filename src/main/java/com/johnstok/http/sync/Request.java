@@ -84,6 +84,10 @@ public interface Request {
     InetSocketAddress getClientAddress();
 
 
+    // TODO: Remove all the below header methods and replace with a single method:
+    // List<Header> getHeaders();
+
+
     /**
      * Look up the value of an incoming request header.
      *

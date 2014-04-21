@@ -23,8 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+
 import com.johnstok.http.Specification;
-import com.johnstok.http.engine.Utils;
 import com.johnstok.http.sync.BodyReader;
 
 
@@ -59,7 +60,7 @@ public class StringBodyReader
      * NULL is not allowed.
      */
     public StringBodyReader(final Charset charset) {
-        _charset = Utils.checkNotNull(charset);
+        _charset = Objects.requireNonNull(charset);
     }
 
 

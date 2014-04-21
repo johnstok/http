@@ -19,9 +19,9 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -61,7 +61,7 @@ public class RangeUnit {
      * @param unit The string representation of the range unit.
      */
     public RangeUnit(final String unit) {
-        _unit = Utils.checkNotNull(unit);
+        _unit = Objects.requireNonNull(unit);
     }
 
 

@@ -19,7 +19,7 @@
  *---------------------------------------------------------------------------*/
 package com.johnstok.http.sync;
 
-import com.johnstok.http.engine.Utils;
+import java.util.Objects;
 
 
 /**
@@ -43,7 +43,7 @@ public abstract class Filter
      * @param delegate The handler to call next.
      */
     public Filter(final Handler delegate) {
-        _delegate = Utils.checkNotNull(delegate);
+        _delegate = Objects.requireNonNull(delegate);
     }
 
 

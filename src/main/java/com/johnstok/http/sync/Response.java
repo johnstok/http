@@ -48,6 +48,8 @@ import com.johnstok.http.Configuration;
  * TODO: How will the server behave if an error is returned? Describe both
  * committed and uncommitted scenarios.
  *
+ * TODO: Document what is escaping is done? E.g. to prevent response splitting, etc.
+ *
  * TODO:Document default vales for:
  *  - status line
  *  - headers

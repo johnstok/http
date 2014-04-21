@@ -22,7 +22,8 @@ package com.johnstok.http.sync.reader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import com.johnstok.http.engine.Utils;
+
+import com.johnstok.http.IO;
 import com.johnstok.http.sync.BodyReader;
 
 
@@ -39,12 +40,9 @@ public class ByteArrayBodyReader
     @Override
     @SuppressWarnings("resource")
     public byte[] read(final InputStream inputStream) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try {
-            Utils.copy(inputStream, baos);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            IO.copy(inputStream, baos);
             return baos.toByteArray();
-        } finally {
-            Utils.close(baos);
         }
     }
 }

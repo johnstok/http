@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.johnstok.http.engine.Utils;
 
 
 /**
@@ -55,13 +54,13 @@ public class Query {
             if (0==param.trim().length()) { continue; }
             String[] paramParts = param.split("=");
             if (1==paramParts.length) {
-                String key = Utils.decode(paramParts[0].trim(), charset);
+                String key = UrlCodec.decode(paramParts[0].trim(), charset);
                 if (0==key.length()) { continue; }
                 List<String> values = _params.get(key);
                 if (null==values) { _params.put(key, new ArrayList<String>()); }
             } else if (2==paramParts.length) {
-                String key = Utils.decode(paramParts[0].trim(), charset);
-                String value = Utils.decode(paramParts[1].trim(), charset);
+                String key = UrlCodec.decode(paramParts[0].trim(), charset);
+                String value = UrlCodec.decode(paramParts[1].trim(), charset);
                 if (0==key.length()) { continue; }
                 List<String> values = _params.get(key);
                 if (null==values) { _params.put(key, new ArrayList<String>()); }
@@ -92,8 +91,6 @@ public class Query {
      * string.
      *
      * @param paramName The name of the required query parameter.
-     * @param defaultValue The default value to return if no such parameter
-     *  exists.
      *
      * @return Returns the decoded query value.
      */

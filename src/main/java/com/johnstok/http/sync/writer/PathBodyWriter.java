@@ -24,7 +24,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import com.johnstok.http.engine.Utils;
+import java.util.Objects;
+
+import com.johnstok.http.IO;
 import com.johnstok.http.sync.BodyWriter;
 
 /**
@@ -45,14 +47,14 @@ public final class PathBodyWriter
      * @param path The path to read from.
      */
     public PathBodyWriter(final Path path) {
-        _resourcePath = Utils.checkNotNull(path);
+        _resourcePath = Objects.requireNonNull(path);
     }
 
 
     @Override
     public void write(final OutputStream os) throws IOException {
         try (InputStream is = Files.newInputStream(_resourcePath)) {
-            Utils.copy(is, os);
+            IO.copy(is, os);
         }
     }
 }
