@@ -1,0 +1,29 @@
+Web Framework
+- Routing
+- MVC
+- Filters
+- HTTPS
+- Conneg
+- Errors and redirects
+- Async processing
+- Streamed response bodies (chunked encoding)
+
+Extensions
+- URI templating
+- Cookies
+- Logging filter
+- Monitoring filter (statsd?)
+- JMX support
+- Serving static assets
+- Response compression filter
+- Templating
+- Parsing form submissions to objects
+- Object validation
+- File upload
+- Session support
+   - DB session
+   - Cookie session (http://en.wikipedia.org/wiki/Session_(computer_science)#Client_side_web_sessions)
+
+Features
+- Should easily support dependency injection
+- Stateless!
