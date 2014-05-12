@@ -84,7 +84,7 @@ import java.util.regex.Pattern;
  * @author Keith Webster Johnston.
  */
 @Specification(name="rfc-2616", section="3.1")
-public class Version {
+public class Version /* TODO: implements Comparable */{
 
     public static final String SYNTAX =
         "HTTP/("+Syntax.DIGIT+")+\\.("+Syntax.DIGIT+")+";
